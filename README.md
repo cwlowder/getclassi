@@ -1,3 +1,5 @@
 # getclassi
+How to run the server:  
+uwsgi run.ini
 
-Laith is our fav
+Requirements.txt contains all the commands needed to run the server
