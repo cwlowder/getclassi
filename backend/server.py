@@ -2,14 +2,16 @@ import os
 import sys
 import json
 from fnmatch import fnmatch
+from traceback import print_stack
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-PATH = "PATH_INFO"
-QUERY = "QUERY_STRING"
-API = "API"
+from API.api import api
+from load_page import load_page
+from CONSTANTS import *
 
 def not_found(environ, start_response):
+	print("Not Found: ", environ[PATH])
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
 	message = "404 Not found"
 	return [message.encode()]
@@ -19,36 +21,6 @@ def test_page(environ, start_response):
 	message = "SUP DOOD"
 	return [message.encode()]
 
-def load_page(environ, start_response):
-	path = "frontend" + environ[PATH]
-	if path[-1] == "/":
-		path += "index.html"
-	print("PATH:", path, "CWD:", os.getcwd())
-	try:
-		message = ""
-		with open(path, "r") as file:
-			for line in file.readlines():
-				message += line + "\n"
-		print(message)
-
-		start_response('200 OK', [('Content-Type', 'text/html')])
-		return [message.encode()]
-	except Exception as e:
-		print(e)
-		return not_found(environ, start_response)
-
-def api(environ, start_response):
-	path = environ[PATH]
-	query = environ[QUERY]
-	start_response('200 OK', [('Content-Type', 'json')])
-	message = json.dumps({
-		"test":"LOL",
-		"query": query,
-		"path": path
-	})
-	print(">>", message)
-	return [message.encode()]
-
 routes = [
 	('/api/*', api),
 	('/test', test_page),
@@ -56,11 +28,12 @@ routes = [
 ]
 
 def application(environ, start_response):
-	print("Requested:", )
-
 	req_path = environ[PATH].strip().split("/")[1:]
-
-	for path, app in routes:
-		if fnmatch(environ[PATH], path):
-			return app(environ, start_response)
+	try:
+		for path, app in routes:
+			if fnmatch(environ[PATH], path):
+				return app(environ, start_response)
+	except Exception as e:
+		print("Error:", e)
+		print_stack()
 	return not_found(environ, start_response)
