@@ -6,7 +6,7 @@ from traceback import print_exc
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-import DB.database
+import DB.database as database
 #initiaze database
 database.connect()
 
