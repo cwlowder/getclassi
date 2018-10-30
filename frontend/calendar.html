@@ -3,32 +3,50 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+  // This will load on page load with the class data
 $(document).ready(function(){
-    $("button").click(function(){
-        $.getJSON("http://localhost:3000/api/calendar?date=today", function(result) {
+        $.getJSON("/api/calendar?date=today", function(result) {
           console.log(result);
           var calendarHolder = "<ul>";
           var n = result["message"];
             calendarHolder += "<li>" + "Classes:" + "<ul>";
-            //$.each(result["message"]["events"][i.toString()], function(key, value) {
-            //});
             for (var i = 0; i < n["events"].length; i++) {
-              calendarHolder += "<li>" + n["events"][i]["class"] + "</li>";
+              calendarHolder += "<li>" + n["events"][i]["class"] + ": " + n["events"][i]["title"] + "</li>";
             }
             calendarHolder += "</ul></li>";
 
           calendarHolder += "</ul>";
-          $("body").append(calendarHolder);
+          $(document.getElementById("class-data")).append(calendarHolder);
+        });
+// This is a button that when clicked will do shit
+    $(document.getElementById("testButton")).click(function(){
+        $.getJSON("/api/calendar?date=today", function(result) {
+          console.log(result);
+          var calendarHolder = "<ul>";
+          var n = result["message"];
+            calendarHolder += "<li>" + "Classes:" + "<ul>";
+            for (var i = 0; i < n["events"].length; i++) {
+              calendarHolder += "<li>" + n["events"][i]["class"] + ": " + n["events"][i]["title"] + "</li>";
+            }
+            calendarHolder += "</ul></li>";
+
+          calendarHolder += "</ul>";
+          $(document.getElementById("class-data")).append(calendarHolder);
         });
     });
 });
 </script>
 </head>
 <body>
+  <div id="class-data"> </div>
+<div id="testButtonDiv">
+  <button id="testButton">Test Button</button>
+</div>
 
-<button>Get JSON data</button>
-
-<table ud></table>
+<div id="addClassDiv">
+  <form method="get" action="/addClass.html">
+    <button type="submit">Add a Class hoe!</button>
+  </form>
+</div>
 
 </body>
-</html>
