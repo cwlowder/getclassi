@@ -8,7 +8,7 @@ from traceback import print_exc
 sys.path.insert(0, os.path.dirname(__file__))
 
 #initiaze database
-database.init()
+database.connect()
 from API.api import api
 from load_page import load_page
 from CONSTANTS import *

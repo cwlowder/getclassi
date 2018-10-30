@@ -1,20 +1,16 @@
 import sys
 import mysql.connector
-import getpass
-from CONSTANTS import *
+import os
+sys.path.insert(0, os.path.dirname(__file__) + "/..")
+import DB.database as db
 
-mydb = mysql.connector.connect(
-	host=DB_HOST,
-	user=DB_USERNAME,
-	passwd=DB_PASSWORD,
-	database=DB_USERNAME
-)
-mycursor = mydb.cursor()
 
-f = open("createTableCommands.txt", "r")
-mycursor = mydb.cursor()
-lines = f.readlines()
+def createTables():
+	f = open("createTableCommands.txt", "r")
+	lines = f.readlines()
 
-for x in lines:
-	print(x)
-	mycursor.execute(x)
+	for x in lines:
+		print(x)
+		db.mycursor.execute(x)
+db.connect()
+createTables()
