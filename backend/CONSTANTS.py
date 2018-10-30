@@ -5,6 +5,9 @@ DUMMY_MODE = True
 # Query environ objects
 PATH = "PATH_INFO"
 QUERY = "QUERY_STRING"
+REQUEST_METHOD = "REQUEST_METHOD"
+METHOD_GET = "GET"
+METHOD_POST = "POST"
 
 # API fields
 STATUS = "status"
@@ -14,3 +17,8 @@ SUCCESS = True
 MESSAGE = "message"
 
 API = "API"
+
+#Database login Path
+DB_HOST = "sql9.freesqldatabase.com"
+DB_PASSWORD = "UdYNAIPst9"
+DB_USERNAME = "sql9263477"
