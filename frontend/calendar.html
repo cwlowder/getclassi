@@ -23,7 +23,6 @@ $(document).ready(function(){
         $.getJSON("/api/calendar?date=today", function(result) {
         })
         .done(function(result) {
-            alert('getJSON request succeeded!');
             console.log(result);
             var calendarHolder = "<ul>";
             var n = result["message"];

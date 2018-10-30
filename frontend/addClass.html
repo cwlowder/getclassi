@@ -10,6 +10,7 @@
   <br>
 
 <button id="submit"> Find Classes </button>
+<br>
 <script>
   function concatenate() {
     var departmentAcr = document.getElementById("departmentAcroynm").value;
@@ -20,6 +21,7 @@
 
 <script>
   $(document.getElementById("submit")).click(function(){
+    $(document.getElementById("addedClassDiv")).empty();
     $.getJSON("/api/find_class?q=" + concatenate(), function(result) {
     })
     .done(function(result) {
@@ -33,7 +35,7 @@
           buttonHolder += "<br>";
           buttonHolder += "<br>";
         }
-        $(document.getElementById("buttonList")).append(buttonHolder);
+        $(document.getElementById("buttonList")).empty().append(buttonHolder);
   })
   .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
 
@@ -47,12 +49,18 @@
     $.post("/api/add_class?crn=" + crn, function(result) {
     })
     .done(function(result) {
-      alert("Worked");
+      console.log("here");
+      $(document.getElementById("addedClassDiv")).empty().append("Added class with CRN: " + crn);
     })
     .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus);
     })
 }
 </script>
 <div id="buttonList">
-
 </div>
+
+<div id="addedClassDiv">
+</div>
+<form method="get" action="/calendar.html">
+  <button type="submit">Go To Your Calendar!</button>
+</form>
