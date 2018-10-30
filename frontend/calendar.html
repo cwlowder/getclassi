@@ -21,18 +21,22 @@ $(document).ready(function(){
 // This is a button that when clicked will do shit
     $(document.getElementById("testButton")).click(function(){
         $.getJSON("/api/calendar?date=today", function(result) {
-          console.log(result);
-          var calendarHolder = "<ul>";
-          var n = result["message"];
+        })
+        .done(function(result) {
+            alert('getJSON request succeeded!');
+            console.log(result);
+            var calendarHolder = "<ul>";
+            var n = result["message"];
             calendarHolder += "<li>" + "Classes:" + "<ul>";
             for (var i = 0; i < n["events"].length; i++) {
               calendarHolder += "<li>" + n["events"][i]["class"] + ": " + n["events"][i]["title"] + "</li>";
             }
             calendarHolder += "</ul></li>";
 
-          calendarHolder += "</ul>";
-          $(document.getElementById("class-data")).append(calendarHolder);
-        });
+            calendarHolder += "</ul>";
+            $(document.getElementById("class-data")).append(calendarHolder);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
     });
 });
 </script>
@@ -45,7 +49,7 @@ $(document).ready(function(){
 
 <div id="addClassDiv">
   <form method="get" action="/addClass.html">
-    <button type="submit">Add a Class hoe!</button>
+    <button type="submit">Add a Class!</button>
   </form>
 </div>
 
