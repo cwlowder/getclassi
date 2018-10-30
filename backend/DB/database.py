@@ -1,5 +1,5 @@
 from CONSTANTS import *
-import mysql
+import mysql.connector
 
 mydb = None
 mycursor = None
