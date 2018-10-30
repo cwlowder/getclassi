@@ -3,7 +3,7 @@ import sys
 import json
 import database
 from fnmatch import fnmatch
-from traceback import print_stack
+from traceback import print_exc
 
 sys.path.insert(0, os.path.dirname(__file__))
 
@@ -38,5 +38,5 @@ def application(environ, start_response):
 				return app(environ, start_response)
 	except Exception as e:
 		print("Error:", e)
-		print_stack()
+		print_exc()
 	return not_found(environ, start_response)
