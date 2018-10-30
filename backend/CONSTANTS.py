@@ -14,3 +14,8 @@ SUCCESS = True
 MESSAGE = "message"
 
 API = "API"
+
+#Database login Path
+DB_HOST = "sql9.freesqldatabase.com"
+DB_PASSWORD = "UdYNAIPst9"
+DB_USERNAME = "sql9263477"
