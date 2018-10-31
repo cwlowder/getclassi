@@ -23,3 +23,6 @@ DB_HOST = "sql9.freesqldatabase.com"
 DB_PASSWORD = "UdYNAIPst9"
 DB_USERNAME = "sql9263477"
 DB_NAME = DB_USERNAME
+
+# Isolation Levels
+SERIALIZABLE = "SERIALIZABLE"

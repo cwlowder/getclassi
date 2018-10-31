@@ -32,15 +32,18 @@ def dummy(environ, start_response):
 				"results": [
 					{
 						"crn": "1",
-						"class": "cs241"
+						"class": "cs241",
+						"department": "cs"
 					},
 					{
 						"crn": "2",
-						"class": "cs210"
+						"class": "ece319",
+						"department": "ece"
 					},
 					{
 						"crn": "3",
-						"class": "cs233"
+						"class": "cs233",
+						"department": "cs"
 					}
 				]
 			}
@@ -53,15 +56,17 @@ def real(environ, start_response):
 	query = pq(environ[QUERY])
 	if message == "":
 		q = query["q"][0]
-		sql = "SELECT CRN, Title FROM Classes WHERE Title LIKE '%" + q + "%'"
+		sql = "SELECT Title, CRN, Department, Instructor FROM Classes WHERE Title LIKE '%" + q + "%'"
 		try:
-			db.mycursor.execute(sql)
-			results = [{"class":row[1],"crn":row[0]} for row in db.mycursor.fetchall()]
+			mydb, mycursor = db.connect()
+			mycursor.execute(sql)
+			results = [{"class":row[0],"crn":row[1], "department":row[2], "instructor":row[3]} for row in db.mycursor.fetchall()]
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: SUCCESS,
 				MESSAGE: {"results": results}
 			})
+			mydb.close()
 		except:
 			print_exc()
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
