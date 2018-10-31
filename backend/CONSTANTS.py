@@ -1,6 +1,6 @@
 # FLAG for dummy data mode
 # If true, use dummy data, and not database
-DUMMY_MODE = True
+DUMMY_MODE = False
 
 # Query environ objects
 PATH = "PATH_INFO"

@@ -2,6 +2,10 @@ from CONSTANTS import *
 import json
 from urllib.parse import parse_qs as pq
 import time
+import DB.database as db
+
+from traceback import print_exc
+
 
 def check_request(environ, start_response):
 	query = pq(environ[QUERY])
@@ -35,19 +39,19 @@ def dummy(environ, start_response):
 				"events": {
 					"0": [
 						{
-							"crn": 0,
+							"crn": "0",
 							"class": "cs241",
 							"title": "MP1",
 							"desc": "this assignment is harder than the teacher expected"
 						},
 						{
-							"crn": 0,
+							"crn": "0",
 							"class": "cs241",
 							"title": "QUIZ1",
 							"desc": "Wow! This quiz is easy-peasy"
 						},
 						{
-							"crn": 0,
+							"crn": "0",
 							"class": "cs241",
 							"title": "LAB1",
 							"desc": "Better put on those lab coats"
@@ -55,7 +59,7 @@ def dummy(environ, start_response):
 					],
 					"1": [
 						{
-							"crn": 0,
+							"crn": "1",
 							"class": "tp103",
 							"title": "MP1",
 							"desc": "this assignment is harder than the teacher expected"
@@ -79,12 +83,12 @@ def real(environ, start_response):
 		date = ""
 		current = time.time()
 		if q == "today":
-			date = time.strftime('%Y-%m-%d', time.gmtime(current))
+			date = time.strftime('%Y-%m-%d', time.localtime(current))
 			print(date)
 		elif q == "tomorrow":
-			date = time.strftime('%Y-%m-%d', time.gmtime(current))
+			date = time.strftime('%Y-%m-%d', time.localtime(current))
 		elif q == "yesterday":
-			date = time.strftime('%Y-%m-%d', time.gmtime(current))
+			date = time.strftime('%Y-%m-%d', time.localtime(current))
 		else:
 			pass #//todo implement abstract date
 		mydb = None
@@ -96,6 +100,20 @@ def real(environ, start_response):
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql)
 			results = db.mycursor.fetchall()
+			titles = {}
+			events = {}
+			for row in results:
+				if row[0] not in titles:
+					titles[row[0]] = row[1]
+				if row[0] not in events:
+					events[row[0]] = []
+				events[row[0]].append({
+					"crn": row[0],
+					"class": row[1],
+					"title": row[5],
+					"desc": row[6]
+				})
+
 			print(results)
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
