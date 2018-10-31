@@ -7,6 +7,7 @@ from API.calendar_api import calendar
 from API.drop_class import drop_class
 from API.find_class import find_class
 from API.add_class import add_class
+from API.class_info import class_info
 
 def not_implemented(environ, start_response):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -35,6 +36,7 @@ routes = [
 	('find_class',find_class),
 	('add_class',add_class),
 	('test_api', test_api),
+	('class_info', class_info),
 	('*', not_implemented)
 ]
 
