@@ -86,39 +86,44 @@ def real(environ, start_response):
 			date = time.strftime('%Y-%m-%d', time.localtime(current))
 			print(date)
 		elif q == "tomorrow":
-			date = time.strftime('%Y-%m-%d', time.localtime(current))
+			date = time.strftime('%Y-%m-%d', time.localtime(current + 86400))
 		elif q == "yesterday":
-			date = time.strftime('%Y-%m-%d', time.localtime(current))
+			date = time.strftime('%Y-%m-%d', time.localtime(current - 86400))
 		else:
 			pass #//todo implement abstract date
 		mydb = None
-		sql = "SELECT * FROM Classes NATURAL JOIN Events AS x, Enrollments WHERE Enrollments.crn = x.crn AND Enrollments.NetId = '0' AND x.DueDate LIKE " + "\"" + date +"%\""
-		print(sql)
+		sql1 = "SELECT Enrollments.CRN, Classes.Title FROM Classes INNER JOIN Enrollments ON Classes.CRN = Enrollments.CRN WHERE Enrollments.NetId = %s"
+		val1 = ("0",)
+		sql2 = "SELECT * FROM (SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`, `Classes`.`Title` AS CTitle FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) AS x, `Enrollments` WHERE `Enrollments`.crn = x.crn AND `Enrollments`.NetId = %s  AND x.DueDate LIKE '" + date +"%' "
+		val2 = ("0",)
 		try:
 			if date == "":
 				raise Exception('Date is not anything')
 			mydb, mycursor = db.connect()
-			mycursor.execute(sql)
-			results = db.mycursor.fetchall()
+			mycursor.execute(sql1, val1)
+			resultsClasses = db.mycursor.fetchall()
+			mycursor.execute(sql2, val2)
+			resultsCalendar = db.mycursor.fetchall()
 			titles = {}
 			events = {}
-			for row in results:
+			for row in resultsClasses:
 				if row[0] not in titles:
 					titles[row[0]] = row[1]
-				if row[0] not in events:
 					events[row[0]] = []
+			for row in resultsCalendar:
 				events[row[0]].append({
 					"crn": row[0],
-					"class": row[1],
-					"title": row[5],
-					"desc": row[6]
+					"class": row[4],
+					"title": row[1],
+					"desc": row[3],
+					"DueDate" : row[2]
 				})
 
-			print(results)
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: SUCCESS,
-				MESSAGE: {"results": results}
+				MESSAGE: {"titles": titles,
+						  "events" : events}
 			})
 			mydb.close()
 		except:
