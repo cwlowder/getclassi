@@ -1,0 +1,43 @@
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<h1>CS411: Database Systems </h1>
+
+  Class Description: Abdu and the boys teach some databases!
+  <br>
+  Course Number: 1235
+
+<button id="mac" onclick="querySt()"> click me hoe </button>
+
+	<nav>
+  <ul>
+    <li><a href="#">Navigation</a></li>
+    <li><a href="#">Menu</a></li>
+    <li><a href="#">Links</a></li>
+  </ul>
+</nav>
+</head>
+
+<script>
+
+	function querySt() {
+
+		var url_string = window.location.href;
+		var url = new URL(url_string);
+		var c = url.searchParams.get("crn");
+		console.log(c);
+
+	}
+
+</script>
+
+
+
+
+<body>
+	<form method="get" action="/calendar.html">
+	  <button type="submit">Go To Your Calendar!</button>
+	</form>
+</body>

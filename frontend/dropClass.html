@@ -1,0 +1,54 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<h1> What Class Do You Want To Drop? </h1>
+
+<script>
+  $(document).ready(function(){
+    $(document.getElementById("dropClassDiv")).empty();
+    $.getJSON("/api/find_class?q=class", function(result) {
+    })
+    .done(function(result) {
+        console.log(result);
+        var buttonHolder = "<br>";
+        for (var i in result["message"].results) {
+          buttonHolder += "<p1> " + result["message"].results[i].class + "     " + "CRN: " + result["message"].results[i].crn
+            + "</p1>" + "<br>" + "<button id=button" +
+            result["message"].results[i].crn + " onclick=addClick(" + result["message"].results[i].crn + ") "
+              + "<br>" + "Drop Me! </button>"
+          buttonHolder += "<br>";
+          buttonHolder += "<br>";
+        }
+        $(document.getElementById("buttonList")).empty().append(buttonHolder);
+  })
+  .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
+
+});
+</script>
+
+<script>
+  function addClick(crn) {
+    console.log("In dropClick");
+    console.log(crn);
+    $.post("/api/drop_class?crn=" + crn, function(result) {
+    })
+    .done(function(result) {
+      console.log("here");
+			location.reload(true);
+      $(document.getElementById("dropClassDiv")).empty().append("Dropped class with CRN: " + crn);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus);
+
+			location.reload(true);
+    })
+}
+</script>
+<div id="buttonList">
+</div>
+
+<div id="dropClassDiv">
+</div>
+<form method="get" action="/calendar.html">
+  <button type="submit">Go To Your Calendar!</button>
+</form>
