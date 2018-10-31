@@ -29,7 +29,7 @@ def dummy(environ, start_response):
 		message = json.dumps({
 			STATUS: SUCCESS,
 			MESSAGE: {
-				"crn": str(query["crn"]),
+				"crn": str(query["crn"][0]),
 				"class": "cs241",
 				"department": "cs",
 				"instructor": "John Doe"
