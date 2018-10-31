@@ -1,0 +1,66 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<h1> Search for the class you want to add! </h1>
+
+  Department Acronym: <br> <input type="text" id="departmentAcroynm">
+  <br>
+  Course Number: <br> <input type="text" id="courseNumber">
+  <br>
+
+<button id="submit"> Find Classes </button>
+<br>
+<script>
+  function concatenate() {
+    var departmentAcr = document.getElementById("departmentAcroynm").value;
+    var courseNum = document.getElementById("courseNumber").value;
+    return departmentAcr + courseNum;
+  }
+</script>
+
+<script>
+  $(document.getElementById("submit")).click(function(){
+    $(document.getElementById("addedClassDiv")).empty();
+    $.getJSON("/api/find_class?q=" + concatenate(), function(result) {
+    })
+    .done(function(result) {
+        console.log(result);
+        var buttonHolder = "<br>";
+        for (var i in result["message"].results) {
+          buttonHolder += "<p1> " + result["message"].results[i].class + "     " + "CRN: " + result["message"].results[i].crn
+            + "</p1>" + "<br>" + "<button id=button" +
+            result["message"].results[i].crn + " onclick=addClick(" + result["message"].results[i].crn + ") "
+              + "<br>" + "Add me </button>"
+          buttonHolder += "<br>";
+          buttonHolder += "<br>";
+        }
+        $(document.getElementById("buttonList")).empty().append(buttonHolder);
+  })
+  .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
+
+});
+</script>
+
+<script>
+  function addClick(crn) {
+    console.log("In addClick");
+    console.log(crn);
+    $.post("/api/add_class?crn=" + crn, function(result) {
+    })
+    .done(function(result) {
+      console.log("here");
+      $(document.getElementById("addedClassDiv")).empty().append("Added class with CRN: " + crn);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus);
+    })
+}
+</script>
+<div id="buttonList">
+</div>
+
+<div id="addedClassDiv">
+</div>
+<form method="get" action="/calendar.html">
+  <button type="submit">Go To Your Calendar!</button>
+</form>
