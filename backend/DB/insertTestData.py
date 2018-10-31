@@ -12,6 +12,7 @@ import time
 db.connect()
 
 def testData():
+	teachers = ["Abdu", "Zilles", "Angrave", "Fleck", "Chatman"]
 	val = []
 	sql = "INSERT INTO Users (NetId, Name) VALUES (%s, %s)"
 	for x in range(0, 10):
@@ -21,14 +22,15 @@ def testData():
 	val = []
 	sql = "INSERT INTO Classes (CRN, Title, Department, Instructor) VALUES (%s, %s, %s, %s)"
 	for x in range(0, 10):
-		val += [(str(x), "Class" + str(x), "Departement"+str(x % 3), "Abdu")]
+		teacher = teachers[(x % len(teachers))]
+		val += [(str(x), "Class" + str(x), "Departement"+str(x % 3), teacher)]
 	db.mycursor.executemany(sql, val)
 
 	val = []
 	sql =  "INSERT INTO Events (EventId, CRN, Title, DueDate, Event_Des) VALUES (%s, %s, %s, %s, %s)"
 	current = time.time()
 	for x in range(0, 50):
-		val += [(x, str(x % 10), "MP" + str(x), time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(current + 6000 * x)), "EventId is that " + str(x))]
+		val += [(x, str(x % 10), "MP" + str(x), time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(current + 100 * x)), "EventId is that " + str(x))]
 	db.mycursor.executemany(sql, val)
 
 	val = []
