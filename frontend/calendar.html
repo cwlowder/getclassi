@@ -10,12 +10,22 @@ $(document).ready(function(){
         $.getJSON("/api/calendar?date=today", function(result) {
         })
         .done(function(result) {
-            console.log(result);
             var calendarHolder = "";
             var n = result["message"];
             calendarHolder += "<li>" + "Classes:" + "<ul>";
-            for (var i = 0; i < n["events"].length; i++) {
-              calendarHolder += "<li>"+ "<a href='/class.html?crn=" + n["events"][i]["crn"] + "'" + ">" + n["events"][i]["class"] + ": " + n["events"][i]["title"] +"</a>"+ "</li>";
+            for (var i in n.titles) {
+              var assignmentDataHolder = "";
+              calendarHolder += "<li>"+ "<a href='/class.html?crn=" + i + "'" + ">";
+              calendarHolder += n.titles[i];
+              calendarHolder += "</a>";
+              calendarHolder += "<ul>";
+              for (var j in n.events[i]) {
+                console.log(n.events[i])
+                assignmentDataHolder += "<li>" + n.events[i][j].title + "</li>";
+              }
+              assignmentDataHolder += "</ul>";
+              calendarHolder += assignmentDataHolder;
+              calendarHolder += "</li>"
             }
             calendarHolder += "</ul></li>";
 
@@ -27,7 +37,10 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-  <div id="class-data"> </div>
+  <div id="class-data">
+    <div id="assignmentData">
+    </div>
+  </div>
 
 <div id="addClassDiv">
   <form method="get" action="/addClass.html">

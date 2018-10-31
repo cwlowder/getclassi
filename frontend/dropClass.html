@@ -12,10 +12,10 @@
     .done(function(result) {
         console.log(result);
         var buttonHolder = "<br>";
-        for (var i in result["message"].results) {
-          buttonHolder += "<p1> " + result["message"].results[i].class + "     " + "CRN: " + result["message"].results[i].crn
+        for (var i in result["message"].titles) {
+          buttonHolder += "<p1> " + result["message"].titles[i] + "     " + "CRN: " + i
             + "</p1>" + "<br>" + "<button id=button" +
-            result["message"].results[i].crn + " onclick=addClick(" + result["message"].results[i].crn + ") "
+            i + " onclick=addClick(" + i + ") "
               + "<br>" + "Drop Me! </button>"
           buttonHolder += "<br>";
           buttonHolder += "<br>";
