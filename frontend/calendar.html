@@ -15,7 +15,7 @@ $(document).ready(function(){
             var n = result["message"];
             calendarHolder += "<li>" + "Classes:" + "<ul>";
             for (var i = 0; i < n["events"].length; i++) {
-              calendarHolder += "<li>"+ "<a href='/class.html?crn="+"14'"+">"+ n["events"][i]["class"] + ": " + n["events"][i]["title"] +"</a>"+ "</li>";
+              calendarHolder += "<li>"+ "<a href='/class.html?crn=" + n["events"][i]["crn"] + "'" + ">" + n["events"][i]["class"] + ": " + n["events"][i]["title"] +"</a>"+ "</li>";
             }
             calendarHolder += "</ul></li>";
 

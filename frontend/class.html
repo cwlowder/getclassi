@@ -3,37 +3,73 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 
-<h1>CS411: Database Systems </h1>
+<div id="classHeaderDiv">
+</div>
 
-  Class Description: Abdu and the boys teach some databases!
+<div id="instructorDiv">
+</div>
+
+<div id="crnDiv">
+</div>
+
+<div id="classDescription">
+</div>
+
+<div id="classAssignmentList">
+</div>
+
+<div id="notesSection">
+  <div id="currNote"> Note
+  </div>
+  Change Note?
   <br>
-  Course Number: 1235
-
-<button id="mac" onclick="querySt()"> click me hoe </button>
-
-	<nav>
-  <ul>
-    <li><a href="#">Navigation</a></li>
-    <li><a href="#">Menu</a></li>
-    <li><a href="#">Links</a></li>
-  </ul>
-</nav>
-</head>
+  <textarea id="notesBox" maxlength="280" rows="4" cols="70"></textarea>
+  <br>
+  <button id="updateNote" onclick="updateNote()">Update Note! </button>
+</div>
 
 <script>
+  $(document).ready(function() {
+    $.getJSON("/api/class_info?crn=" + getCrn(), function(result) {
 
-	function querySt() {
+    })
+    .done(function(result) {
+      var info = result["message"];
+      $(document.getElementById("classHeaderDiv")).append(info.class);
+      $(document.getElementById("crnDiv")).append(info.crn);
+      $(document.getElementById("currNote")).empty().append(info.note);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
+  })
+</script>
 
+<script>
+  function updateNote() {
+    var message = document.getElementById("notesBox").value;
+    console.log(message);
+    $.post("/api/set_note?crn=" + getCrn(), JSON.stringify({note: message}) , function(result) {
+
+    })
+    .done(function(result) {
+      console.log("Note updated");
+      $(document.getElementById("currNote")).empty().append(message);
+      location.reload(true);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log("Failed");
+    })
+  }
+</script>
+
+<script>
+	function getCrn() {
 		var url_string = window.location.href;
 		var url = new URL(url_string);
 		var c = url.searchParams.get("crn");
 		console.log(c);
-
+    return c;
 	}
-
 </script>
-
-
 
 
 <body>

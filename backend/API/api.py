@@ -54,5 +54,10 @@ def api(environ, start_response):
 	except Exception as e:
 		print("Error in api:", e)
 		print_exc()
+		start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
+		return json.dumps({
+			STATUS: FAILED,
+			MESSAGE: "Error occured on the server"
+		})
 
 	return not_implemented(environ, start_response)

@@ -7,7 +7,7 @@
 <script>
   $(document).ready(function(){
     $(document.getElementById("dropClassDiv")).empty();
-    $.getJSON("/api/find_class?q=class", function(result) {
+    $.getJSON("/api/calendar?date=today", function(result) {
     })
     .done(function(result) {
         console.log(result);
@@ -38,7 +38,7 @@
 			location.reload(true);
       $(document.getElementById("dropClassDiv")).empty().append("Dropped class with CRN: " + crn);
     })
-    .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus);
+    .fail(function(jqXHR, textStatus, errorThrown) { alert('Failed to drop class!' + textStatus);
 
 			location.reload(true);
     })
