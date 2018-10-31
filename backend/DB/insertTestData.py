@@ -27,8 +27,8 @@ def testData():
 	val = []
 	sql =  "INSERT INTO Events (EventId, CRN, Title, DueDate, Event_Des) VALUES (%s, %s, %s, %s, %s)"
 	current = time.time()
-	for x in range(0, 20):
-		val += [(x, str(x % 10), "MP" + str(x%6), time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(current + 12000 * x)), "EventId is that " + str(x))]
+	for x in range(0, 50):
+		val += [(x, str(x % 10), "MP" + str(x), time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(current + 6000 * x)), "EventId is that " + str(x))]
 	db.mycursor.executemany(sql, val)
 
 	val = []
