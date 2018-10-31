@@ -36,7 +36,7 @@ def testData():
 	val = []
 	sql =  "INSERT INTO Enrollments (CRN, NetId) VALUES (%s, %s)"
 	for x in range(0, 30):
-		val += [(str(x % 10), str(int(x) % 10))]
+		val += [(str(x % 10), str(int(x/3) % 10))]
 	db.mycursor.executemany(sql, val)
 	db.mydb.commit()
 
