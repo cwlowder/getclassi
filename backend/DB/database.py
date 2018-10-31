@@ -1,9 +1,6 @@
 from CONSTANTS import *
 import mysql.connector
 
-mydb = None
-mycursor = None
-
 def connect():
 	global mydb
 	global mycursor
@@ -19,8 +16,9 @@ def connect():
 	print("Connected to database:", mydb)
 	for x in mycursor:
 		print(x)
+	return mydb, mycursor
 
-def runQuery(query):
+def runQuery(mydb, mycursor, query):
 	mycursor.execute(query)
 	myresult = mycursor.fetchall()
 	return myresult
