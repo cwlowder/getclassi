@@ -15,7 +15,12 @@
   function concatenate() {
     var departmentAcr = document.getElementById("departmentAcroynm").value;
     var courseNum = document.getElementById("courseNumber").value;
-    return departmentAcr + courseNum;
+    var returnVal =  departmentAcr + courseNum;
+		if(returnVal === ""){
+			returnVal = "CS411";
+		}
+
+		return returnVal;
   }
 </script>
 

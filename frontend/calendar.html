@@ -5,50 +5,39 @@
 <script>
   // This will load on page load with the class data
 $(document).ready(function(){
-        $.getJSON("/api/calendar?date=today", function(result) {
-          console.log(result);
-          var calendarHolder = "<ul>";
-          var n = result["message"];
-            calendarHolder += "<li>" + "Classes:" + "<ul>";
-            for (var i = 0; i < n["events"].length; i++) {
-              calendarHolder += "<li>" + n["events"][i]["class"] + ": " + n["events"][i]["title"] + "</li>";
-            }
-            calendarHolder += "</ul></li>";
 
-          calendarHolder += "</ul>";
-          $(document.getElementById("class-data")).append(calendarHolder);
-        });
 // This is a button that when clicked will do shit
-    $(document.getElementById("testButton")).click(function(){
         $.getJSON("/api/calendar?date=today", function(result) {
         })
         .done(function(result) {
             console.log(result);
-            var calendarHolder = "<ul>";
+            var calendarHolder = "";
             var n = result["message"];
             calendarHolder += "<li>" + "Classes:" + "<ul>";
             for (var i = 0; i < n["events"].length; i++) {
-              calendarHolder += "<li>" + n["events"][i]["class"] + ": " + n["events"][i]["title"] + "</li>";
+              calendarHolder += "<li>"+ "<a href='/class.html?crn="+"14'"+">"+ n["events"][i]["class"] + ": " + n["events"][i]["title"] +"</a>"+ "</li>";
             }
             calendarHolder += "</ul></li>";
 
-            calendarHolder += "</ul>";
+            calendarHolder += "";
             $(document.getElementById("class-data")).append(calendarHolder);
         })
         .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
-    });
 });
 </script>
 </head>
 <body>
   <div id="class-data"> </div>
-<div id="testButtonDiv">
-  <button id="testButton">Test Button</button>
-</div>
 
 <div id="addClassDiv">
   <form method="get" action="/addClass.html">
     <button type="submit">Add a Class!</button>
+  </form>
+</div>
+
+<div id="dropClassDiv">
+  <form method="get" action="/dropClass.html">
+    <button type="submit">Drop a Class!</button>
   </form>
 </div>
 
