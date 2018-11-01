@@ -24,10 +24,10 @@ def load_page(environ, start_response):
 			message = open(path, "rb").read()
 			contentType = [('Content-Type', 'image/jpg')]
 		elif ".css" in path:
-			message = [open(path, "r").read()].encode()
+			message = open(path, "r").read().encode()
 			contentType = [('Content-Type', 'text/css')]
 		else:
-			message = [open(path, "r").read()].endcode()
+			message = open(path, "r").read().encode()
 			contentType = [('Content-Type', 'text/html')]
 		start_response('200 OK', contentType)
 		return [message]
