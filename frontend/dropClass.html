@@ -1,8 +1,19 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<h1> What Class Do You Want To Drop? </h1>
+<div class="jumbotron text-center" style="background-color: #122B4A">
+<h1 style="color: #D67713; font-size:50px" align="center">
+  What class do you want to drop?
+</h1>
+</div>
+<style>
+body {
+  background-color: #D3D3D3;
+}
+</style>
+
 
 <script>
   $(document).ready(function(){
@@ -14,7 +25,7 @@
         var buttonHolder = "<br>";
         for (var i in result["message"].titles) {
           buttonHolder += "<p1> " + result["message"].titles[i] + "     " + "CRN: " + i
-            + "</p1>" + "<br>" + "<button id=button" +
+            + "</p1>" + "<br>" + "<button class='btn btn-default btn-sm' id=button" +
             i + " onclick=addClick(" + i + ") "
               + "<br>" + "Drop Me! </button>"
           buttonHolder += "<br>";
@@ -50,5 +61,5 @@
 <div id="dropClassDiv">
 </div>
 <form method="get" action="/calendar.html">
-  <button type="submit">Go To Your Calendar!</button>
+  <button class="btn btn-default btn-lg" type="submit">Go To Your Calendar!</button>
 </form>
