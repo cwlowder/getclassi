@@ -1,31 +1,42 @@
 
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-
-<div id="classHeaderDiv">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="jumbotron text-center" style="background-color: #122B4A">
+	<div style="color: #D67713; font-size:50px" align="center" id="classHeaderDiv">
+	</div>
 </div>
+<style>
+body {
+	background-color: #D3D3D3;
+}
+</style>
+<div class="container-fluid">
+	<div id="instructorDiv">
+	</div>
 
-<div id="instructorDiv">
-</div>
+	<div id="crnDiv">
+	</div>
 
-<div id="crnDiv">
-</div>
+	<div id="classDescription">
+	</div>
 
-<div id="classDescription">
-</div>
+	<div id="classAssignmentList">
+	</div>
 
-<div id="classAssignmentList">
-</div>
-
-<div id="notesSection">
-  <div id="currNote"> Note
-  </div>
-  Change Note?
-  <br>
-  <textarea id="notesBox" maxlength="280" rows="4" cols="70"></textarea>
-  <br>
-  <button id="updateNote" onclick="updateNote()">Update Note! </button>
+	<div id="notesSection">
+	  <div id="currNote"> Note
+	  </div>
+	  <h4>Change Note?</h4>
+	  <br>
+	  <textarea class="form-control" style="width: 35%" id="notesBox" maxlength="280" rows="4" cols="70"></textarea>
+	  <br>
+	  <button class="btn btn-default btn-lg" id="updateNote" onclick="updateNote()">Update Note! </button>
+	</div>
+	<form method="get" action="/calendar.html">
+		<button class="btn btn-default btn-lg" type="submit">Go To Your Calendar!</button>
+	</form>
 </div>
 
 <script>
@@ -72,8 +83,6 @@
 </script>
 
 
-<body>
-	<form method="get" action="/calendar.html">
-	  <button type="submit">Go To Your Calendar!</button>
-	</form>
+
+
 </body>
