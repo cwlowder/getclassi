@@ -45,6 +45,8 @@ def endpoint(environ, start_response):
 	req_path = environ[PATH].strip()[1:]
 	print(req_path)
 
+	subprocess.call(["echo", "Recieved endpoint request to ", req_path, ">>", "~/update.log"])
+	
 	try:
 		for path, app in routes:
 			if fnmatch(req_path, "endpoint/" + path):
