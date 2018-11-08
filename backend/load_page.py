@@ -13,7 +13,6 @@ def load_page(environ, start_response):
 	if path[-1] == "/":
 		path += "index.html"
 
-	print("PATH:", path, "CWD:", os.getcwd())
 	try:
 		contentType = []
 		message = ""

@@ -48,8 +48,8 @@ def real(environ, start_response):
 		print("body", body)
 		body = json.loads(body)
 		sql = "UPDATE Classes SET Note = %s WHERE CRN = %s"
-		if 'note' not in body or str(type(body['note'])) != "<class 'str'>" or len(body['note']) >= 280:
-			start_response('200 OK', [('Content-Type', 'json')])
+		if 'note' not in body or str(type(body['note'])) != "<class 'str'>" or len(body['note']) > 280:
+			start_response('400 Bad Request', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: FAILED,
 				MESSAGE: "Improper request"

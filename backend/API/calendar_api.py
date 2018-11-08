@@ -79,7 +79,7 @@ def real(environ, start_response):
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":
-		q = query["date"][0]
+		q = db.escapeString(query["date"][0])
 		date = ""
 		current = time.time()
 		if q == "today":
