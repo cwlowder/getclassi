@@ -19,10 +19,14 @@ def git_update(environ, start_response):
 	message = {}
 	body = environ[BODY].read().decode("utf-8")
 	body = json.loads(body)
-	if body['ref'] == "refs/heads/" + PROD_BRANCH:
-		subprocess.call(["cd", "~/getclassi;" "sh", "update_repo.sh", PROD_BRANCH])
-	else:
-		subprocess.call(["echo", body['ref'], ">>", "~/update.log"])
+	try:
+		subprocess.call(["echo", "Recieved notification of push to ", PROD_BRANCH, ">>", "~/update.log"])
+		if body['ref'] == "refs/heads/" + PROD_BRANCH:
+			subprocess.call(["cd", "~/getclassi;" "sh", "update_repo.sh", PROD_BRANCH])
+		else:
+			subprocess.call(["echo", body['ref'], ">>", "~/update.log"])
+	except:
+		subprocess.call(["echo", "ERROR OCCURED DURRING RUN ON SERVER", ">>", "~/update.log"])
 	'''
 	if len(body) > 0:
 		body = json.loads(body)
