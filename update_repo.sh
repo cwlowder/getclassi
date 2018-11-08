@@ -12,6 +12,6 @@ if [ "$current" = "$prod_branch" ]
 then
 	echo "restarting server"
 	git pull origin $current
-	pkill python3.6
+	sleep 2 && pkill python3.6 &
 	echo "Restarting server: $(date) on branch ($current)" >> ~/update.log
 fi
