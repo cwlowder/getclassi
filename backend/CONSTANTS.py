@@ -2,6 +2,9 @@
 # If true, use dummy data, and not database
 DUMMY_MODE = False
 
+# production branch
+PROD_BRANCH = "master"
+
 # Query environ objects
 PATH = "PATH_INFO"
 QUERY = "QUERY_STRING"
