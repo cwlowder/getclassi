@@ -55,7 +55,7 @@ def real(environ, start_response):
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":
-		q = query["q"][0]
+		q = db.escapeString(query["q"][0])
 		sql = "SELECT Title, CRN, Department, Instructor FROM Classes WHERE Title LIKE '%" + q + "%'"
 		try:
 			mydb, mycursor = db.connect()
