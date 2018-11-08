@@ -14,4 +14,6 @@ then
 	git pull origin $current
 	sleep 2 && pkill python3.6 &
 	echo "Restarting server: $(date) on branch ($current)" >> ~/update.log
+else
+	echo "Not currect repo: $(date), expected $current but got $prod_branch"
 fi
