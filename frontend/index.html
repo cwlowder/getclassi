@@ -12,7 +12,7 @@
     <meta name="author" content="">
 
     <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="230799065613-mgao2osjis576qle2e6nol5ooui0a25g.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="667147779945-d349v2ioe3f5kvqhhsvrcvepj8jqpqrn.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>    <!-- Bootstrap Core JavaScript -->
     <title>Classi</title>
@@ -58,6 +58,40 @@
         <form method="get" action="/calendar.html">
           <button class="btn btn-default btn-lg" type="submit" style="display: block; margin: 0 auto;">Go To Your Calendar!</button>
         </form>
+				<br></br>
+				<div class="g-signin2" align = "center" data-onsuccess="onSignIn"></div>
+				<br></br>
+				<div id = "signOut" align = "center">
+					<button onclick="signOut()">Sign Out</button>
+				</div>
+				<script>
+				function onSignIn(googleUser) {
+				  var profile = googleUser.getBasicProfile();
+					var id_token = googleUser.getAuthResponse().id_token;
+
+					$.post("/api/sign_in?email=" + profile.getEmail(), JSON.stringify({google_token: id_token}) , function(result) {
+			    })
+			    .done(function(result) {
+			     document.cookie = "Email=" + profile.getEmail();
+					 document.cookie = "sessionID=" + id_token;
+					 var auth2 = gapi.auth2.getAuthInstance();
+			     auth2.signOut().then(function () {
+			       console.log('User signed out.');
+			     });
+
+			    })
+			    .fail(function(jqXHR, textStatus, errorThrown) {
+			      console.log("Failed");
+						var auth2 = gapi.auth2.getAuthInstance();
+				    auth2.signOut().then(function () {
+				      console.log('User signed out.');
+				    });
+			    })
+
+				}
+
+				</script>
+
     <!-- jQuery -->
     <script src="js/bootstrap.min.js"></script>
     <script type="application/ld+json">
