@@ -21,7 +21,7 @@ def git_update(environ, start_response):
 			STATUS: FAILED,
 			MESSAGE: "USE post request"
 		}
-	return [json.dumps(message).encode()]
+		return [json.dumps(message).encode()]
 	start_response('200 OK', [('Content-Type', 'text/html')])
 	message = {}
 	body = environ[BODY].read().decode("utf-8")
