@@ -15,18 +15,25 @@ def not_implemented(environ, start_response):
 
 def git_update(environ, start_response):
 	print("ENDPOINT CALLED")
+	if environ[REQUEST_METHOD] != METHOD_POST:
+		start_response('400 Bad Method', [('Content-Type', 'text/html')])
+		message = {
+			STATUS: FAILED,
+			MESSAGE: "USE post request"
+		}
+	return [json.dumps(message).encode()]
 	start_response('200 OK', [('Content-Type', 'text/html')])
 	message = {}
 	body = environ[BODY].read().decode("utf-8")
 	body = json.loads(body)
 	try:
-		subprocess.call(["echo", "Recieved notification of push to ", PROD_BRANCH, ">>", "~/update.log"])
+		subprocess.run("echo 'Recieved notification of push to " + PROD_BRANCH + "' >> ~/update.log".split(" "))
 		if body['ref'] == "refs/heads/" + PROD_BRANCH:
-			subprocess.call(["cd", "~/getclassi;" "sh", "update_repo.sh", PROD_BRANCH])
+			subprocess.call(["cd", "~/getclassi;" "sh", "update_repo.sh", PROD_BRANCH], shell=True)
 		else:
-			subprocess.call(["echo", body['ref'], ">>", "~/update.log"])
+			subprocess.call(["echo", body['ref'], ">>", "~/update.log"], shell=True)
 	except:
-		subprocess.call(["echo", "ERROR OCCURED DURRING RUN ON SERVER", ">>", "~/update.log"])
+		subprocess.call(["echo", "ERROR OCCURED DURRING RUN ON SERVER", ">>", "~/update.log"], shell=True)
 	'''
 	if len(body) > 0:
 		body = json.loads(body)
