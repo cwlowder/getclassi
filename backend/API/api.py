@@ -9,6 +9,7 @@ from API.find_class import find_class
 from API.add_class import add_class
 from API.class_info import class_info
 from API.set_note import set_note
+from API.sign_in import sign_in
 
 def not_implemented(environ, start_response):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -39,6 +40,7 @@ routes = [
 	('test_api', test_api),
 	('class_info', class_info),
 	('set_note', set_note),
+	('sign_in', sign_in),
 	('*', not_implemented)
 ]
 

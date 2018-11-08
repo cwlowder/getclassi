@@ -6,8 +6,6 @@ def escapeString(s):
 	return mydb.converter.escape(s)
 
 def connect():
-	global mydb
-	global mycursor
 	mydb = mysql.connector.connect(
 		host=DB_HOST,
 		user=DB_USERNAME,

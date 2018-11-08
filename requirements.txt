@@ -1,3 +1,4 @@
 apt-get install build-essential python-dev
 pip3 install uwsgi
 pip3 install mysql-connector
+pip install --upgrade google-auth

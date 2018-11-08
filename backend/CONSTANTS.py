@@ -1,7 +1,8 @@
 # FLAG for dummy data mode
 # If true, use dummy data, and not database
 DUMMY_MODE = False
-
+LOCAL_CLIENT_ID = "667147779945-d349v2ioe3f5kvqhhsvrcvepj8jqpqrn.apps.googleusercontent.com"
+SESSION_TIMEOUT = 3600 # 1 hour of seconds
 # Query environ objects
 PATH = "PATH_INFO"
 QUERY = "QUERY_STRING"

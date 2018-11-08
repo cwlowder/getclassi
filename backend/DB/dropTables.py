@@ -14,9 +14,8 @@ def dropTables():
     db.mycursor.execute(sql)
     sql = "DROP TABLE IF EXISTS Classes"
     db.mycursor.execute(sql)
-
-
-
+    sql = "DROP TABLE IF EXISTS Sessions"
+    db.mycursor.execute(sql)
 
 db.connect()
 dropTables()

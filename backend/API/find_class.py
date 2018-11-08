@@ -60,7 +60,7 @@ def real(environ, start_response):
 		try:
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql)
-			results = [{"class":row[0],"crn":row[1], "department":row[2], "instructor":row[3]} for row in db.mycursor.fetchall()]
+			results = [{"class":row[0],"crn":row[1], "department":row[2], "instructor":row[3]} for row in mycursor.fetchall()]
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: SUCCESS,
