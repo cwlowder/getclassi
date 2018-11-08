@@ -21,6 +21,8 @@ def git_update(environ, start_response):
 	body = json.loads(body)
 	if body['ref'] == "refs/heads/" + PROD_BRANCH:
 		subprocess.call(["cd", "~/getclassi;" "sh", "update_repo.sh", PROD_BRANCH])
+	else:
+		subprocess.call(["echo", body['ref'], ">>", "~/update.log"])
 	'''
 	if len(body) > 0:
 		body = json.loads(body)
