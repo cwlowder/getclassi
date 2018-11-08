@@ -33,14 +33,14 @@ def dummy(environ, start_response):
 	print("Message:", message)
 	return [message.encode()]
 
-def real(environ, start_response):
+def real(environ, start_response, netId):
 	print("MAC ON THE ATTACK: quietiepie")
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":
 		crn = query["crn"][0]
 		sql = "DELETE FROM Enrollments WHERE CRN = %s and NetId=%s"
-		val = (crn, "0") #TODO CHANGE TO LOGGED IN USER
+		val = (crn, netId) #TODO CHANGE TO LOGGED IN USER
 		mydb = None
 		try:
 			mydb, mycursor = db.connect()
@@ -73,8 +73,8 @@ def real(environ, start_response):
 	print(message)
 	return [message.encode()]
 
-def drop_class(environ, start_response):
+def drop_class(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:
-		return real(environ, start_response)
+		return real(environ, start_response, netId)
