@@ -13,6 +13,6 @@ then
 	echo "restarting server"
 	git pull origin $current
 	pkill python3.6
-	timestamp = "$(date)"
+	timestamp="$(date)"
 	echo "Restarting server: ($date) on branch ($current)" >> "~/update.log"
 fi
