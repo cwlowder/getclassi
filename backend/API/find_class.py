@@ -76,7 +76,7 @@ def real(environ, start_response):
 			})
 	print(message)
 	return [message.encode()]
-def find_class(environ, start_response):
+def find_class(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:

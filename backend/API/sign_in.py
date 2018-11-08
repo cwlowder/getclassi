@@ -75,7 +75,7 @@ def real(environ, start_response):
 	print(message)
 	return [message.encode()]
 
-def sign_in(environ, start_response):
+def sign_in(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:

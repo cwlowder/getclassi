@@ -2,7 +2,8 @@ from CONSTANTS import *
 import mysql.connector
 
 def escapeString(s):
-	global mydb
+	mydb,_ = connect()
+	mydb.close()
 	return mydb.converter.escape(s)
 
 def connect():

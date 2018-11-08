@@ -78,7 +78,7 @@ def real(environ, start_response):
 	print(message)
 	return [message.encode()]
 
-def set_note(environ, start_response):
+def set_note(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:
