@@ -136,7 +136,6 @@ def real(environ, start_response, netId):
 		finally:
 			if mydb:
 				mydb.close()
-	print(message)
 	return [message.encode()]
 
 

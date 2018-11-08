@@ -67,7 +67,6 @@ def api(environ, start_response):
 		try:
 			sessionID = cookie['sessionID'].value
 			netId = session_auth(sessionID)
-			print(">> netId:", netId, "sessionID:", sessionID)
 		except:
 			print_exc()
 			return not_signedin(environ, start_response)

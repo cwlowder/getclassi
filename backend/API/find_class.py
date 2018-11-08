@@ -74,7 +74,6 @@ def real(environ, start_response):
 				STATUS: FAILED,
 				MESSAGE: "oopsie I made a poopsie"
 			})
-	print(message)
 	return [message.encode()]
 def find_class(environ, start_response, netId):
 	if DUMMY_MODE:

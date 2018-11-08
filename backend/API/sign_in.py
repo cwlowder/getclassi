@@ -6,26 +6,17 @@ from traceback import print_exc
 from auth import google_auth, generate_Session, add_user
 
 def check_request(environ, start_response):
-	query = pq(environ[QUERY])
-	print(query)
 	if environ[REQUEST_METHOD] != METHOD_POST:
 		start_response('400 Bad Request', [('Content-Type', 'json')])
 		return json.dumps({
 			STATUS: FAILED,
 			MESSAGE: "Bad request method: expecting POST"
 		})
-	elif "email" not in query or len(query["email"]) == 0 or '@' not in query['email'][0]:
-		start_response('400 Bad Request', [('Content-Type', 'json')])
-		return json.dumps({
-			STATUS: FAILED,
-			MESSAGE: "Missing query parameter ?email=%"
-		})
 	else:
 		return ""
 
 def dummy(environ, start_response):
 	message = check_request(environ,start_response)
-	query = pq(environ[QUERY])
 	if message == "":
 		start_response('200 OK', [('Content-Type', 'json')])
 		message = json.dumps({
@@ -49,7 +40,8 @@ def real(environ, start_response):
 			})
 		else:
 			token = body['google_token']
-			if not google_auth(token):
+			idinfo = google_auth(token)
+			if idinfo is None:
 				start_response('400 Bad Request', [('Content-Type', 'json')])
 				message = json.dumps({
 					STATUS: FAILED,
@@ -57,7 +49,7 @@ def real(environ, start_response):
 				})
 			else:
 				try:
-					netId = query['email'][0].split("@")[0]
+					netId = idinfo['email'][0].split("@")[0]
 					add_user(netId)
 					session = generate_Session(netId)
 					start_response('200 OK', [('Content-Type', 'json')])

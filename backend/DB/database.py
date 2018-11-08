@@ -15,10 +15,6 @@ def connect():
 	)
 
 	mycursor = mydb.cursor()
-	mycursor.execute("SHOW DATABASES")
-	print("Connected to database:", mydb)
-	for x in mycursor:
-		print(x)
 	return mydb, mycursor
 
 def runQuery(mydb, mycursor, query):

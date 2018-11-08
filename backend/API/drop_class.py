@@ -34,7 +34,6 @@ def dummy(environ, start_response):
 	return [message.encode()]
 
 def real(environ, start_response, netId):
-	print("MAC ON THE ATTACK: quietiepie")
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":

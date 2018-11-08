@@ -24,13 +24,12 @@ def google_auth(token):
 
 		# ID token is valid. Get the user's Google Account ID from the decoded token.
 		userid = idinfo['sub']
+		return idinfo
 	except ValueError:
 		# Invalid token
 		print_exc()
 		print("Failed to validate id token")
-		return False
-		pass
-	return True
+		return None
 
 cached_sessions = {}
 
@@ -38,9 +37,7 @@ def session_auth(sessionID):
 	results = None
 	if sessionID in cached_sessions:
 		results = [cached_sessions[sessionID]]
-		print("session_auth CACHE HIT")
 	else:
-		print("session_auth CACHE MISS")
 		sql = "SELECT * FROM Sessions WHERE SessionToken = %s"
 		val = (sessionID, ); #TODO CHANGE TO LOGIN USER
 		mydb, mycursor = db.connect()
@@ -49,6 +46,7 @@ def session_auth(sessionID):
 		mydb.close()
 		if len(results) == 0:
 			return None
+		cached_sessions[sessionID] = results[0]
 	createTime = results[0][2];
 	currentTime = time.time()
 	if currentTime - createTime > SESSION_TIMEOUT:
