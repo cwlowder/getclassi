@@ -5,6 +5,7 @@ DUMMY_MODE = True
 # Query environ objects
 PATH = "PATH_INFO"
 QUERY = "QUERY_STRING"
+BODY = "wsgi.input"
 REQUEST_METHOD = "REQUEST_METHOD"
 METHOD_GET = "GET"
 METHOD_POST = "POST"

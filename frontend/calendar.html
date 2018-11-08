@@ -2,6 +2,8 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 <script>
   // This will load on page load with the class data
 $(document).ready(function(){
@@ -10,15 +12,27 @@ $(document).ready(function(){
         $.getJSON("/api/calendar?date=today", function(result) {
         })
         .done(function(result) {
-            console.log(result);
             var calendarHolder = "";
             var n = result["message"];
-            calendarHolder += "<li>" + "Classes:" + "<ul>";
-            for (var i = 0; i < n["events"].length; i++) {
-              calendarHolder += "<li>"+ "<a href='/class.html?crn="+"14'"+">"+ n["events"][i]["class"] + ": " + n["events"][i]["title"] +"</a>"+ "</li>";
+            calendarHolder += "<div class='container-fluid' style='padding:30px'>"
+            calendarHolder += "<h2 font-size:40px> Classes </h1>"
+            calendarHolder += "<ul>";
+            for (var i in n.titles) {
+              var assignmentDataHolder = "";
+              calendarHolder += "<li>"+ "<a href='/class.html?crn=" + i + "'" + ">";
+              calendarHolder += n.titles[i];
+              calendarHolder += "</a>";
+              calendarHolder += "<ul>";
+              for (var j in n.events[i]) {
+                console.log(n.events[i])
+                assignmentDataHolder += "<li>" + n.events[i][j].title + "</li>";
+              }
+              assignmentDataHolder += "</ul>";
+              calendarHolder += assignmentDataHolder;
+              calendarHolder += "</li>"
             }
-            calendarHolder += "</ul></li>";
-
+            calendarHolder += "</ul>";
+            calendarHolder += "</div>"
             calendarHolder += "";
             $(document.getElementById("class-data")).append(calendarHolder);
         })
@@ -27,12 +41,33 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-  <div id="class-data"> </div>
+  <style>
+  body {
+    background-color: #D3D3D3;
+  }
+  </style>
+  <div class="jumbotron text-center" style="background-color: #122B4A">
+  <h1 style="color: #D67713; font-size:50px" align="center">
+    Calendar
+  </h1>
+</div>
+  <div style="color: #EA6100;" id="class-data">
+    <div id="assignmentData">
+    </div>
+  </div>
 
-<div id="addClassDiv">
-  <form method="get" action="/addClass.html">
-    <button type="submit">Add a Class!</button>
-  </form>
+<div class="row" style="padding:20px">
+  <div class="col-sm-2" id="addClassDiv">
+    <form method="get" action="/addClass.html">
+      <button class="btn btn-default btn-lg" type="submit">Add a Class!</button>
+    </form>
+  </div>
+
+  <div class="col-sm-4" id="dropClassDiv">
+    <form method="get" action="/dropClass.html">
+      <button class="btn btn-default btn-lg" type="submit">Drop a Class!</button>
+    </form>
+  </div>
 </div>
 
 <div id="dropClassDiv">

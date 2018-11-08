@@ -1,6 +1,10 @@
 from CONSTANTS import *
 import mysql.connector
 
+def escapeString(s):
+	global mydb
+	return mydb.converter.escape(s)
+
 def connect():
 	global mydb
 	global mycursor

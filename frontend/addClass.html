@@ -1,15 +1,29 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<h1> Search for the class you want to add! </h1>
+<div class="jumbotron text-center" style="background-color: #122B4A">
+  <h1 style="color: #D67713; font-size:50px" align="center">
+    Search for a class you want to add!
+  </h1>
+</div>
 
-  Department Acronym: <br> <input type="text" id="departmentAcroynm">
-  <br>
-  Course Number: <br> <input type="text" id="courseNumber">
-  <br>
+<style>
+body {
+  background-color: #D3D3D3;
+}
+</style>
 
-<button id="submit"> Find Classes </button>
+
+
+<h7 style="font-size:20px"> Department Acronym: </h7> <br> <input type="text" class="form-control" placeholder="E.g. CS" id="departmentAcroynm"
+style="width: 7%">
+<br>
+<h7 style="font-size:20px"> Course Number: </h7> <br> <input type="text" class="form-control" placeholder="E.g 411" id="courseNumber" style="width: 7%">
+<br>
+
+<button class="btn btn-default btn-lg" id="submit"> Find Classes </button>
 <br>
 <script>
   function concatenate() {
@@ -34,7 +48,7 @@
         var buttonHolder = "<br>";
         for (var i in result["message"].results) {
           buttonHolder += "<p1> " + result["message"].results[i].class + "     " + "CRN: " + result["message"].results[i].crn
-            + "</p1>" + "<br>" + "<button id=button" +
+            + "</p1>" + "<br>" + "<button class='btn btn-default btn-sm' id=button" +
             result["message"].results[i].crn + " onclick=addClick(" + result["message"].results[i].crn + ") "
               + "<br>" + "Add me </button>"
           buttonHolder += "<br>";
@@ -67,5 +81,5 @@
 <div id="addedClassDiv">
 </div>
 <form method="get" action="/calendar.html">
-  <button type="submit">Go To Your Calendar!</button>
+  <button class="btn btn-default btn-lg" type="submit">Go To Your Calendar!</button>
 </form>

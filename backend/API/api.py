@@ -8,6 +8,7 @@ from API.drop_class import drop_class
 from API.find_class import find_class
 from API.add_class import add_class
 from API.class_info import class_info
+from API.set_note import set_note
 
 def not_implemented(environ, start_response):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -37,6 +38,7 @@ routes = [
 	('add_class',add_class),
 	('test_api', test_api),
 	('class_info', class_info),
+	('set_note', set_note),
 	('*', not_implemented)
 ]
 
@@ -52,5 +54,10 @@ def api(environ, start_response):
 	except Exception as e:
 		print("Error in api:", e)
 		print_exc()
+		start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
+		return json.dumps({
+			STATUS: FAILED,
+			MESSAGE: "Error occured on the server"
+		})
 
 	return not_implemented(environ, start_response)

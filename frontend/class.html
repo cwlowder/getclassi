@@ -1,43 +1,88 @@
 
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="jumbotron text-center" style="background-color: #122B4A">
+	<div style="color: #D67713; font-size:50px" align="center" id="classHeaderDiv">
+	</div>
+</div>
+<style>
+body {
+	background-color: #D3D3D3;
+}
+</style>
+<div class="container-fluid">
+	<div id="instructorDiv">
+	</div>
 
+	<div id="crnDiv">
+	</div>
 
-<h1>CS411: Database Systems </h1>
+	<div id="classDescription">
+	</div>
 
-  Class Description: Abdu and the boys teach some databases!
-  <br>
-  Course Number: 1235
+	<div id="classAssignmentList">
+	</div>
 
-<button id="mac" onclick="querySt()"> click me hoe </button>
-
-	<nav>
-  <ul>
-    <li><a href="#">Navigation</a></li>
-    <li><a href="#">Menu</a></li>
-    <li><a href="#">Links</a></li>
-  </ul>
-</nav>
-</head>
+	<div id="notesSection">
+	  <div id="currNote"> Note
+	  </div>
+	  <h4>Change Note?</h4>
+	  <br>
+	  <textarea class="form-control" style="width: 35%" id="notesBox" maxlength="280" rows="4" cols="70"></textarea>
+	  <br>
+	  <button class="btn btn-default btn-lg" id="updateNote" onclick="updateNote()">Update Note! </button>
+	</div>
+	<form method="get" action="/calendar.html">
+		<button class="btn btn-default btn-lg" type="submit">Go To Your Calendar!</button>
+	</form>
+</div>
 
 <script>
+  $(document).ready(function() {
+    $.getJSON("/api/class_info?crn=" + getCrn(), function(result) {
 
-	function querySt() {
+    })
+    .done(function(result) {
+      var info = result["message"];
+      $(document.getElementById("classHeaderDiv")).append(info.class);
+      $(document.getElementById("crnDiv")).append(info.crn);
+      $(document.getElementById("currNote")).empty().append(info.note);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
+  })
+</script>
 
+<script>
+  function updateNote() {
+    var message = document.getElementById("notesBox").value;
+    console.log(message);
+    $.post("/api/set_note?crn=" + getCrn(), JSON.stringify({note: message}) , function(result) {
+
+    })
+    .done(function(result) {
+      console.log("Note updated");
+      $(document.getElementById("currNote")).empty().append(message);
+      location.reload(true);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log("Failed");
+    })
+  }
+</script>
+
+<script>
+	function getCrn() {
 		var url_string = window.location.href;
 		var url = new URL(url_string);
 		var c = url.searchParams.get("crn");
 		console.log(c);
-
+    return c;
 	}
-
 </script>
 
 
 
 
-<body>
-	<form method="get" action="/calendar.html">
-	  <button type="submit">Go To Your Calendar!</button>
-	</form>
 </body>
