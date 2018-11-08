@@ -21,7 +21,7 @@ API = "API"
 
 #Database login Path
 DB_HOST = "localhost"
-DB_PASSWORD = "xG.5MxS{U3dM"
+DB_PASSWORD = "s,LsLC~na,nd"
 DB_USERNAME = "getclassi_robot"
 DB_NAME = "getclassi_classi"
 
