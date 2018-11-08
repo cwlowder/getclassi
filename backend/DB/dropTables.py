@@ -6,16 +6,17 @@ import DB.database as db
 
 
 def dropTables():
+    mydb, mycursor = db.connect()
     sql = "DROP TABLE IF EXISTS Events"
-    db.mycursor.execute(sql)
+    mycursor.execute(sql)
     sql = "DROP TABLE IF EXISTS Enrollments"
-    db.mycursor.execute(sql)
+    mycursor.execute(sql)
     sql = "DROP TABLE IF EXISTS Users"
-    db.mycursor.execute(sql)
+    mycursor.execute(sql)
     sql = "DROP TABLE IF EXISTS Classes"
-    db.mycursor.execute(sql)
+    mycursor.execute(sql)
     sql = "DROP TABLE IF EXISTS Sessions"
-    db.mycursor.execute(sql)
+    mycursor.execute(sql)
+    mydb.close()
 
-db.connect()
 dropTables()

@@ -13,7 +13,7 @@ import secrets
 def google_auth(token):
     try:
         # Specify the CLIENT_ID of the app that accesses the backend:
-        idinfo = id_token.verify_oauth2_token(token, requests.Request(), TEST_CLIENT_ID)
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), LOCAL_CLIENT_ID)
 
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise ValueError('Wrong issuer.')
@@ -74,14 +74,14 @@ def generate_Session(netId):
 
 def add_user(netId, name = "Abdu"):
     sql = "SELECT * FROM Users WHERE NetId = %s"
-    val = (session, ); #TODO CHANGE TO LOGIN USER
+    val = (netId, ); #TODO CHANGE TO LOGIN USER
     mydb, mycursor = db.connect()
     mycursor.execute(sql, val)
     results =  mycursor.fetchall()
     mydb.close()
     if len(results) == 0:
         mydb, mycursor = db.connect()
-        sql = "INSERT INTO User (NetId, Name)  VALUES (%s, %s)"
+        sql = "INSERT INTO Users (NetId, Name)  VALUES (%s, %s)"
         val = (netId, name);
         mydb, mycursor = db.connect()
         mycursor.execute(sql, val)
