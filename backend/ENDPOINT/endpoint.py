@@ -3,6 +3,7 @@ import json
 from fnmatch import fnmatch
 from traceback import print_exc
 import datetime
+import subprocess
 
 def not_implemented(environ, start_response):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -17,11 +18,15 @@ def git_update(environ, start_response):
 	start_response('200 OK', [('Content-Type', 'text/html')])
 	message = {}
 	body = environ[BODY].read().decode("utf-8")
-	print("body", body)
+	body = json.loads(body)
+	if body['ref'] == "refs/heads/" + PROD_BRANCH:
+		subprocess.call(["./update_repo.sh", PROD_BRANCH])
+	'''
 	if len(body) > 0:
 		body = json.loads(body)
 		f = open(datetime.datetime.now().strftime("%Y-%m-%d|%H:%M:%S.txt"), "w")
 		f.write(json.dumps(body))
+	'''
 	# TODO update endpoint
 	return [json.dumps(message).encode()]
 
