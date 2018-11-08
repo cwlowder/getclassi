@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,24 +68,27 @@
 					var id_token = googleUser.getAuthResponse().id_token;
 
 					$.post("/api/sign_in?email=" + profile.getEmail(), JSON.stringify({google_token: id_token}) , function(result) {
-			    })
-			    .done(function(result) {
-			     document.cookie = "Email=" + profile.getEmail();
-					 document.cookie = "sessionID=" + id_token;
-					 var auth2 = gapi.auth2.getAuthInstance();
-			     auth2.signOut().then(function () {
-			       console.log('User signed out.');
-			     });
 
-			    })
-			    .fail(function(jqXHR, textStatus, errorThrown) {
-			      console.log("Failed");
-						var auth2 = gapi.auth2.getAuthInstance();
-				    auth2.signOut().then(function () {
-				      console.log('User signed out.');
-				    });
-			    })
-
+                    })
+    			    .done(function(result) {
+                        if (result['status']) {
+                            document.cookie = "Email=" + profile.getEmail();
+                            document.cookie = "sessionID=" + result['message'];
+                        } else {
+                            console.log("Failed to log in:", + result['message'])
+                        }
+        			    var auth2 = gapi.auth2.getAuthInstance();
+    			        auth2.signOut().then(function () {
+    			            console.log('User signed out.');
+        			    });
+			        })
+    			    .fail(function(jqXHR, textStatus, errorThrown) {
+    			      console.log("Failed");
+    						var auth2 = gapi.auth2.getAuthInstance();
+    				    auth2.signOut().then(function () {
+    				      console.log('User signed out.');
+    				    });
+    			    })
 				}
 
 				</script>

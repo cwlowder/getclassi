@@ -26,7 +26,7 @@ def not_signedin(environ, start_response):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
 	message = {
 		STATUS: FAILED,
-		MESSAGE: "Invalid SessionID"
+		MESSAGE: "Invalid sessionID"
 	}
 
 def test_api(environ, start_response):
@@ -65,9 +65,9 @@ def api(environ, start_response):
 		cookie = SimpleCookie()
 		cookie.load(raw_cookies)
 		try:
-			netId = session_auth(cookie['sessionID'].value)
-			if netId is None:
-				a = 1/0
+			sessionID = cookie['sessionID'].value
+			netId = session_auth(sessionID)
+			print(">> netId:", netId, "sessionID:", sessionID)
 		except:
 			print_exc()
 			return not_signedin(environ, start_response)
