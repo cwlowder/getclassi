@@ -32,8 +32,12 @@ def git_update(environ, start_response):
 			subprocess.call(["cd", "~/getclassi;" "sh", "update_repo.sh", PROD_BRANCH], shell=True)
 		else:
 			subprocess.call(["echo", body['ref'], ">>", "~/update.log"], shell=True)
-	except:
+	except Exception as e:
 		subprocess.call(["echo", "ERROR OCCURED DURRING RUN ON SERVER", ">>", "~/update.log"], shell=True)
+		message = {
+			STATUS: FAILED,
+			MESSAGE: str(e)
+		}
 	'''
 	if len(body) > 0:
 		body = json.loads(body)
