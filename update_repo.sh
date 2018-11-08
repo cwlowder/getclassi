@@ -10,6 +10,7 @@ echo $prod_branch
 
 if [ "$current" = "$prod_branch" ]
 then
-	echo "restarting file"
+	echo "restarting server"
 	git pull origin $current
+	pkill python3.6
 fi
