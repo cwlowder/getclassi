@@ -20,10 +20,10 @@ MESSAGE = "message"
 API = "API"
 
 #Database login Path
-DB_HOST = "sql9.freesqldatabase.com"
-DB_PASSWORD = "UdYNAIPst9"
-DB_USERNAME = "sql9263477"
-DB_NAME = DB_USERNAME
+DB_HOST = "localhost"
+DB_PASSWORD = "xG.5MxS{U3dM"
+DB_USERNAME = "xG.5MxS{U3dM"
+DB_NAME = "getclassi_classi"
 
 # Isolation Levels
 SERIALIZABLE = "SERIALIZABLE"
