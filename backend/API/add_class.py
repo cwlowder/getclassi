@@ -32,24 +32,24 @@ def dummy(environ, start_response):
 	print("Message:", message)
 	return [message.encode()]
 
-def real(environ, start_response):
+def real(environ, start_response, netId):
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":
 		crn = query["crn"][0]
 		sql = "INSERT INTO Enrollments (CRN, NetId) VALUES (%s, %s)"
-		val = (crn, str(0)) #TODO CHANGE TO LOGIN USER
+		val = (crn, netId) #TODO CHANGE TO LOGIN USER
 		try:
 			mydb, mycursor = db.connect()
 			#db.mydb.start_transaction(isolation_level=SERIALIZABLE, readonly=False)
-			db.mycursor.execute(sql, val)
+			mycursor.execute(sql, val)
 			start_response('200 OK', [('Content-Type', 'json')])
 			mydb.commit()
 			message = json.dumps({
 				STATUS: SUCCESS
 			})
 		except Exception as e:
-			db.mydb.rollback()
+			mydb.rollback()
 			print_exc()
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
 			message = json.dumps({
@@ -62,8 +62,8 @@ def real(environ, start_response):
 	print(message)
 	return [message.encode()]
 
-def add_class(environ, start_response):
+def add_class(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:
-		return real(environ, start_response)
+		return real(environ, start_response, netId)

@@ -45,7 +45,6 @@ def real(environ, start_response):
 	if message == "":
 		crn = query["crn"][0]
 		body = environ[BODY].read().decode("utf-8")
-		print("body", body)
 		body = json.loads(body)
 		sql = "UPDATE Classes SET Note = %s WHERE CRN = %s"
 		if 'note' not in body or str(type(body['note'])) != "<class 'str'>" or len(body['note']) > 280:
@@ -78,7 +77,7 @@ def real(environ, start_response):
 	print(message)
 	return [message.encode()]
 
-def set_note(environ, start_response):
+def set_note(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:

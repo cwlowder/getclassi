@@ -8,10 +8,6 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from ENDPOINT.endpoint import endpoint 
 
-import DB.database as database
-#initiaze database
-database.connect()
-
 from API.api import api
 from load_page import load_page
 from CONSTANTS import *

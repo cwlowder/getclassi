@@ -50,7 +50,7 @@ def real(environ, start_response):
 			mydb, mycursor = db.connect()
 			val = (crn,)
 			mycursor.execute(sql, val)
-			results = db.mycursor.fetchall()
+			results = mycursor.fetchall()
 			if len(results) == 1:
 				start_response('200 OK', [('Content-Type', 'json')])
 				row = results[0]
@@ -83,7 +83,7 @@ def real(environ, start_response):
 
 	print(message)
 	return [message.encode()]
-def class_info(environ, start_response):
+def class_info(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:

@@ -3,12 +3,16 @@ import json
 from fnmatch import fnmatch
 from traceback import print_exc
 
+from http.cookies import SimpleCookie
+from auth import session_auth
+
 from API.calendar_api import calendar
 from API.drop_class import drop_class
 from API.find_class import find_class
 from API.add_class import add_class
 from API.class_info import class_info
 from API.set_note import set_note
+from API.sign_in import sign_in
 
 def not_implemented(environ, start_response):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -17,6 +21,13 @@ def not_implemented(environ, start_response):
 		MESSAGE: "This api is not implemented"
 	}
 	return [json.dumps(message).encode()]
+
+def not_signedin(environ, start_response):
+	start_response('404 Not Found', [('Content-Type', 'text/html')])
+	message = {
+		STATUS: FAILED,
+		MESSAGE: "Invalid sessionID"
+	}
 
 def test_api(environ, start_response):
 	path = environ[PATH]
@@ -39,6 +50,7 @@ routes = [
 	('test_api', test_api),
 	('class_info', class_info),
 	('set_note', set_note),
+	('sign_in', sign_in),
 	('*', not_implemented)
 ]
 
@@ -46,11 +58,23 @@ routes = [
 def api(environ, start_response):
 	req_path = environ[PATH].strip()[1:]
 	print(req_path)
+
+	netId = None
+	if req_path not in ['api/sign_in']:
+		raw_cookies = environ[COOKIES]
+		cookie = SimpleCookie()
+		cookie.load(raw_cookies)
+		try:
+			sessionID = cookie['sessionID'].value
+			netId = session_auth(sessionID)
+		except:
+			print_exc()
+			return not_signedin(environ, start_response)
 	try:
 		for path, app in routes:
 			if fnmatch(req_path, "api/" + path):
 				print("Called", path)
-				return app(environ, start_response)
+				return app(environ, start_response, netId)
 	except Exception as e:
 		print("Error in api:", e)
 		print_exc()
