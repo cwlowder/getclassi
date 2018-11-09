@@ -27,7 +27,7 @@ def git_update(environ, start_response):
 	body = environ[BODY].read().decode("utf-8")
 	body = json.loads(body)
 	try:
-		with open("~/update.log", "a") as log:
+		with open("update.log", "a+") as log:
 			log.write("Recieved notification of push to " + PROD_BRANCH + "\n")
 			print("CALLED")
 			if body['ref'] == "refs/heads/" + PROD_BRANCH:
@@ -36,7 +36,6 @@ def git_update(environ, start_response):
 				log.write(body[ref])
 	except Exception as e:
 		print_exc()
-		#subprocess.call(["echo", "ERROR OCCURED DURRING RUN ON SERVER", ">>", "~/update.log"], shell=True)
 		message = {
 			STATUS: FAILED,
 			MESSAGE: str(e)
