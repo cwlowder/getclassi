@@ -27,12 +27,13 @@ def git_update(environ, start_response):
 	body = environ[BODY].read().decode("utf-8")
 	body = json.loads(body)
 	try:
-		subprocess.run("echo 'Recieved notification of push to " + PROD_BRANCH + "' >> ~/update.log".split(" "))
+		subprocess.call(("echo 'Recieved notification of push to " + PROD_BRANCH + "' >> ~/update.log").split(" "))
 		if body['ref'] == "refs/heads/" + PROD_BRANCH:
 			subprocess.call(["cd", "~/getclassi;" "sh", "update_repo.sh", PROD_BRANCH], shell=True)
 		else:
 			subprocess.call(["echo", body['ref'], ">>", "~/update.log"], shell=True)
 	except Exception as e:
+		print_exc()
 		subprocess.call(["echo", "ERROR OCCURED DURRING RUN ON SERVER", ">>", "~/update.log"], shell=True)
 		message = {
 			STATUS: FAILED,
