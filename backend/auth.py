@@ -46,7 +46,7 @@ def session_auth(sessionID):
 		mydb.close()
 		if len(results) == 0:
 			return None
-		cached_sessions[sessionID] = results[0]
+		#cached_sessions[sessionID] = results[0]
 	createTime = results[0][2];
 	currentTime = time.time()
 	if currentTime - createTime > SESSION_TIMEOUT:
@@ -78,7 +78,7 @@ def generate_Session(netId):
 		mydb.commit()
 		mydb.close()
 
-		cached_sessions[session] = val
+		#cached_sessions[session] = val
 		return session
 	else:
 		generate_Session()
