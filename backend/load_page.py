@@ -25,11 +25,14 @@ def load_page(environ, start_response):
 		raw_cookies = environ[COOKIES]
 		cookie = SimpleCookie()
 		cookie.load(raw_cookies)
+		netId = None
 		try:
 			netId = session_auth(cookie['sessionID'].value)
 		except:
 			print_exc()
-			return redirect(environ, start_response)
+		finally:
+			if netId == None:
+				return redirect(environ, start_response)
 	try:
 		contentType = []
 		message = ""
