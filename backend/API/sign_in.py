@@ -49,7 +49,7 @@ def real(environ, start_response):
 				})
 			else:
 				try:
-					netId = idinfo['email'][0].split("@")[0]
+					netId = idinfo['email'].split("@")[0]
 					add_user(netId)
 					session = generate_Session(netId)
 					start_response('200 OK', [('Content-Type', 'json')])
