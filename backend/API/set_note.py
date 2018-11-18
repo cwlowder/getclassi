@@ -57,7 +57,7 @@ def real(environ, start_response):
 			val = (body['note'], crn)
 			try:
 				mydb, mycursor = db.connect()
-				db.mycursor.execute(sql, val)
+				mycursor.execute(sql, val)
 				start_response('200 OK', [('Content-Type', 'json')])
 				mydb.commit()
 				message = json.dumps({
