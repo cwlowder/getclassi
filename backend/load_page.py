@@ -16,7 +16,6 @@ def redirect(environ, start_response, dest='/index.html'):
 	return [b'1']
 
 def load_page(environ, start_response):
-	print("WOW:", environ['HTTP_HOST'])
 	if environ['HTTP_HOST'] == "localhost:3000":
 		# This is a development server
 		pass

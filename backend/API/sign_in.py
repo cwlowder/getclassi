@@ -3,7 +3,7 @@ import json
 from urllib.parse import parse_qs as pq
 import DB.database as db
 from traceback import print_exc
-from auth import google_auth, generate_Session, add_user
+from auth import google_auth, start_session, add_user
 
 def check_request(environ, start_response):
 	if environ[REQUEST_METHOD] != METHOD_POST:
@@ -51,7 +51,7 @@ def real(environ, start_response):
 				try:
 					netId = idinfo['email'].split("@")[0]
 					add_user(netId)
-					session = generate_Session(netId)
+					session = start_session(netId)
 					start_response('200 OK', [('Content-Type', 'json')])
 					message = json.dumps( {
 						STATUS: SUCCESS,

@@ -8,8 +8,6 @@ import DB.database as db
 import time
 import secrets
 
-
-
 def google_auth(token):
 	try:
 		# Specify the CLIENT_ID of the app that accesses the backend:
@@ -61,8 +59,8 @@ def session_auth(sessionID):
 		return None
 	return results[0][0]
 
-def generate_Session(netId):
-	session = str(secrets.token_urlsafe(200))[:200] # Limit to first 200 char
+def start_session(netId):
+	session = str(secrets.token_urlsafe(200))[:200] # Limit to first 200 chars
 	sql = "SELECT * FROM Sessions WHERE SessionToken = %s"
 	val = (session, ); #TODO CHANGE TO LOGIN USER
 	mydb, mycursor = db.connect()
@@ -81,14 +79,26 @@ def generate_Session(netId):
 		#cached_sessions[session] = val
 		return session
 	else:
-		generate_Session()
+		# Session token generated collides with existing session token
+		return start_session(netId)
+
+def stop_session(sessionID):
+	sql = "DELETE FROM Sessions WHERE SessionToken = %s"
+	val = (sessionID, );
+	mydb, mycursor = db.connect()
+	mycursor.execute(sql, val)
+	results = mycursor.rowcount
+	print("RES:", results)
+	mydb.commit()
+	mydb.close()
+	return results == 1
 
 def add_user(netId, name = "Abdu"):
 	sql = "SELECT * FROM Users WHERE NetId = %s"
-	val = (netId, ); #TODO CHANGE TO LOGIN USER
+	val = (netId, );
 	mydb, mycursor = db.connect()
 	mycursor.execute(sql, val)
-	results =  mycursor.fetchall()
+	results = mycursor.fetchall()
 	mydb.close()
 	if len(results) == 0:
 		mydb, mycursor = db.connect()
@@ -101,3 +111,5 @@ def add_user(netId, name = "Abdu"):
 		return True
 	else:
 		return False
+
+
