@@ -72,7 +72,7 @@
                     })
     			    .done(function(result) {
                         if (result['status']) {
-                            document.cookie = "sessionID=" + result['message'] + "; HttpOnly; secure;";
+                            document.cookie = "sessionID=" + result['message'] + ";";
                         } else {
                             console.log("Failed to log in:", + result['message'])
                         }

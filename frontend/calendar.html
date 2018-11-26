@@ -6,6 +6,7 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
 
 <script>
   // This will load on page load with the class data
@@ -41,6 +42,14 @@ $(document).ready(function(){
         })
         .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
 });
+
+const signOut = function() {
+  console.log("LOG OUT")
+  $.post("/api/sign_out", function() {
+    window.location.href = "/";
+  })
+  return false;
+}
 </script>
 </head>
 <body>
@@ -50,34 +59,33 @@ $(document).ready(function(){
     background-color: #D3D3D3;
   }
   </style>
-  <div class="jumbotron text-center" style="background-color: #122B4A">
-  <h1 style="color: #D67713; font-size:60px" align="center">
-    Calendar
-  </h1>
-</div>
 
-<nav class="navbar navbar-default">
-	<div>
-	<ul class="nav navbar-nav">
-		<li class="active"><a href="#">Calendar</a></li>
-		<li><a href="/addClass.html">Add a Class</a></li>
-		<li><a href="/dropClass.html">Drop a Class</a></li>
-	</ul>
-</div>
+<nav class="navbar navbar-custom" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">getclassi</a>
+    </div>
+  	<ul class="nav navbar-nav">
+  		<li class="nav-item active">
+        <a class="nav-link" href="#">Calendar</a>
+      </li>
+  		<li class="nav-item">
+        <a class="nav-link" href="/addClass.html">Add a Class</a>
+      </li>
+  		<li class="nav-item">
+        <a class="nav-link" href="/dropClass.html">Drop a Class</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:{}" onClick="return signOut()"><span class="glyphicon glyphicon-log-out"></span>Sign Out</a>
+      </li>
+    </ul>
+  </div>
 </nav>
 
-  <div style="color: #EA6100;" id="class-data">
-    <div id="assignmentData">
-    </div>
+<div style="color: #EA6100;" id="class-data">
+  <div id="assignmentData">
   </div>
-
-<script>
-	function signOut() {
-		var auth2 = gapi.auth2.getAuthInstance();
-		auth2.signOut().then(function () {
-			console.log('User signed out.');
-		});
-}
-</script>
-
+</div>
 </body>

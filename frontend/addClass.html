@@ -2,12 +2,7 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<div class="jumbotron text-center" style="background-color: #122B4A">
-  <h1 style="color: #D67713; font-size:50px" align="center">
-    Search for a class you want to add!
-  </h1>
-</div>
+<link rel="stylesheet" type="text/css" href="css/common.css">
 
 <style>
 body {
@@ -16,6 +11,29 @@ body {
 </style>
 
 
+<nav class="navbar navbar-custom" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">getclassi</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/calendar.html">Calendar</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Add a Class</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dropClass.html">Drop a Class</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:{}" onClick="return signOut()"><span class="glyphicon glyphicon-log-out"></span>Sign Out</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
 <h7 style="font-size:20px"> Department Acronym: </h7> <br> <input type="text" class="form-control" placeholder="E.g. CS" id="departmentAcroynm"
 style="width: 10%; min-width:100px">
@@ -74,7 +92,16 @@ style="width: 10%; min-width:100px">
     .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus);
     })
 }
+
+const signOut = function() {
+  console.log("LOG OUT")
+  $.post("/api/sign_out", function() {
+    window.location.href = "/";
+  })
+  return false;
+}
 </script>
+
 <div id="buttonList">
 </div>
 

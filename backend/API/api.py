@@ -13,6 +13,7 @@ from API.add_class import add_class
 from API.class_info import class_info
 from API.set_note import set_note
 from API.sign_in import sign_in
+from API.sign_out import sign_out
 
 def not_implemented(environ, start_response, netid):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -55,6 +56,7 @@ routes = [
 	('class_info', class_info),
 	('set_note', set_note),
 	('sign_in', sign_in),
+	('sign_out', sign_out),
 	('dev_api', dev_api),
 	('*', not_implemented)
 ]
