@@ -26,7 +26,7 @@ def load_page(environ, start_response):
 			# Redirect to https
 			dest = "https://" + environ['HTTP_HOST'] + environ[PATH]
 			print("dest:", dest)
-			start_response('308 Permanent Redirect', [('location', dest)])
+			start_response('307 Temporary Redirect', [('location', dest)])
 			return [b'1']#["<html><head><title>Redirecting...</title></head><script language='JavaScript'>function redirectHttpToHttps(){ var httpURL= window.location.hostname + window.location.pathname + window.location.search; var httpsURL= 'https://' + httpURL; window.location = httpsURL;}redirectHttpToHttps();</script><body></body></html>".encode()]
 
 	path = "frontend" + environ[PATH]
