@@ -72,8 +72,7 @@
                     })
     			    .done(function(result) {
                         if (result['status']) {
-                            document.cookie = "Email=" + profile.getEmail();
-                            document.cookie = "sessionID=" + result['message'];
+                            document.cookie = "sessionID=" + result['message'] + "; HttpOnly; secure;";
                         } else {
                             console.log("Failed to log in:", + result['message'])
                         }

@@ -21,12 +21,12 @@ def load_page(environ, start_response):
 		# This is a development server
 		pass
 	# Assume this is a production server
-	if 'HTTPS' not in environ or environ['HTTPS'].lower() != 'on':
-		# Redirect to https
-		dest = "https://" + environ['HTTP_HOST'] + environ[PATH]
-		print("dest:", dest)
-		start_response('301 Moved Permanently', [('Location', dest)])
-		return [b'1']#["<html><head><title>Redirecting...</title></head><script language='JavaScript'>function redirectHttpToHttps(){ var httpURL= window.location.hostname + window.location.pathname + window.location.search; var httpsURL= 'https://' + httpURL; window.location = httpsURL;}redirectHttpToHttps();</script><body></body></html>".encode()]
+	else:
+		if 'HTTPS' not in environ or environ['HTTPS'].lower() != 'on':
+			# Redirect to https
+			dest = "https://" + environ['HTTP_HOST'] + environ[PATH]
+			start_response('301 Moved Permanently', [('Location', dest)])
+			return [b'1']#["<html><head><title>Redirecting...</title></head><script language='JavaScript'>function redirectHttpToHttps(){ var httpURL= window.location.hostname + window.location.pathname + window.location.search; var httpsURL= 'https://' + httpURL; window.location = httpsURL;}redirectHttpToHttps();</script><body></body></html>".encode()]
 
 	path = "frontend" + environ[PATH]
 	if path[-1] == "/":
