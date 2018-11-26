@@ -23,10 +23,11 @@ def load_page(environ, start_response):
 	else:
 		# Assume this is a production server
 		if 'HTTPS' not in environ or environ['HTTPS'].toLower() != 'on':
-			print("TEST")
 			# Redirect to https
-			start_response('200 OK', [('Content-Type', 'text/html')])
-			return ["<html><head><title>Redirecting...</title></head><script language='JavaScript'>function redirectHttpToHttps(){ var httpURL= window.location.hostname + window.location.pathname + window.location.search; var httpsURL= 'https://' + httpURL; window.location = httpsURL;}redirectHttpToHttps();</script><body></body></html>".encode()]
+			dest = "https://" + environ['HTTP_HOST'] + environ[PATH]
+			print("dest:", dest)
+			start_response('308 Permanent Redirect', [('location', dest)])
+			return [b'1']#["<html><head><title>Redirecting...</title></head><script language='JavaScript'>function redirectHttpToHttps(){ var httpURL= window.location.hostname + window.location.pathname + window.location.search; var httpsURL= 'https://' + httpURL; window.location = httpsURL;}redirectHttpToHttps();</script><body></body></html>".encode()]
 
 	path = "frontend" + environ[PATH]
 	if path[-1] == "/":
