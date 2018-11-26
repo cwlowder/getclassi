@@ -32,12 +32,13 @@ routes = [
 
 def application(environ, start_response):
 	req_path = environ[PATH].strip().split("/")[1:]
+
 	if environ['HTTP_HOST'] == "localhost:3000":
 		# This is a development server
 		pass
 	else:
 		# Assume this is a production server
-		if environ['HTTP_HOST'].startswith("http://"):
+		if 'HTTPS' not in environ or environ['HTTPS'].toLower() != 'on':
 			# Redirect to https
 			start_response('303 see other', [('location', environ['HTTP_HOST'].replace("http://", "https://"))])
 			return [b'1']
