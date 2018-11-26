@@ -40,7 +40,7 @@ def application(environ, start_response):
 		# Assume this is a production server
 		if 'HTTPS' not in environ or environ['HTTPS'].toLower() != 'on':
 			# Redirect to https
-			start_response('303 see other', [('location', environ['HTTP_HOST'].replace("http://", "https://"))])
+			start_response('303 see other', [('location',  "https://" + environ['HTTP_HOST'])])
 			return [b'1']
 
 	try:
