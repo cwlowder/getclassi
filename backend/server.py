@@ -32,6 +32,7 @@ routes = [
 
 def application(environ, start_response):
 	req_path = environ[PATH].strip().split("/")[1:]
+
 	try:
 		for path, app in routes:
 			if fnmatch(environ[PATH], path):

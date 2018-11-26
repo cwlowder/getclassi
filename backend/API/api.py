@@ -14,7 +14,7 @@ from API.class_info import class_info
 from API.set_note import set_note
 from API.sign_in import sign_in
 
-def not_implemented(environ, start_response):
+def not_implemented(environ, start_response, netid):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
 	message = {
 		STATUS: FAILED,
@@ -22,14 +22,14 @@ def not_implemented(environ, start_response):
 	}
 	return [json.dumps(message).encode()]
 
-def not_signedin(environ, start_response):
+def not_signedin(environ, start_response, netid):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
 	message = {
 		STATUS: FAILED,
 		MESSAGE: "Invalid sessionID"
 	}
 
-def test_api(environ, start_response):
+def test_api(environ, start_response, netid):
 	path = environ[PATH]
 	query = environ[QUERY]
 	start_response('200 OK', [('Content-Type', 'json')])
@@ -42,6 +42,10 @@ def test_api(environ, start_response):
 	})
 	return [message.encode()]
 
+def dev_api(environ, start_response, netid):
+	start_response('200 OK', [('Content-Type', 'json')])
+	return [(str(environ)).encode()]
+
 routes = [
 	('calendar', calendar),
 	('drop_class',drop_class),
@@ -51,6 +55,7 @@ routes = [
 	('class_info', class_info),
 	('set_note', set_note),
 	('sign_in', sign_in),
+	('dev_api', dev_api),
 	('*', not_implemented)
 ]
 
