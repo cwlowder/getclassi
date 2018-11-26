@@ -21,7 +21,7 @@ def load_page(environ, start_response):
 		# This is a development server
 		pass
 	# Assume this is a production server
-	if 'HTTPS' not in environ or environ['HTTPS'].toLower() != 'on':
+	if 'HTTPS' not in environ:
 		# Redirect to https
 		dest = "https://" + environ['HTTP_HOST'] + environ[PATH]
 		print("dest:", dest)
