@@ -39,9 +39,10 @@ def application(environ, start_response):
 	else:
 		# Assume this is a production server
 		if 'HTTPS' not in environ or environ['HTTPS'].toLower() != 'on':
+			print("TEST")
 			# Redirect to https
-			start_response('303 see other', [('location',  "https://" + environ['HTTP_HOST'])])
-			return [b'1']
+			start_response('200 OK', [('Content-Type', 'text/html')])
+			return ["<html><head><title>Redirecting...</title></head><script language='JavaScript'>function redirectHttpToHttps(){ var httpURL= window.location.hostname + window.location.pathname + window.location.search; var httpsURL= 'https://' + httpURL; window.location = httpsURL;}redirectHttpToHttps();</script><body></body></html>".encode()]
 
 	try:
 		for path, app in routes:
