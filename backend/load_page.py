@@ -67,7 +67,7 @@ def load_page(environ, start_response):
 		else:
 			message = open(path, "r").read().encode()
 			contentType = [('Content-Type', 'text/html')]
-		start_response('200 OK', contentType)
+		start_response('200 OK', contentType + [('Cache-Control', 'no-store, must-revalidate'), ('Pragma', 'no-cache'), ('Expires', '0')])
 		return [message]
 	except Exception as e:
 		print_exc()

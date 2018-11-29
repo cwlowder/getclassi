@@ -11,6 +11,12 @@ body {
 }
 </style>
 
+<div class="jumbotron text-center" style="background-color: #122B4A">
+	<h1 id="jumbo" style="color: #D67713; font-size:60px; margin-bottom:0px; padding:0px 0px 0px 0px" align="center">
+
+	</h1>
+</div>
+
 <nav class="navbar navbar-custom" role="navigation">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -57,9 +63,6 @@ body {
 	  <br>
 	  <button class="btn btn-default btn-lg" id="updateNote" onclick="updateNote()">Update Note! </button>
 	</div>
-	<form method="get" action="/calendar.html">
-		<button class="btn btn-default btn-lg" type="submit">Go To Your Calendar!</button>
-	</form>
 </div>
 
 <script>
@@ -72,6 +75,8 @@ body {
       $(document.getElementById("classHeaderDiv")).append(info.class);
       $(document.getElementById("crnDiv")).append(info.crn);
       $(document.getElementById("currNote")).empty().append(info.note);
+			$(document.getElementById("jumbo")).append(info.class);
+
     })
     .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
   })
