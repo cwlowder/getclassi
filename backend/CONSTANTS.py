@@ -26,7 +26,6 @@ MESSAGE = "message"
 
 API = "API"
 
-
 #Database login Path - testing
 DB_HOST = "sql9.freesqldatabase.com"
 DB_PASSWORD = "UdYNAIPst9"
@@ -41,3 +40,6 @@ DB_NAME = "getclassi_classi"
 
 # Isolation Levels
 SERIALIZABLE = "SERIALIZABLE"
+
+# list of admin accounts which have access to slightly more features
+ADMINS = ['clowder2']

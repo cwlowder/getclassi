@@ -14,6 +14,7 @@ from API.class_info import class_info
 from API.set_note import set_note
 from API.sign_in import sign_in
 from API.sign_out import sign_out
+from API.list_classes import list_classes
 
 def not_implemented(environ, start_response, netid):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -44,8 +45,12 @@ def test_api(environ, start_response, netid):
 	return [message.encode()]
 
 def dev_api(environ, start_response, netid):
-	start_response('200 OK', [('Content-Type', 'json')])
-	return [(str(environ)).encode()]
+	if netid in ADMINS:
+		start_response('200 OK', [('Content-Type', 'json')])
+		return [(str(environ)).encode()]
+	else:
+		start_response('401 Unauthorized', [('Content-Type', 'json')])
+		return ["{}".encode()]
 
 routes = [
 	('calendar', calendar),
@@ -58,6 +63,7 @@ routes = [
 	('sign_in', sign_in),
 	('sign_out', sign_out),
 	('dev_api', dev_api),
+	('list_classes', list_classes),
 	('*', not_implemented)
 ]
 
