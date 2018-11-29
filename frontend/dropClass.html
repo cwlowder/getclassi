@@ -12,7 +12,7 @@ body {
 <script>
   $(document).ready(function(){
     $(document.getElementById("dropClassDiv")).empty();
-    $.getJSON("/api/calendar?date=today", function(result) {
+    $.getJSON("/api/listClasses", function(result) {
     })
     .done(function(result) {
         console.log(result);

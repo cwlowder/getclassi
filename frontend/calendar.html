@@ -13,7 +13,7 @@
 $(document).ready(function(){
 
 // This is a button that when clicked will do shit
-        $.getJSON("/api/calendar?date=today", function(result) {
+        $.getJSON("/api/calendar?date=today&numDays=3", function(result) {
         })
         .done(function(result) {
             var calendarHolder = "";
@@ -59,6 +59,12 @@ const signOut = function() {
     background-color: #D3D3D3;
   }
   </style>
+
+  <div class="jumbotron text-center" style="background-color: #122B4A">
+    <h1 style="color: #D67713; font-size:60px; margin-bottom:0px; padding:0px 0px 0px 0px" align="center">
+      Calendar
+    </h1>
+  </div>
 
 <nav class="navbar navbar-custom" role="navigation">
   <div class="container-fluid">
