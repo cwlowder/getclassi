@@ -40,6 +40,8 @@ def dummy(environ, start_response):
 				"dates": [
 					"2018-11-28"
 				],
+				"prev": "2018-11-27",
+				"next": "2018-11-29",
 				"titles": {
 					"0":"cs241",
 					"1":"tp103",
@@ -51,19 +53,19 @@ def dummy(environ, start_response):
 							"crn": "0",
 							"class": "cs241",
 							"title": "MP1",
-							"desc": "this assignment is harder than the teacher expected"
+							"desc": "this assignment is harder than the teacher expected",
+							"DueDate": "2018-11-29 00:22:57",
+							"EventId": 1,
+							"checked": True
 						},
 						{
 							"crn": "0",
 							"class": "cs241",
 							"title": "QUIZ1",
-							"desc": "Wow! This quiz is easy-peasy"
-						},
-						{
-							"crn": "0",
-							"class": "cs241",
-							"title": "LAB1",
-							"desc": "Better put on those lab coats"
+							"desc": "Wow! This quiz is easy-peasy",
+							"DueDate": "2018-11-29 00:12:57",
+							"EventId": 2,
+							"checked": False
 						}
 					],
 					"1": [
@@ -71,7 +73,10 @@ def dummy(environ, start_response):
 							"crn": "1",
 							"class": "tp103",
 							"title": "MP1",
-							"desc": "this assignment is harder than the teacher expected"
+							"desc": "this assignment is harder than the teacher expected",
+							"DueDate": "2018-11-29 00:23:59",
+							"EventId": 3,
+							"checked": False
 						}
 					],
 					"2":[]
