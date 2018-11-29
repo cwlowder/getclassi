@@ -125,7 +125,6 @@ def real(environ, start_response, netId):
 				MESSAGE: {"titles": titles,
 						  "events" : events}
 			})
-			mydb.close()
 		except:
 			print_exc()
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
