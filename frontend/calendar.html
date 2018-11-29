@@ -5,7 +5,7 @@
 <meta name="google-signin-client_id" content="667147779945-d349v2ioe3f5kvqhhsvrcvepj8jqpqrn.apps.googleusercontent.com">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="css/common.css">
 
 <script>
@@ -13,11 +13,101 @@
 $(document).ready(function(){
 
 // This is a button that when clicked will do shit
-        $.getJSON("/api/calendar?date=today&numDays=3", function(result) {
+        $.getJSON("/api/calendar?date=yesterday&numDays=3", function(result) {
         })
         .done(function(result) {
+            var leftDay = result["message"].dates[0];
+            var middleDay = result["message"].dates[1];
+            var rightDay = result["message"].dates[2];
+            var leftInfo = result["message"].events[leftDay];
+            var middleInfo = result["message"].events[middleDay];
+            var rightInfo = result["message"].events[rightDay];
+            $(document.getElementById("leftCardTitle")).append(leftDay);
+            $(document.getElementById("middleCardTitle")).append(middleDay);
+            $(document.getElementById("rightCardTitle")).append(rightDay);
+
+            var leftHolder = "";
+            leftHolder += "<div class='container-fluid' style='padding:10px'>"
+            leftHolder += "<ul>";
+            for (var i in leftInfo) {
+              var leftDataHolder = "";
+              leftHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+              leftHolder += result["message"].titles[i];
+              leftHolder += "</a>";
+              leftHolder += "<ul>";
+              console.log(leftInfo[i])
+              for (var j in leftInfo[i]) {
+                console.log(leftInfo[i])
+                leftDataHolder += "<li>" + leftInfo[i][j].title + "</li>";
+              }
+
+              leftDataHolder += "</ul>";
+              leftHolder += leftDataHolder;
+
+              leftHolder += "</div>"
+
+            }
+            leftHolder += "</ul>";
+            leftHolder += "</div>"
+            leftHolder += "";
+            $(document.getElementById("left")).append(leftHolder);
+
+            var middleHolder = "";
+            middleHolder += "<div class='container-fluid' style='padding:10px'>"
+            middleHolder += "<ul>";
+            for (var i in middleInfo) {
+              var middleDataHolder = "";
+              middleHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+              middleHolder += result["message"].titles[i];
+              middleHolder += "</a>";
+              middleHolder += "<ul>";
+              console.log(middleInfo[i])
+              for (var j in middleInfo[i]) {
+                console.log(middleInfo[i])
+                middleDataHolder += "<li>" + middleInfo[i][j].title + "</li>";
+              }
+
+              middleDataHolder += "</ul>";
+              middleHolder += middleDataHolder;
+
+              middleHolder += "</div>"
+
+            }
+            middleHolder += "</ul>";
+            middleHolder += "</div>"
+            middleHolder += "";
+            $(document.getElementById("middle")).append(middleHolder);
+
+            var rightHolder = "";
+            rightHolder += "<div class='container-fluid' style='padding:10px'>"
+            rightHolder += "<ul>";
+            for (var i in rightInfo) {
+              var rightDataHolder = "";
+              rightHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+              rightHolder += result["message"].titles[i];
+              rightHolder += "</a>";
+              rightHolder += "<ul>";
+              console.log(rightInfo[i])
+              for (var j in rightInfo[i]) {
+                console.log(rightInfo[i])
+                rightDataHolder += "<li>" + rightInfo[i][j].title + "</li>";
+              }
+
+              rightDataHolder += "</ul>";
+              rightHolder += rightDataHolder;
+
+              rightHolder += "</div>"
+
+            }
+            rightHolder += "</ul>";
+            rightHolder += "</div>"
+            rightHolder += "";
+            $(document.getElementById("right")).append(rightHolder);
+
+
+            /*
             var calendarHolder = "";
-            var n = result["message"];
+            var n = result["events"];
             calendarHolder += "<div class='container-fluid' style='padding:30px'>"
             calendarHolder += "<h2 style='font-size:40px; font-family:Times, sans-serif'> Classes </h1>"
             calendarHolder += "<ul>";
@@ -38,7 +128,9 @@ $(document).ready(function(){
             calendarHolder += "</ul>";
             calendarHolder += "</div>"
             calendarHolder += "";
+
             $(document.getElementById("class-data")).append(calendarHolder);
+            */
         })
         .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
 });
@@ -66,7 +158,7 @@ const signOut = function() {
     </h1>
   </div>
 
-<nav class="navbar navbar-custom" role="navigation">
+<nav class="navbar navbar-custom" role="navigation" style="padding-right:0px">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">getclassi</a>
@@ -82,7 +174,7 @@ const signOut = function() {
         <a class="nav-link" href="/dropClass.html">Drop a Class</a>
       </li>
     </ul>
-    <ul class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav navbar-right pull-right" style="margin-left:93%; margin-right:0px; width:100">
       <li class="nav-item">
         <a class="nav-link" href="javascript:{}" onClick="return signOut()"><span class="glyphicon glyphicon-log-out"></span>Sign Out</a>
       </li>
@@ -90,8 +182,50 @@ const signOut = function() {
   </div>
 </nav>
 
+<div class="container-fluid">
+    <div class="row" style="margin-top:20px">
+      <div class="card-group">
+        <div class="col-lg-4">
+          <div class="card-block" >
+            <div class="card-body">
+              <h4 align="center" class="card-title" id="leftCardTitle">
+
+              </h4>
+              <p class="card-text" id="left">
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card-block">
+            <div class="card-body">
+              <h4 align="center" class="card-title" id="middleCardTitle">
+
+              </h4>
+              <p class="card-text" id="middle">
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="card-block">
+            <div class="card-body">
+              <h4 align="center" class="card-title" id="rightCardTitle">
+
+              </h4>
+              <p class="card-text" id="right">
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--
 <div style="color: #EA6100;" id="class-data">
   <div id="assignmentData">
   </div>
 </div>
+-->
 </body>

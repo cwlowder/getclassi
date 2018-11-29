@@ -12,14 +12,14 @@ body {
 <script>
   $(document).ready(function(){
     $(document.getElementById("dropClassDiv")).empty();
-    $.getJSON("/api/listClasses", function(result) {
+    $.getJSON("/api/list_classes", function(result) {
     })
     .done(function(result) {
         console.log(result);
         var buttonHolder = "<br>";
-        for (var i in result["message"].titles) {
-          buttonHolder += "<p1> " + result["message"].titles[i] + "     " + "CRN: " + i
-            + "</p1>" + "<br>" + "<button class='btn btn-default btn-sm' id=button" +
+        for (var i in result["message"]) {
+          buttonHolder += "<p1 style='padding-right:10px; padding-left:20px'> " + "CRN: " + i + " Class title: " + result["message"][i]
+            + "</p1>" + "<button class='btn btn-default btn-sm' id=button" +
             i + " onclick=addClick(" + i + ") "
               + "<br>" + "Drop Me! </button>"
           buttonHolder += "<br>";
@@ -57,6 +57,12 @@ const signOut = function() {
     })
 }
 </script>
+
+<div class="jumbotron text-center" style="background-color: #122B4A">
+  <h1 style="color: #D67713; font-size:60px; margin-bottom:0px; padding:0px 0px 0px 0px" align="center">
+    Drop a Class
+  </h1>
+</div>
 
 <nav class="navbar navbar-custom" role="navigation">
   <div class="container-fluid">
