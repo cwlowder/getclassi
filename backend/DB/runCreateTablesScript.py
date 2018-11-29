@@ -6,11 +6,13 @@ import DB.database as db
 
 
 def createTables():
+	mydb, mycursor = db.connect()
 	f = open("createTableCommands.txt", "r")
 	lines = f.readlines()
 
 	for x in lines:
 		print(x)
-		db.mycursor.execute(x)
-db.connect()
+		mycursor.execute(x)
+	mydb.close()
+
 createTables()

@@ -75,7 +75,7 @@ def dummy(environ, start_response):
 	print("Message:", message)
 	return [message.encode()]
 
-def real(environ, start_response):
+def real(environ, start_response, netId):
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":
@@ -93,17 +93,17 @@ def real(environ, start_response):
 			pass #//todo implement abstract date
 		mydb = None
 		sql1 = "SELECT Enrollments.CRN, Classes.Title FROM Classes INNER JOIN Enrollments ON Classes.CRN = Enrollments.CRN WHERE Enrollments.NetId = %s"
-		val1 = ("0",)
+		val1 = (netId,)
 		sql2 = "SELECT * FROM (SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`, `Classes`.`Title` AS CTitle FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) AS x, `Enrollments` WHERE `Enrollments`.crn = x.crn AND `Enrollments`.NetId = %s  AND x.DueDate LIKE '" + date +"%' "
-		val2 = ("0",)
+		val2 = (netId,)
 		try:
 			if date == "":
 				raise Exception('Date is not anything')
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql1, val1)
-			resultsClasses = db.mycursor.fetchall()
+			resultsClasses = mycursor.fetchall()
 			mycursor.execute(sql2, val2)
-			resultsCalendar = db.mycursor.fetchall()
+			resultsCalendar = mycursor.fetchall()
 			titles = {}
 			events = {}
 			for row in resultsClasses:
@@ -125,7 +125,6 @@ def real(environ, start_response):
 				MESSAGE: {"titles": titles,
 						  "events" : events}
 			})
-			mydb.close()
 		except:
 			print_exc()
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
@@ -136,12 +135,11 @@ def real(environ, start_response):
 		finally:
 			if mydb:
 				mydb.close()
-	print(message)
 	return [message.encode()]
 
 
-def calendar(environ, start_response):
+def calendar(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:
-		return real(environ, start_response)
+		return real(environ, start_response, netId)

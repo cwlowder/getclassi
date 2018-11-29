@@ -6,9 +6,7 @@ from traceback import print_exc
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-import DB.database as database
-#initiaze database
-database.connect()
+from ENDPOINT.endpoint import endpoint 
 
 from API.api import api
 from load_page import load_page
@@ -28,11 +26,13 @@ def test_page(environ, start_response):
 routes = [
 	('/api/*', api),
 	('/test', test_page),
+	('/endpoint/*', endpoint),
 	('/*', load_page)
 ]
 
 def application(environ, start_response):
 	req_path = environ[PATH].strip().split("/")[1:]
+
 	try:
 		for path, app in routes:
 			if fnmatch(environ[PATH], path):
