@@ -6,6 +6,7 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
 <link rel="stylesheet" type="text/css" href="css/common.css">
 
 <script>
@@ -26,113 +27,120 @@ $(document).ready(function(){
             $(document.getElementById("middleCardTitle")).append(middleDay);
             $(document.getElementById("rightCardTitle")).append(rightDay);
 
-            var leftHolder = "";
-            leftHolder += "<div class='container-fluid' style='padding:10px'>"
-            leftHolder += "<ul>";
-            for (var i in leftInfo) {
-              var leftDataHolder = "";
-              leftHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-              leftHolder += result["message"].titles[i];
-              leftHolder += "</a>";
+            if (Object.keys(leftInfo).length > 0 || Object.keys(rightInfo).length > 0 || Object.keys(middleInfo).length > 0) {
+              var leftHolder = "";
+              leftHolder += "<div class='container-fluid' style='padding:10px'>"
               leftHolder += "<ul>";
-              console.log(leftInfo[i])
-              for (var j in leftInfo[i]) {
+              for (var i in leftInfo) {
+                var leftDataHolder = "";
+                leftHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+                leftHolder += result["message"].titles[i];
+                leftHolder += "</a>";
+                leftHolder += "<ul>";
                 console.log(leftInfo[i])
-                leftDataHolder += "<li>" + leftInfo[i][j].title + "</li>";
+                for (var j in leftInfo[i]) {
+                  console.log(leftInfo[i])
+                  leftDataHolder += "<li>" + leftInfo[i][j].title + "</li>";
+                }
+
+                leftDataHolder += "</ul>";
+                leftHolder += leftDataHolder;
+
+                leftHolder += "</div>"
+
               }
-
-              leftDataHolder += "</ul>";
-              leftHolder += leftDataHolder;
-
+              leftHolder += "</ul>";
               leftHolder += "</div>"
+              leftHolder += "";
+              $(document.getElementById("left")).append(leftHolder);
 
-            }
-            leftHolder += "</ul>";
-            leftHolder += "</div>"
-            leftHolder += "";
-            $(document.getElementById("left")).append(leftHolder);
-
-            var middleHolder = "";
-            middleHolder += "<div class='container-fluid' style='padding:10px'>"
-            middleHolder += "<ul>";
-            for (var i in middleInfo) {
-              var middleDataHolder = "";
-              middleHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-              middleHolder += result["message"].titles[i];
-              middleHolder += "</a>";
+              var middleHolder = "";
+              middleHolder += "<div class='container-fluid' style='padding:10px'>"
               middleHolder += "<ul>";
-              console.log(middleInfo[i])
-              for (var j in middleInfo[i]) {
+              for (var i in middleInfo) {
+                var middleDataHolder = "";
+                middleHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+                middleHolder += result["message"].titles[i];
+                middleHolder += "</a>";
+                middleHolder += "<ul>";
                 console.log(middleInfo[i])
-                middleDataHolder += "<li>" + middleInfo[i][j].title + "</li>";
+                for (var j in middleInfo[i]) {
+                  console.log(middleInfo[i])
+                  middleDataHolder += "<li>" + middleInfo[i][j].title + "</li>";
+                }
+
+                middleDataHolder += "</ul>";
+                middleHolder += middleDataHolder;
+
+                middleHolder += "</div>"
+
               }
-
-              middleDataHolder += "</ul>";
-              middleHolder += middleDataHolder;
-
+              middleHolder += "</ul>";
               middleHolder += "</div>"
+              middleHolder += "";
+              $(document.getElementById("middle")).append(middleHolder);
 
-            }
-            middleHolder += "</ul>";
-            middleHolder += "</div>"
-            middleHolder += "";
-            $(document.getElementById("middle")).append(middleHolder);
-
-            var rightHolder = "";
-            rightHolder += "<div class='container-fluid' style='padding:10px'>"
-            rightHolder += "<ul>";
-            for (var i in rightInfo) {
-              var rightDataHolder = "";
-              rightHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-              rightHolder += result["message"].titles[i];
-              rightHolder += "</a>";
+              var rightHolder = "";
+              rightHolder += "<div class='container-fluid' style='padding:10px'>"
               rightHolder += "<ul>";
-              console.log(rightInfo[i])
-              for (var j in rightInfo[i]) {
+              for (var i in rightInfo) {
+                var rightDataHolder = "";
+                rightHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+                rightHolder += result["message"].titles[i];
+                rightHolder += "</a>";
+                rightHolder += "<ul>";
                 console.log(rightInfo[i])
-                rightDataHolder += "<li>" + rightInfo[i][j].title + "</li>";
+                for (var j in rightInfo[i]) {
+                  console.log(rightInfo[i])
+                  rightDataHolder += "<li>" + rightInfo[i][j].title + "</li>";
+                }
+
+                rightDataHolder += "</ul>";
+                rightHolder += rightDataHolder;
+
+                rightHolder += "</div>"
+
               }
-
-              rightDataHolder += "</ul>";
-              rightHolder += rightDataHolder;
-
+              rightHolder += "</ul>";
               rightHolder += "</div>"
+              rightHolder += "";
+              $(document.getElementById("right")).append(rightHolder);
+            } else {
+              var leftString = "";
+              var middleString = "";
+              var rightString = "";
+              leftString = "<p1> You have no work to do today! </p1>";
+              middleString = "<p1> Take the day off! </p1>";
+              rightString = "<p1> Check back tomorrow! </p1>";
 
+              $(document.getElementById("left")).append(leftString);
+              $(document.getElementById("middle")).append(middleString);
+              $(document.getElementById("right")).append(rightString);
             }
-            rightHolder += "</ul>";
-            rightHolder += "</div>"
-            rightHolder += "";
-            $(document.getElementById("right")).append(rightHolder);
 
 
-            /*
-            var calendarHolder = "";
-            var n = result["events"];
-            calendarHolder += "<div class='container-fluid' style='padding:30px'>"
-            calendarHolder += "<h2 style='font-size:40px; font-family:Times, sans-serif'> Classes </h1>"
-            calendarHolder += "<ul>";
-            for (var i in n.titles) {
-              var assignmentDataHolder = "";
-              calendarHolder += "<li "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-              calendarHolder += n.titles[i];
-              calendarHolder += "</a>";
-              calendarHolder += "<ul>";
-              for (var j in n.events[i]) {
-                console.log(n.events[i])
-                assignmentDataHolder += "<li>" + n.events[i][j].title + "</li>";
-              }
-              assignmentDataHolder += "</ul>";
-              calendarHolder += assignmentDataHolder;
-              calendarHolder += "</li>"
-            }
-            calendarHolder += "</ul>";
-            calendarHolder += "</div>"
-            calendarHolder += "";
-
-            $(document.getElementById("class-data")).append(calendarHolder);
-            */
         })
-        .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          var leftDay = result["message"].dates[0];
+          var middleDay = result["message"].dates[1];
+          var rightDay = result["message"].dates[2];
+          var leftInfo = result["message"].events[leftDay];
+          var middleInfo = result["message"].events[middleDay];
+          var rightInfo = result["message"].events[rightDay];
+          $(document.getElementById("leftCardTitle")).append(leftDay);
+          $(document.getElementById("middleCardTitle")).append(middleDay);
+          $(document.getElementById("rightCardTitle")).append(rightDay);
+          var leftString = "";
+          var middleString = "";
+          var rightString = "";
+          leftString = "<p1> You have no work to do today! </p1>";
+          middleString = "<p1> Take the day off! </p1>";
+          rightString = "<p1> Check back tomorrow! </p1>";
+
+          $(document.getElementById("left")).append(leftString);
+          $(document.getElementById("middle")).append(middleString);
+          $(document.getElementById("right")).append(rightString);
+        })
 });
 
 const signOut = function() {
@@ -153,7 +161,7 @@ const signOut = function() {
   </style>
 
   <div class="jumbotron text-center" style="background-color: #122B4A; margin-bottom:0">
-    <h1 style="color: #D67713; font-size:60px; margin-bottom:0px; padding:0px 0px 0px 0px" align="center">
+    <h1 style="color: #D67713; font-size:50px; margin-bottom:0px; padding:0px 0px 0px 0px" align="center">
       Calendar
     </h1>
   </div>
@@ -182,11 +190,11 @@ const signOut = function() {
   </div>
 </nav>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row" style="margin-top:20px">
       <div class="card-deck">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="max-height:300px; overflow-y:auto">
               <h4 align="center" class="card-title" id="leftCardTitle">
 
               </h4>
@@ -195,7 +203,7 @@ const signOut = function() {
             </div>
           </div>
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="max-height:300px; overflow-y:auto" >
               <h4 align="center" class="card-title" id="middleCardTitle">
 
               </h4>
@@ -204,7 +212,7 @@ const signOut = function() {
             </div>
           </div>
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="max-height:300px; overflow-y:auto">
               <h4 align="center" class="card-title" id="rightCardTitle">
 
               </h4>
@@ -215,11 +223,17 @@ const signOut = function() {
         </div>
     </div>
 </div>
-
-<!--
-<div style="color: #EA6100;" id="class-data">
-  <div id="assignmentData">
-  </div>
-</div>
--->
+<br>
+</br>
 </body>
+
+<footer class="page-footer font-small blue pt-4">
+    <div class="container-fluid text-center text-md-left">
+      <div class="row">
+        <div class="col-md-6 mt-md-0 mt-6" align="left">
+          <button type="button" class="btn btn-default btn-arrow-left">Previous 3 days</button>
+        </div>
+        <div class="col-md-6 mt-md-0 mt-6" align="right">
+          <button type="button" class="btn btn-default btn-arrow-right">Next 3 days</button>
+        </div>
+  </footer>
