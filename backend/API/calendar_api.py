@@ -37,6 +37,9 @@ def dummy(environ, start_response):
 	if message == "":
 		start_response('200 OK', [('Content-Type', 'json')])
 		payload = {
+				"dates": [
+					"2018-11-28"
+				],
 				"titles": {
 					"0":"cs241",
 					"1":"tp103",
@@ -88,18 +91,24 @@ def real(environ, start_response, netId):
 		q = db.escapeString(query["date"][0])
 		numDays = int(db.escapeString(query["numDays"][0]))
 		dates = []
+
 		current = time.time()
+		previous = time.strftime('%Y-%m-%d', time.localtime(current - 86400))
+
 		if q == "today":
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current))]
 		elif q == "tomorrow":
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
+			current = current + 86400
 		elif q == "yesterday":
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current - 86400))]
+			current = current - 86400
 		else:
 			pass #//todo implement abstract date
 		for x in range(numDays - 1):
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
 			current += 86400
+		nextDay = time.strftime('%Y-%m-%d', time.localtime(current + 86400))
 		mydb = None
 		sql1 = "SELECT Enrollments.CRN, Classes.Title FROM Classes INNER JOIN Enrollments ON Classes.CRN = Enrollments.CRN WHERE Enrollments.NetId = %s"
 		val1 = (netId,)
@@ -144,6 +153,9 @@ def real(environ, start_response, netId):
 			message = json.dumps({
 				STATUS: SUCCESS,
 				MESSAGE: {
+						  "dates": dates,
+						  "prev": previous,
+						  "next": nextDay,
 						  "titles": titles,
 						  "events" : events}
 			})
