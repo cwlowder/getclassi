@@ -25,25 +25,33 @@ def load_page(environ, start_response):
 			# Redirect to https
 			dest = "https://" + environ['HTTP_HOST'] + environ[PATH]
 			start_response('307 Temporary Redirect', [('Location', dest)])
-			return [b'1']#["<html><head><title>Redirecting...</title></head><script language='JavaScript'>function redirectHttpToHttps(){ var httpURL= window.location.hostname + window.location.pathname + window.location.search; var httpsURL= 'https://' + httpURL; window.location = httpsURL;}redirectHttpToHttps();</script><body></body></html>".encode()]
+			return [b'1']
 
 	path = "frontend" + environ[PATH]
 	if path[-1] == "/":
 		path += "index.html"
 
-	# Only one page does not require login
-	if path != "frontend/index.html":
-		raw_cookies = environ[COOKIES]
-		cookie = SimpleCookie()
-		cookie.load(raw_cookies)
-		netId = None
-		try:
-			netId = session_auth(cookie['sessionID'].value)
-		except:
-			print_exc()
-		finally:
+	# Check cookies
+	raw_cookies = environ[COOKIES]
+	cookie = SimpleCookie()
+	cookie.load(raw_cookies)
+	netId = None
+	try:
+		netId = session_auth(cookie['sessionID'].value)
+	except:
+		#print_exc()
+		# Don't print out that they have an invalid cookie/no cookie
+		pass
+	finally:
+		# Redirect if not logged in
+		if path != "frontend/index.html":
 			if netId == None:
 				return redirect(environ, start_response)
+		# Redirect if logged in
+		else:
+			if netId != None:
+				return redirect(environ, start_response, "/calendar.html")
+
 	try:
 		contentType = []
 		message = ""
