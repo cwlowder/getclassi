@@ -111,18 +111,19 @@ def real(environ, start_response, netId):
 		nextDay = time.strftime('%Y-%m-%d', time.localtime(current + 86400))
 		mydb = None
 		sql1 = "SELECT Enrollments.CRN, Classes.Title FROM Classes INNER JOIN Enrollments ON Classes.CRN = Enrollments.CRN WHERE Enrollments.NetId = %s"
-		val1 = (netId,)
+		val1 = (netId, )
 		sql2 = """
-		SELECT * FROM (SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`, `Classes`.`Title`
-		 AS CTitle FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) AS x, `Enrollments` WHERE `Enrollments`.crn =
-		 x.crn AND `Enrollments`.NetId = %s
+		SELECT * FROM ((SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`,
+		`Classes`.`Title` AS CTitle, `Events`.EventId as EventId FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) As Y
+		LEFT JOIN EventDone ON EventDone.EventId = Y.EventId),
+		`Enrollments` WHERE `Enrollments`.crn = Y.CRN AND `Enrollments`.NetId = %s
 		"""
 		# Dates is not USER generated, I made it bitch thats right. I can bring down this whole system by changing motherfucking date
-		sql2 +=  "AND (x.DueDate LIKE '" + dates[0] +"%'"
+		sql2 +=  "AND (Y.DueDate LIKE '" + dates[0] +"%'"
 		for x in range(1, len(dates)):
-			sql2 += "OR x.DueDate LIKE '" + dates[x] +"%'"
+			sql2 += "OR Y.DueDate LIKE '" + dates[x] +"%'"
 		sql2 += ")"
-		val2 = (netId,)
+		val2 = (netId, )
 		try:
 			if len(dates) == "0":
 				raise Exception('Date is not anything')
@@ -135,6 +136,8 @@ def real(environ, start_response, netId):
 			events = {}
 			for elem in dates:
 				events[elem] = {}
+			print("NETID:", netId)
+			print(resultsCalendar[0])
 			for row in resultsClasses:
 				if row[0] not in titles:
 					titles[row[0]] = row[1]
@@ -146,7 +149,9 @@ def real(environ, start_response, netId):
 					"class": row[4],
 					"title": row[1],
 					"desc": row[3],
-					"DueDate" : row[2]
+					"DueDate" : row[2],
+					"EventId" : row[5],
+					"checked" : row[6] != None
 				})
 
 			start_response('200 OK', [('Content-Type', 'json')])
