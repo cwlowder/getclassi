@@ -21,6 +21,12 @@ def check_request(environ, start_response):
 			STATUS: FAILED,
 			MESSAGE: "Missing query parameter ?date=today"
 		})
+	elif "numDays" not in query or len(query["numDays"]) == 0:
+		start_response('400 Bad Request', [('Content-Type', 'json')])
+		return json.dumps({
+			STATUS: FAILED,
+			MESSAGE: "Missing query parameter ?numDays=#"
+		})
 	else:
 		return ""
 
@@ -31,12 +37,15 @@ def dummy(environ, start_response):
 	if message == "":
 		start_response('200 OK', [('Content-Type', 'json')])
 		payload = {
+				"dates": [
+					"2018-11-28"
+				],
 				"titles": {
 					"0":"cs241",
 					"1":"tp103",
 					"2":"astr120"
 				},
-				"events": {
+				"events": [{
 					"0": [
 						{
 							"crn": "0",
@@ -66,7 +75,7 @@ def dummy(environ, start_response):
 						}
 					],
 					"2":[]
-				}
+				}]
 			}
 		message = json.dumps({
 			STATUS: SUCCESS,
@@ -80,24 +89,42 @@ def real(environ, start_response, netId):
 	query = pq(environ[QUERY])
 	if message == "":
 		q = db.escapeString(query["date"][0])
-		date = ""
+		numDays = int(db.escapeString(query["numDays"][0]))
+		dates = []
+
 		current = time.time()
+		previous = time.strftime('%Y-%m-%d', time.localtime(current - 86400))
+
 		if q == "today":
-			date = time.strftime('%Y-%m-%d', time.localtime(current))
-			print(date)
+			dates += [time.strftime('%Y-%m-%d', time.localtime(current))]
 		elif q == "tomorrow":
-			date = time.strftime('%Y-%m-%d', time.localtime(current + 86400))
+			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
+			current = current + 86400
 		elif q == "yesterday":
-			date = time.strftime('%Y-%m-%d', time.localtime(current - 86400))
+			dates += [time.strftime('%Y-%m-%d', time.localtime(current - 86400))]
+			current = current - 86400
 		else:
 			pass #//todo implement abstract date
+		for x in range(numDays - 1):
+			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
+			current += 86400
+		nextDay = time.strftime('%Y-%m-%d', time.localtime(current + 86400))
 		mydb = None
 		sql1 = "SELECT Enrollments.CRN, Classes.Title FROM Classes INNER JOIN Enrollments ON Classes.CRN = Enrollments.CRN WHERE Enrollments.NetId = %s"
 		val1 = (netId,)
-		sql2 = "SELECT * FROM (SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`, `Classes`.`Title` AS CTitle FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) AS x, `Enrollments` WHERE `Enrollments`.crn = x.crn AND `Enrollments`.NetId = %s  AND x.DueDate LIKE '" + date +"%' "
+		sql2 = """
+		SELECT * FROM (SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`, `Classes`.`Title`
+		 AS CTitle FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) AS x, `Enrollments` WHERE `Enrollments`.crn =
+		 x.crn AND `Enrollments`.NetId = %s
+		"""
+		# Dates is not USER generated, I made it bitch thats right. I can bring down this whole system by changing motherfucking date
+		sql2 +=  "AND (x.DueDate LIKE '" + dates[0] +"%'"
+		for x in range(1, len(dates)):
+			sql2 += "OR x.DueDate LIKE '" + dates[x] +"%'"
+		sql2 += ")"
 		val2 = (netId,)
 		try:
-			if date == "":
+			if len(dates) == "0":
 				raise Exception('Date is not anything')
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql1, val1)
@@ -106,12 +133,15 @@ def real(environ, start_response, netId):
 			resultsCalendar = mycursor.fetchall()
 			titles = {}
 			events = {}
+			for elem in dates:
+				events[elem] = {}
 			for row in resultsClasses:
 				if row[0] not in titles:
 					titles[row[0]] = row[1]
-					events[row[0]] = []
+					for elem in dates:
+						events[elem][row[0]] = []
 			for row in resultsCalendar:
-				events[row[0]].append({
+				events[row[2].split(' ')[0]][row[0]].append({
 					"crn": row[0],
 					"class": row[4],
 					"title": row[1],
@@ -122,7 +152,11 @@ def real(environ, start_response, netId):
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: SUCCESS,
-				MESSAGE: {"titles": titles,
+				MESSAGE: {
+						  "dates": dates,
+						  "prev": previous,
+						  "next": nextDay,
+						  "titles": titles,
 						  "events" : events}
 			})
 		except:
