@@ -64,7 +64,7 @@ def real(environ, start_response):
 					STATUS: SUCCESS
 				})
 			except Exception as e:
-				db.mydb.rollback()
+				mydb.rollback()
 				print_exc()
 				start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
 				message = json.dumps({
@@ -74,7 +74,6 @@ def real(environ, start_response):
 			finally:
 				if mydb:
 					mydb.close()
-	print(message)
 	return [message.encode()]
 
 def set_note(environ, start_response, netId):

@@ -32,10 +32,12 @@ def load_page(environ, start_response):
 		path += "index.html"
 
 	# Check cookies
-	raw_cookies = environ[COOKIES]
-	cookie = SimpleCookie()
-	cookie.load(raw_cookies)
+	cookie = None
 	netId = None
+	if COOKIES in environ:
+		raw_cookies = environ[COOKIES]
+		cookie = SimpleCookie()
+		cookie.load(raw_cookies)
 	try:
 		netId = session_auth(cookie['sessionID'].value)
 	except:

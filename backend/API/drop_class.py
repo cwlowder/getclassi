@@ -59,7 +59,7 @@ def real(environ, start_response, netId):
 					MESSAGE: "User is not enrolled in class"
 				})
 		except Exception as e:
-			db.mydb.rollback()
+			mydb.rollback()
 			print_exc()
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
 			message = json.dumps({

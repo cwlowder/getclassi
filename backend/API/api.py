@@ -16,6 +16,7 @@ from API.sign_in import sign_in
 from API.sign_out import sign_out
 from API.list_classes import list_classes
 from API.mark_event import mark_event
+from API.update_event import update_event
 
 def not_implemented(environ, start_response, netid):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -66,6 +67,7 @@ routes = [
 	('dev_api', dev_api),
 	('list_classes', list_classes),
 	('mark_event', mark_event),
+	('update_event', update_event),
 	('*', not_implemented)
 ]
 

@@ -41,7 +41,7 @@ def real(environ, start_response, netId):
 		val = (crn, netId) #TODO CHANGE TO LOGIN USER
 		try:
 			mydb, mycursor = db.connect()
-			#db.mydb.start_transaction(isolation_level=SERIALIZABLE, readonly=False)
+			#mydb.start_transaction(isolation_level=SERIALIZABLE, readonly=False)
 			mycursor.execute(sql, val)
 			start_response('200 OK', [('Content-Type', 'json')])
 			mydb.commit()

@@ -52,7 +52,7 @@ def real(environ, start_response, netId):
 			sql = "DELETE FROM EventDone WHERE EventId = %s and NetId=%s"
 		try:
 			mydb, mycursor = db.connect()
-			#db.mydb.start_transaction(isolation_level=SERIALIZABLE, readonly=False)
+			#mydb.start_transaction(isolation_level=SERIALIZABLE, readonly=False)
 			mycursor.execute(sql, val)
 			count = mycursor.rowcount
 			start_response('200 OK', [('Content-Type', 'json')])
