@@ -104,7 +104,22 @@ def real(environ, start_response, netId):
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current - 86400))]
 			current = current - 86400
 		else:
-			pass #//todo implement abstract date
+			try:
+				print(q)
+				format =  time.strptime(q, "%Y-%m-%d")
+				print(format)
+				current = time.mktime(format)
+				print(current)
+				dates += [q]
+			except:
+				print_exc()
+				start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
+				message = json.dumps({
+					STATUS: FAILED,
+					MESSAGE: "Date query has wrong format"
+				})
+				return [message.encode()]
+
 		for x in range(numDays - 1):
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
 			current += 86400
@@ -137,7 +152,6 @@ def real(environ, start_response, netId):
 			for elem in dates:
 				events[elem] = {}
 			print("NETID:", netId)
-			print(resultsCalendar[0])
 			for row in resultsClasses:
 				if row[0] not in titles:
 					titles[row[0]] = row[1]
