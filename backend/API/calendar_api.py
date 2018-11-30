@@ -98,7 +98,7 @@ def real(environ, start_response, netId):
 		dates = []
 
 		current = time.time()
-		previous = time.strftime('%Y-%m-%d', time.localtime(current - 86400))
+		previous = time.strftime('%Y-%m-%d', time.localtime(current - numDays * 86400))
 
 		if q == "today":
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current))]
