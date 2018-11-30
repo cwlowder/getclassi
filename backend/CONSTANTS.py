@@ -32,7 +32,7 @@ DB_HOST = None
 DB_PASSWORD = None
 DB_USERNAME = None
 DB_NAME = None
-if os.environ['HOSTNAME'] == 'web.illinois.edu':
+if 'HOSTNAME' in os.environ:
 	#Database login Path - production
 	DB_HOST = "localhost"
 	DB_PASSWORD = "s,LsLC~na,nd"
