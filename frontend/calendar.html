@@ -14,18 +14,20 @@
 $(document).ready(function(){
 
 // This is a button that when clicked will do shit
-        $.getJSON("/api/calendar?date=yesterday&numDays=3", function(result) {
+        $.getJSON("/api/calendar?date=today&numDays=3", function(result) {
         })
         .done(function(result) {
+            $(document.getElementById("nextDate")).empty().append(result["message"].next);
+            $(document.getElementById("prevDate")).empty().append(result["message"].prev);
             var leftDay = result["message"].dates[0];
             var middleDay = result["message"].dates[1];
             var rightDay = result["message"].dates[2];
             var leftInfo = result["message"].events[leftDay];
             var middleInfo = result["message"].events[middleDay];
             var rightInfo = result["message"].events[rightDay];
-            $(document.getElementById("leftCardTitle")).append(leftDay);
-            $(document.getElementById("middleCardTitle")).append(middleDay);
-            $(document.getElementById("rightCardTitle")).append(rightDay);
+            $(document.getElementById("leftCardTitle")).empty().append(leftDay);
+            $(document.getElementById("middleCardTitle")).empty().append(middleDay);
+            $(document.getElementById("rightCardTitle")).empty().append(rightDay);
 
             if (Object.keys(leftInfo).length > 0 || Object.keys(rightInfo).length > 0 || Object.keys(middleInfo).length > 0) {
               var leftHolder = "";
@@ -36,18 +38,12 @@ $(document).ready(function(){
                 leftHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
                 leftHolder += result["message"].titles[i];
                 leftHolder += "</a>";
-                leftHolder += "<ul>";
-                console.log(leftInfo[i])
                 for (var j in leftInfo[i]) {
-                  console.log(leftInfo[i])
-                  leftDataHolder += "<li>" + leftInfo[i][j].title + "</li>";
+                  leftDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
                 }
 
-                leftDataHolder += "</ul>";
                 leftHolder += leftDataHolder;
-
                 leftHolder += "</div>"
-
               }
               leftHolder += "</ul>";
               leftHolder += "</div>"
@@ -62,18 +58,11 @@ $(document).ready(function(){
                 middleHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
                 middleHolder += result["message"].titles[i];
                 middleHolder += "</a>";
-                middleHolder += "<ul>";
-                console.log(middleInfo[i])
                 for (var j in middleInfo[i]) {
-                  console.log(middleInfo[i])
-                  middleDataHolder += "<li>" + middleInfo[i][j].title + "</li>";
+                  middleDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
                 }
-
-                middleDataHolder += "</ul>";
                 middleHolder += middleDataHolder;
-
                 middleHolder += "</div>"
-
               }
               middleHolder += "</ul>";
               middleHolder += "</div>"
@@ -88,14 +77,9 @@ $(document).ready(function(){
                 rightHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
                 rightHolder += result["message"].titles[i];
                 rightHolder += "</a>";
-                rightHolder += "<ul>";
-                console.log(rightInfo[i])
                 for (var j in rightInfo[i]) {
-                  console.log(rightInfo[i])
-                  rightDataHolder += "<li>" + rightInfo[i][j].title + "</li>";
+                  rightDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
                 }
-
-                rightDataHolder += "</ul>";
                 rightHolder += rightDataHolder;
 
                 rightHolder += "</div>"
@@ -227,13 +211,142 @@ const signOut = function() {
 </br>
 </body>
 
+<div id="prevDate" style="visibility:hidden">
+</div>
+
+<div id="nextDate" style="visibility:hidden">
+</div>
+
+<script>
+  function previousDays() {
+    var prev = $(document.getElementById("prevDate")).text();
+    console.log(prev);
+    $.getJSON("/api/calendar?date=" + prev + "&numDays=3", function(result) {
+    })
+    .done(function(result) {
+      console.log(result);
+      $(document.getElementById("nextDate")).empty().append(result["message"].next);
+      $(document.getElementById("prevDate")).empty().append(result["message"].prev);
+      var leftDay = result["message"].dates[0];
+      var middleDay = result["message"].dates[1];
+      var rightDay = result["message"].dates[2];
+      var leftInfo = result["message"].events[leftDay];
+      var middleInfo = result["message"].events[middleDay];
+      var rightInfo = result["message"].events[rightDay];
+      $(document.getElementById("leftCardTitle")).empty().append(leftDay);
+      $(document.getElementById("middleCardTitle")).empty().append(middleDay);
+      $(document.getElementById("rightCardTitle")).empty().append(rightDay);
+
+      if (Object.keys(leftInfo).length > 0 || Object.keys(rightInfo).length > 0 || Object.keys(middleInfo).length > 0) {
+        var leftHolder = "";
+        leftHolder += "<div class='container-fluid' style='padding:10px'>"
+        leftHolder += "<ul>";
+        for (var i in leftInfo) {
+          var leftDataHolder = "";
+          leftHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+          leftHolder += result["message"].titles[i];
+          leftHolder += "</a>";
+          for (var j in leftInfo[i]) {
+            leftDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
+          }
+
+          leftHolder += leftDataHolder;
+          leftHolder += "</div>"
+        }
+        leftHolder += "</ul>";
+        leftHolder += "</div>"
+        leftHolder += "";
+        $(document.getElementById("left")).empty().append(leftHolder);
+
+        var middleHolder = "";
+        middleHolder += "<div class='container-fluid' style='padding:10px'>"
+        middleHolder += "<ul>";
+        for (var i in middleInfo) {
+          var middleDataHolder = "";
+          middleHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+          middleHolder += result["message"].titles[i];
+          middleHolder += "</a>";
+          for (var j in middleInfo[i]) {
+            middleDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
+          }
+          middleHolder += middleDataHolder;
+          middleHolder += "</div>"
+        }
+        middleHolder += "</ul>";
+        middleHolder += "</div>"
+        middleHolder += "";
+        $(document.getElementById("middle")).empty().append(middleHolder);
+
+        var rightHolder = "";
+        rightHolder += "<div class='container-fluid' style='padding:10px'>"
+        rightHolder += "<ul>";
+        for (var i in rightInfo) {
+          var rightDataHolder = "";
+          rightHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
+          rightHolder += result["message"].titles[i];
+          rightHolder += "</a>";
+          for (var j in rightInfo[i]) {
+            rightDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
+          }
+          rightHolder += rightDataHolder;
+
+          rightHolder += "</div>"
+
+        }
+        rightHolder += "</ul>";
+        rightHolder += "</div>"
+        rightHolder += "";
+        $(document.getElementById("right")).empty().append(rightHolder);
+      } else {
+        var leftString = "";
+        var middleString = "";
+        var rightString = "";
+        leftString = "<p1> You have no work to do today! </p1>";
+        middleString = "<p1> Take the day off! </p1>";
+        rightString = "<p1> Check back tomorrow! </p1>";
+
+        $(document.getElementById("left")).empty().append(leftString);
+        $(document.getElementById("middle")).empty().append(middleString);
+        $(document.getElementById("right")).empty().append(rightString);
+      }
+
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      var leftDay = result["message"].dates[0];
+      var middleDay = result["message"].dates[1];
+      var rightDay = result["message"].dates[2];
+      var leftInfo = result["message"].events[leftDay];
+      var middleInfo = result["message"].events[middleDay];
+      var rightInfo = result["message"].events[rightDay];
+      $(document.getElementById("leftCardTitle")).empty().append(leftDay);
+      $(document.getElementById("middleCardTitle")).empty().append(middleDay);
+      $(document.getElementById("rightCardTitle")).empty().append(rightDay);
+      var leftString = "";
+      var middleString = "";
+      var rightString = "";
+      leftString = "<p1> You have no work to do today! </p1>";
+      middleString = "<p1> Take the day off! </p1>";
+      rightString = "<p1> Check back tomorrow! </p1>";
+
+      $(document.getElementById("left")).empty().append(leftString);
+      $(document.getElementById("middle")).empty().append(middleString);
+      $(document.getElementById("right")).empty().append(rightString);
+    })
+  }
+
+  function nextDays() {
+    var next = $(document.getElementById("nextDate")).text();
+
+  }
+</script>
+
 <footer class="page-footer font-small blue pt-4">
     <div class="container-fluid text-center text-md-left">
       <div class="row">
         <div class="col-md-6 mt-md-0 mt-6" align="left">
-          <button type="button" class="btn btn-default btn-arrow-left">Previous 3 days</button>
+          <button onclick="previousDays()" class="btn btn-primary btn-sm">Previous 3 days</button>
         </div>
         <div class="col-md-6 mt-md-0 mt-6" align="right">
-          <button type="button" class="btn btn-default btn-arrow-right">Next 3 days</button>
+          <button onclick="nextDays()" class="btn btn-primary btn-sm">Next 3 days</button>
         </div>
   </footer>
