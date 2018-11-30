@@ -1,3 +1,4 @@
+import os
 # FLAG for dummy data mode
 # If true, use dummy data, and not database
 DUMMY_MODE = False
@@ -26,17 +27,23 @@ MESSAGE = "message"
 
 API = "API"
 
-#Database login Path - testing
-DB_HOST = "sql9.freesqldatabase.com"
-DB_PASSWORD = "UdYNAIPst9"
-DB_USERNAME = "sql9263477"
-DB_NAME = DB_USERNAME
 
-#Database login Path - production
-DB_HOST = "localhost"
-DB_PASSWORD = "s,LsLC~na,nd"
-DB_USERNAME = "getclassi_robot"
-DB_NAME = "getclassi_classi"
+DB_HOST = None
+DB_PASSWORD = None
+DB_USERNAME = None
+DB_NAME = None
+if 'HOSTNAME' in os.environ:
+	#Database login Path - production
+	DB_HOST = "localhost"
+	DB_PASSWORD = "s,LsLC~na,nd"
+	DB_USERNAME = "getclassi_robot"
+	DB_NAME = "getclassi_classi"
+else:
+	#Database login Path - testing
+	DB_HOST = "sql9.freesqldatabase.com"
+	DB_PASSWORD = "UdYNAIPst9"
+	DB_USERNAME = "sql9263477"
+	DB_NAME = DB_USERNAME
 
 # Isolation Levels
 SERIALIZABLE = "SERIALIZABLE"

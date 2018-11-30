@@ -12,11 +12,11 @@ def check_request(environ, start_response):
 			STATUS: FAILED,
 			MESSAGE: "Bad request method: expecting GET"
 		})
-	elif "q" not in query or len(query["q"]) == 0:
+	elif "eventId" not in query or len(query["eventId"]) == 0:
 		start_response('400 Bad Request', [('Content-Type', 'json')])
 		return json.dumps({
 			STATUS: FAILED,
-			MESSAGE: "Missing query parameter ?q=%"
+			MESSAGE: "Missing query parameter ?eventId=#"
 		})
 	else:
 		return ""
@@ -29,47 +29,47 @@ def dummy(environ, start_response):
 		message = json.dumps({
 			STATUS: SUCCESS,
 			MESSAGE: {
-				"results": [
-					{
-						"crn": "1",
-						"class": "cs241",
-						"department": "cs"
-					},
-					{
-						"crn": "2",
-						"class": "ece319",
-						"department": "ece"
-					},
-					{
-						"crn": "3",
-						"class": "cs233",
-						"department": "cs"
-					}
-				]
+				"eventId": str(query["eventId"][0]),
+				"crn": "1002",
+				"Title": "mp2",
+				"DueDate": "11-29-2018 10:12:10",
+				"description": "Just another annoying event"
 			}
 		})
 	print("Message:", message)
 	return [message.encode()]
 
-def real(environ, start_response, netId):
+def real(environ, start_response):
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":
-		q = db.escapeString(query["q"][0])
-		sql = """SELECT Title, Classes.CRN, Department, Instructor, (x.netId IS NOT NULL) FROM
-		 Classes LEFT JOIN (SELECT * FROM Enrollments WHERE NetID = %s) AS x
-		 ON Classes.CRN = x.CRN WHERE Title LIKE '%""" + q + "%'"
-		val1 = (netId, )
+		eventId = query["eventId"][0]
+		sql = "SELECT CRN, Title, DueDate, Event_Des FROM Events WHERE EventId = %s"
+		mydb = None
 		try:
 			mydb, mycursor = db.connect()
-			mycursor.execute(sql, val1)
-			results = [{"class":row[0],"crn":row[1], "department":row[2], "instructor":row[3], "currentlyEnrolled": row[4] == 1} for row in mycursor.fetchall()]
-			start_response('200 OK', [('Content-Type', 'json')])
-			message = json.dumps({
-				STATUS: SUCCESS,
-				MESSAGE: {"results": results}
-			})
-			mydb.close()
+			val = (eventId,)
+			mycursor.execute(sql, val)
+			results = mycursor.fetchall()
+			if len(results) == 1:
+				start_response('200 OK', [('Content-Type', 'json')])
+				row = results[0]
+				message = json.dumps({
+					STATUS: SUCCESS,
+					MESSAGE: {
+						"eventId": str(query["eventId"][0]),
+						"crn": row[0],
+						"title": row[1],
+						"duedate": row[2],
+						"desc": row[3]
+					}
+				})
+			else:
+				start_response('400 Bad Request', [('Content-Type', 'json')])
+				message = json.dumps({
+					STATUS: FAILED,
+					MESSAGE: "class does not exist"
+				})
 		except:
 			print_exc()
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
@@ -77,9 +77,14 @@ def real(environ, start_response, netId):
 				STATUS: FAILED,
 				MESSAGE: "oopsie I made a poopsie"
 			})
+		finally:
+			if mydb:
+				mydb.close()
+
+	print(message)
 	return [message.encode()]
-def find_class(environ, start_response, netId):
+def event_info(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:
-		return real(environ, start_response, netId)
+		return real(environ, start_response)
