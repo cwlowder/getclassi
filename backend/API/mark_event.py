@@ -12,11 +12,17 @@ def check_request(environ,start_response):
 			STATUS: FAILED,
 			MESSAGE: "Bad request method: expecting POST"
 		})
-	elif "crn" not in query or len(query["crn"]) == 0:
+	elif "EventId" not in query or len(query["EventId"]) == 0:
 		start_response('400 Bad Request', [('Content-Type', 'json')])
 		return json.dumps({
 			STATUS: FAILED,
-			MESSAGE: "Missing query parameter ?crn=%"
+			MESSAGE: "Missing query parameter ?EventId=#"
+		})
+	elif "check" not in query or len(query["check"]) == 0:
+		start_response('400 Bad Request', [('Content-Type', 'json')])
+		return json.dumps({
+			STATUS: FAILED,
+			MESSAGE: "Missing query parameter ?check=#"
 		})
 	else:
 		return ""
@@ -36,17 +42,23 @@ def real(environ, start_response, netId):
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":
-		crn = query["crn"][0]
-		sql = "INSERT INTO Enrollments (CRN, NetId) VALUES (%s, %s)"
-		val = (crn, netId) #TODO CHANGE TO LOGIN USER
+		EventId = query["EventId"][0]
+		check = query["check"][0].lower() == "true"
+		sql = ""
+		val = (EventId, netId )
+		if check:
+			sql = "INSERT INTO EventDone (EventId, NetId) VALUES (%s, %s)"
+		else:
+			sql = "DELETE FROM EventDone WHERE EventId = %s and NetId=%s"
 		try:
 			mydb, mycursor = db.connect()
 			#mydb.start_transaction(isolation_level=SERIALIZABLE, readonly=False)
 			mycursor.execute(sql, val)
+			count = mycursor.rowcount
 			start_response('200 OK', [('Content-Type', 'json')])
 			mydb.commit()
 			message = json.dumps({
-				STATUS: SUCCESS
+				STATUS: SUCCESS if count == 1 else FAILED
 			})
 		except Exception as e:
 			mydb.rollback()
@@ -54,7 +66,7 @@ def real(environ, start_response, netId):
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: FAILED,
-				MESSAGE: str(e)
+				MESSAGE: "Already checked done on event" if check else "Event is already unchecked"
 			})
 		finally:
 			if mydb:
@@ -62,7 +74,9 @@ def real(environ, start_response, netId):
 	print(message)
 	return [message.encode()]
 
-def add_class(environ, start_response, netId):
+def mark_event(environ, start_response, netId):
+	if netId == None:
+		raise Exception("Not logged in")
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:

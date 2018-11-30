@@ -40,6 +40,8 @@ def dummy(environ, start_response):
 				"dates": [
 					"2018-11-28"
 				],
+				"prev": "2018-11-27",
+				"next": "2018-11-29",
 				"titles": {
 					"0":"cs241",
 					"1":"tp103",
@@ -51,19 +53,19 @@ def dummy(environ, start_response):
 							"crn": "0",
 							"class": "cs241",
 							"title": "MP1",
-							"desc": "this assignment is harder than the teacher expected"
+							"desc": "this assignment is harder than the teacher expected",
+							"DueDate": "2018-11-29 00:22:57",
+							"EventId": 1,
+							"checked": True
 						},
 						{
 							"crn": "0",
 							"class": "cs241",
 							"title": "QUIZ1",
-							"desc": "Wow! This quiz is easy-peasy"
-						},
-						{
-							"crn": "0",
-							"class": "cs241",
-							"title": "LAB1",
-							"desc": "Better put on those lab coats"
+							"desc": "Wow! This quiz is easy-peasy",
+							"DueDate": "2018-11-29 00:12:57",
+							"EventId": 2,
+							"checked": False
 						}
 					],
 					"1": [
@@ -71,7 +73,10 @@ def dummy(environ, start_response):
 							"crn": "1",
 							"class": "tp103",
 							"title": "MP1",
-							"desc": "this assignment is harder than the teacher expected"
+							"desc": "this assignment is harder than the teacher expected",
+							"DueDate": "2018-11-29 00:23:59",
+							"EventId": 3,
+							"checked": False
 						}
 					],
 					"2":[]
@@ -104,25 +109,41 @@ def real(environ, start_response, netId):
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current - 86400))]
 			current = current - 86400
 		else:
-			pass #//todo implement abstract date
+			try:
+				print(q)
+				format =  time.strptime(q, "%Y-%m-%d")
+				print(format)
+				current = time.mktime(format)
+				print(current)
+				dates += [q]
+			except:
+				print_exc()
+				start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
+				message = json.dumps({
+					STATUS: FAILED,
+					MESSAGE: "Date query has wrong format"
+				})
+				return [message.encode()]
+
 		for x in range(numDays - 1):
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
 			current += 86400
 		nextDay = time.strftime('%Y-%m-%d', time.localtime(current + 86400))
 		mydb = None
 		sql1 = "SELECT Enrollments.CRN, Classes.Title FROM Classes INNER JOIN Enrollments ON Classes.CRN = Enrollments.CRN WHERE Enrollments.NetId = %s"
-		val1 = (netId,)
+		val1 = (netId, )
 		sql2 = """
-		SELECT * FROM (SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`, `Classes`.`Title`
-		 AS CTitle FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) AS x, `Enrollments` WHERE `Enrollments`.crn =
-		 x.crn AND `Enrollments`.NetId = %s
+		SELECT * FROM ((SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`,
+		`Classes`.`Title` AS CTitle, `Events`.EventId as EventId FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) As Y
+		LEFT JOIN EventDone ON EventDone.EventId = Y.EventId),
+		`Enrollments` WHERE `Enrollments`.crn = Y.CRN AND `Enrollments`.NetId = %s
 		"""
 		# Dates is not USER generated, I made it bitch thats right. I can bring down this whole system by changing motherfucking date
-		sql2 +=  "AND (x.DueDate LIKE '" + dates[0] +"%'"
+		sql2 +=  "AND (Y.DueDate LIKE '" + dates[0] +"%'"
 		for x in range(1, len(dates)):
-			sql2 += "OR x.DueDate LIKE '" + dates[x] +"%'"
+			sql2 += "OR Y.DueDate LIKE '" + dates[x] +"%'"
 		sql2 += ")"
-		val2 = (netId,)
+		val2 = (netId, )
 		try:
 			if len(dates) == "0":
 				raise Exception('Date is not anything')
@@ -135,6 +156,7 @@ def real(environ, start_response, netId):
 			events = {}
 			for elem in dates:
 				events[elem] = {}
+			print("NETID:", netId)
 			for row in resultsClasses:
 				if row[0] not in titles:
 					titles[row[0]] = row[1]
@@ -146,7 +168,9 @@ def real(environ, start_response, netId):
 					"class": row[4],
 					"title": row[1],
 					"desc": row[3],
-					"DueDate" : row[2]
+					"DueDate" : row[2],
+					"EventId" : row[5],
+					"checked" : row[6] != None
 				})
 
 			start_response('200 OK', [('Content-Type', 'json')])
