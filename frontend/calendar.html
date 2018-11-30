@@ -489,7 +489,7 @@ const signOut = function() {
           rightHolder += "</a>";
           for (var j in rightInfo[i]) {
             var eventId = rightInfo[i][j].EventId;
-            var isChecked = leftInfo[i][j].checked;
+            var isChecked = rightInfo[i][j].checked;
             if (isChecked == true) {
               rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
 
