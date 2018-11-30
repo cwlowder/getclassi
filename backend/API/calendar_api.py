@@ -97,24 +97,23 @@ def real(environ, start_response, netId):
 		numDays = int(db.escapeString(query["numDays"][0]))
 		dates = []
 
-		current = time.time()
-		previous = time.strftime('%Y-%m-%d', time.localtime(current - 86400))
-
+		start = time.time()
+		current = start
 		if q == "today":
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current))]
 		elif q == "tomorrow":
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
-			current = current + 86400
+			current = start + 86400
 		elif q == "yesterday":
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current - 86400))]
-			current = current - 86400
+			current = start - 86400
 		else:
 			try:
 				print(q)
 				format =  time.strptime(q, "%Y-%m-%d")
-				print(format)
-				current = time.mktime(format)
-				print(current)
+				start = time.mktime(format)
+				current = start
+				print("start is {}".format(time.strftime('%Y-%m-%d', time.localtime(current - (numDays) * 86400))))
 				dates += [q]
 			except:
 				print_exc()
@@ -124,7 +123,7 @@ def real(environ, start_response, netId):
 					MESSAGE: "Date query has wrong format"
 				})
 				return [message.encode()]
-
+		previous = time.strftime('%Y-%m-%d', time.localtime(current - (numDays) * 86400))
 		for x in range(numDays - 1):
 			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
 			current += 86400

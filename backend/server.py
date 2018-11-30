@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from ENDPOINT.endpoint import endpoint 
 
 from API.api import api
+from document import load_doc
 from load_page import load_page
 from CONSTANTS import *
 
@@ -27,6 +28,7 @@ routes = [
 	('/api/*', api),
 	('/test', test_page),
 	('/endpoint/*', endpoint),
+	('/doc/*', load_doc),
 	('/*', load_page)
 ]
 
