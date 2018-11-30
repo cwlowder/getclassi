@@ -27,7 +27,6 @@ MESSAGE = "message"
 
 API = "API"
 
-<<<<<<< Updated upstream
 DB_HOST = None
 DB_PASSWORD = None
 DB_USERNAME = None
@@ -44,13 +43,6 @@ else:
 	DB_PASSWORD = "UdYNAIPst9"
 	DB_USERNAME = "sql9263477"
 	DB_NAME = DB_USERNAME
-=======
-#Database login Path - production
-DB_HOST = "localhost"
-DB_PASSWORD = "s,LsLC~na,nd"
-DB_USERNAME = "getclassi_robot"
-DB_NAME = "getclassi_classi"
->>>>>>> Stashed changes
 
 #Database login Path - testing
 DB_HOST = "sql9.freesqldatabase.com"
