@@ -24,7 +24,6 @@ def please_login(environ, start_response):
 
 def load_doc(environ, start_response):
 	doc_id = environ[PATH].split("/doc/")[1]
-	print("doc_id:", doc_id)
 
 	# Check cookies
 	cookie = None
@@ -36,7 +35,8 @@ def load_doc(environ, start_response):
 	try:
 		netId = session_auth(cookie['sessionID'].value)
 	except:
-		return please_login(environ, start_response)
+		pass
+		#return please_login(environ, start_response)
 	
 	form = None
 	content = b''
@@ -51,8 +51,6 @@ def load_doc(environ, start_response):
 
 		form = row[0]
 		content = row[1]
-		print(type(content), content)
-
 		if mydb:
 			mydb.close()
 	except IndexError:
@@ -66,12 +64,10 @@ def load_doc(environ, start_response):
 		return internal_error(environ, start_response)
 
 	try:
-		print("form:", form, "content_size:", len(content))
 		contentType = []
 		if form == "png":
 			contentType = [('Content-Type', 'image/png')]
 		elif form == "jpg":
-			print("JPG")
 			contentType = [('Content-Type', 'image/jpg')]
 		elif form == "pdf":
 			contentType = [('Content-Type', 'application/pdf')]
@@ -79,8 +75,7 @@ def load_doc(environ, start_response):
 			contentType = [('Content-Type', 'text/plain')]
 		else:
 			return internal_error(environ, start_response)
-		start_response('200 OK', contentType + [('Content-Length', str(len(content))), ('Cache-Control', 'no-store, must-revalidate'), ('Pragma', 'no-cache'), ('Expires', '0')])
-		print(type(content))
+		start_response('200 OK', contentType + [('Cache-Control', 'no-store, must-revalidate'), ('Pragma', 'no-cache'), ('Expires', '0')])
 		return [content]
 	except Exception as e:
 		print_exc()

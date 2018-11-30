@@ -44,7 +44,6 @@ def dummy(environ, start_response):
 				"id": 1
 			}
 		})
-	print("Message:", message)
 	return [message.encode()]
 
 def real(environ, start_response, netId):
