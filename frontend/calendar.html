@@ -9,12 +9,37 @@
 
 <link rel="stylesheet" type="text/css" href="css/common.css">
 
+
+<script>
+  function assignmentsDone(eventId, checked) {
+    $.getJSON("/api/calendar?date=yesterday&numDays=3", function(result) {
+    })
+    .done(function(result) {
+      $.post("/api/mark_event?EventId=" + eventId + "&check=" + !checked, function(result) {
+
+      })
+      .done(function(result) {
+        console.log("Shit was marked updated");
+        $(document.getElementById("currNote")).empty().append(message);
+        location.reload(true);
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log("Failed");
+      })
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+
+    })
+
+  }
+</script>
+
 <script>
   // This will load on page load with the class data
 $(document).ready(function(){
 
 // This is a button that when clicked will do shit
-        $.getJSON("/api/calendar?date=today&numDays=3", function(result) {
+        $.getJSON("/api/calendar?date=yesterday&numDays=3", function(result) {
         })
         .done(function(result) {
             $(document.getElementById("nextDate")).empty().append(result["message"].next);
@@ -39,8 +64,14 @@ $(document).ready(function(){
                 leftHolder += result["message"].titles[i];
                 leftHolder += "</a>";
                 for (var j in leftInfo[i]) {
-                  leftDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
-                }
+                  var eventId = leftInfo[i][j].EventId;
+                  var isChecked = leftInfo[i][j].checked;
+                  if (isChecked == true) {
+                    leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
+
+                  } else {
+                    leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
+                  }                }
 
                 leftHolder += leftDataHolder;
                 leftHolder += "</div>"
@@ -59,8 +90,14 @@ $(document).ready(function(){
                 middleHolder += result["message"].titles[i];
                 middleHolder += "</a>";
                 for (var j in middleInfo[i]) {
-                  middleDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
-                }
+                  var eventId = middleInfo[i][j].EventId;
+                  var isChecked = middleInfo[i][j].checked;
+                  if (isChecked == true) {
+                    middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
+
+                  } else {
+                    middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
+                  }                }
                 middleHolder += middleDataHolder;
                 middleHolder += "</div>"
               }
@@ -78,7 +115,13 @@ $(document).ready(function(){
                 rightHolder += result["message"].titles[i];
                 rightHolder += "</a>";
                 for (var j in rightInfo[i]) {
-                  rightDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
+                  var eventId = rightInfo[i][j].EventId;
+                  var isChecked = rightInfo[i][j].checked;
+                  if (isChecked == true) {
+                    rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
+                  } else {
+                    rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
+                  }
                 }
                 rightHolder += rightDataHolder;
 
@@ -89,6 +132,14 @@ $(document).ready(function(){
               rightHolder += "</div>"
               rightHolder += "";
               $(document.getElementById("right")).append(rightHolder);
+              /*
+              var checkboxes = document.getElementsByTagName('input');
+              for (var i = 0; i < checkboxes.length; i++)  {
+                if (checkboxes[i].type == 'checkbox')   {
+                  checkboxes[i].checked = false;
+                }
+              }
+              */
             } else {
               var leftString = "";
               var middleString = "";
@@ -179,7 +230,7 @@ const signOut = function() {
       <div class="card-deck">
           <div class="card">
             <div class="card-body" style="max-height:300px; overflow-y:auto">
-              <h4 align="center" class="card-title" id="leftCardTitle">
+              <h4 align="center" class="card-header" id="leftCardTitle">
 
               </h4>
               <p class="card-text" id="left">
@@ -188,7 +239,7 @@ const signOut = function() {
           </div>
           <div class="card">
             <div class="card-body" style="max-height:300px; overflow-y:auto" >
-              <h4 align="center" class="card-title" id="middleCardTitle">
+              <h4 align="center" class="card-header" id="middleCardTitle">
 
               </h4>
               <p class="card-text" id="middle">
@@ -197,7 +248,7 @@ const signOut = function() {
           </div>
           <div class="card">
             <div class="card-body" style="max-height:300px; overflow-y:auto">
-              <h4 align="center" class="card-title" id="rightCardTitle">
+              <h4 align="center" class="card-header" id="rightCardTitle">
 
               </h4>
               <p class="card-text" id="right">
@@ -217,10 +268,10 @@ const signOut = function() {
 <div id="nextDate" style="visibility:hidden">
 </div>
 
+
 <script>
   function previousDays() {
     var prev = $(document.getElementById("prevDate")).text();
-    console.log(prev);
     $.getJSON("/api/calendar?date=" + prev + "&numDays=3", function(result) {
     })
     .done(function(result) {
@@ -247,7 +298,14 @@ const signOut = function() {
           leftHolder += result["message"].titles[i];
           leftHolder += "</a>";
           for (var j in leftInfo[i]) {
-            leftDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
+            var eventId = leftInfo[i][j].EventId;
+            var isChecked = leftInfo[i][j].checked;
+            if (isChecked == true) {
+              leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
+
+            } else {
+              leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
+            }
           }
 
           leftHolder += leftDataHolder;
@@ -267,8 +325,14 @@ const signOut = function() {
           middleHolder += result["message"].titles[i];
           middleHolder += "</a>";
           for (var j in middleInfo[i]) {
-            middleDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
-          }
+            var eventId = middleInfo[i][j].EventId;
+            var isChecked = middleInfo[i][j].checked;
+            if (isChecked == true) {
+              middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
+
+            } else {
+              middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
+            }            }
           middleHolder += middleDataHolder;
           middleHolder += "</div>"
         }
@@ -286,8 +350,14 @@ const signOut = function() {
           rightHolder += result["message"].titles[i];
           rightHolder += "</a>";
           for (var j in rightInfo[i]) {
-            rightDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
-          }
+            var eventId = rightInfo[i][j].EventId;
+            var isChecked = rightInfo[i][j].checked;
+            if (isChecked == true) {
+              rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
+
+            } else {
+              rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
+            }          }
           rightHolder += rightDataHolder;
 
           rightHolder += "</div>"
@@ -363,9 +433,15 @@ const signOut = function() {
           leftHolder += result["message"].titles[i];
           leftHolder += "</a>";
           for (var j in leftInfo[i]) {
-            leftDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
-          }
+            var eventId = leftInfo[i][j].EventId;
+            var isChecked = leftInfo[i][j].checked;
+            if (isChecked == true) {
+              leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
 
+            } else {
+              leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
+            }
+          }
           leftHolder += leftDataHolder;
           leftHolder += "</div>"
         }
@@ -383,8 +459,14 @@ const signOut = function() {
           middleHolder += result["message"].titles[i];
           middleHolder += "</a>";
           for (var j in middleInfo[i]) {
-            middleDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
-          }
+            var eventId = middleInfo[i][j].EventId;
+            var isChecked = middleInfo[i][j].checked;
+            if (isChecked == true) {
+              middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
+
+            } else {
+              middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
+            }            }
           middleHolder += middleDataHolder;
           middleHolder += "</div>"
         }
@@ -402,8 +484,14 @@ const signOut = function() {
           rightHolder += result["message"].titles[i];
           rightHolder += "</a>";
           for (var j in rightInfo[i]) {
-            rightDataHolder += "<ul>" + "<input class='form-check-input' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
-          }
+            var eventId = rightInfo[i][j].EventId;
+            var isChecked = leftInfo[i][j].checked;
+            if (isChecked == true) {
+              rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
+
+            } else {
+              rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
+            }          }
           rightHolder += rightDataHolder;
 
           rightHolder += "</div>"
