@@ -12,7 +12,11 @@ body {
 <script>
   $(document).ready(function(){
     $(document.getElementById("dropClassDiv")).empty();
+<<<<<<< Updated upstream
     $.getJSON("/api/list_classes", function(result) {
+=======
+    $.getJSON("/api/listClasses", function(result) {
+>>>>>>> Stashed changes
     })
     .done(function(result) {
         console.log(result);
