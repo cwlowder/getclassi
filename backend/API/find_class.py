@@ -51,16 +51,19 @@ def dummy(environ, start_response):
 	print("Message:", message)
 	return [message.encode()]
 
-def real(environ, start_response):
+def real(environ, start_response, netId):
 	message = check_request(environ,start_response)
 	query = pq(environ[QUERY])
 	if message == "":
 		q = db.escapeString(query["q"][0])
-		sql = "SELECT Title, CRN, Department, Instructor FROM Classes WHERE Title LIKE '%" + q + "%'"
+		sql = """SELECT Title, Classes.CRN, Department, Instructor, (x.netId IS NOT NULL) FROM
+		 Classes LEFT JOIN (SELECT * FROM Enrollments WHERE NetID = %s) AS x
+		 ON Classes.CRN = x.CRN WHERE Title LIKE '%""" + q + "%'"
+		val1 = (netId, )
 		try:
 			mydb, mycursor = db.connect()
-			mycursor.execute(sql)
-			results = [{"class":row[0],"crn":row[1], "department":row[2], "instructor":row[3]} for row in mycursor.fetchall()]
+			mycursor.execute(sql, val1)
+			results = [{"class":row[0],"crn":row[1], "department":row[2], "instructor":row[3], "currentlyEnrolled": row[4] == 1} for row in mycursor.fetchall()]
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: SUCCESS,
@@ -79,4 +82,4 @@ def find_class(environ, start_response, netId):
 	if DUMMY_MODE:
 		return dummy(environ, start_response)
 	else:
-		return real(environ, start_response)
+		return real(environ, start_response, netId)
