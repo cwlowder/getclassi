@@ -18,6 +18,7 @@ from API.list_classes import list_classes
 from API.mark_event import mark_event
 from API.update_event import update_event
 from API.event_info import event_info
+from API.create_event import create_event
 
 def not_implemented(environ, start_response, netid):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -70,6 +71,7 @@ routes = [
 	('mark_event', mark_event),
 	('update_event', update_event),
 	('event_info', event_info),
+	('create_event', create_event),
 	('*', not_implemented)
 ]
 
