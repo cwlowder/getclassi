@@ -17,6 +17,8 @@ def dropTables():
     mycursor.execute(sql)
     sql = "DROP TABLE IF EXISTS Classes"
     mycursor.execute(sql)
+    sql = "DROP TABLE IF EXISTS EventDone"
+    mycursor.execute(sql)
     mydb.close()
 
 dropTables()
