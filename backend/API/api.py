@@ -18,6 +18,7 @@ from API.list_classes import list_classes
 from API.mark_event import mark_event
 from API.update_event import update_event
 from API.event_info import event_info
+from API.create_event import create_event
 from API.upload_doc import upload_doc
 from API.list_docs import list_docs
 
@@ -75,6 +76,7 @@ routes = [
 	('event_info', event_info),
 	('upload_doc', upload_doc),
 	('list_docs', list_docs),
+	('create_event', create_event),
 	('*', not_implemented)
 ]
 
