@@ -47,30 +47,25 @@ def real(environ, start_response):
 		try:
 			body = environ[BODY].read().decode("utf-8")
 			body = json.loads(body)
-			sql = "INSERT INTO Events (CRN, Title, DueDate , Event_Des) VALUES (%s, %s, %s, %s)"
+			sql = "INSERT INTO Events ( CRN , Title, DueDate, Event_Des) VALUES (%s, %s, %s, %s)"
 			num_attributes = 0
-			results = []
+			vals = []
+			vals.append(body["CRN"])
+			vals.append(body["title"])
 			# Extract updated values
-			for key, val in body.items():
-				if key not in key_map:
-					raise
-				if key == "duedate":
-					# must validate it is a good time
-					try:
-						time.strptime(val, "%Y-%m-%d %H:%M:%S")
-					except:
-						print_exc()
-						num_attributes = 0
-						break
-					if num_attributes == 0:
-						raise
-				if type(val) != str:
-					raise
+			try:
+				time.strptime(body["duedate"], "%Y-%m-%d %H:%M:%S")
+			except:
+				print_exc()
+				start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
+				message = json.dumps({
+					STATUS: FAILED,
+					MESSAGE: "Incorrect Date in duedate put it in %Y-%m-%d %H:%M:%S"
+				})
+				return [message.encode()]
 
-				num_attributes += 1
-				results.append((key_map[key],val))
-			if(num_attributes != 4):
-				raise
+			vals.append(body["duedate"])
+			vals.append(body["desc"])
 		except:
 			print_exc()
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
@@ -81,9 +76,6 @@ def real(environ, start_response):
 			return [message.encode()]
 		mydb = None
 		try:
-			vals = []
-			for x in results:
-				vals.append(x[1])
 			print(vals)
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql, vals)
