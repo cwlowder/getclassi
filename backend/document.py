@@ -35,8 +35,7 @@ def load_doc(environ, start_response):
 	try:
 		netId = session_auth(cookie['sessionID'].value)
 	except:
-		pass
-		#return please_login(environ, start_response)
+		return please_login(environ, start_response)
 	
 	form = None
 	content = b''

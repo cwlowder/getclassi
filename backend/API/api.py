@@ -28,12 +28,13 @@ def not_implemented(environ, start_response, netid):
 	}
 	return [json.dumps(message).encode()]
 
-def not_signedin(environ, start_response, netid):
-	start_response('404 Not Found', [('Content-Type', 'text/html')])
+def not_signedin(environ, start_response):
+	start_response('404 Not Found', [('Content-Type', 'text/json')])
 	message = {
 		STATUS: FAILED,
 		MESSAGE: "Invalid sessionID"
 	}
+	return [json.dumps(message).encode()]
 
 def test_api(environ, start_response, netid):
 	path = environ[PATH]
@@ -82,14 +83,13 @@ def api(environ, start_response):
 
 	netId = None
 	if req_path not in ['api/sign_in']:
-		raw_cookies = environ[COOKIES]
-		cookie = SimpleCookie()
-		cookie.load(raw_cookies)
 		try:
+			raw_cookies = environ[COOKIES]
+			cookie = SimpleCookie()
+			cookie.load(raw_cookies)
 			sessionID = cookie['sessionID'].value
 			netId = session_auth(sessionID)
 		except:
-			print_exc()
 			return not_signedin(environ, start_response)
 	try:
 		for path, app in routes:
