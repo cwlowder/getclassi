@@ -18,6 +18,7 @@ from API.list_classes import list_classes
 from API.mark_event import mark_event
 from API.update_event import update_event
 from API.event_info import event_info
+from API.create_event import create_event
 from API.upload_doc import upload_doc
 
 def not_implemented(environ, start_response, netid):
@@ -73,6 +74,7 @@ routes = [
 	('update_event', update_event),
 	('event_info', event_info),
 	('upload_doc', upload_doc),
+	('create_event', create_event)
 	('*', not_implemented)
 ]
 
