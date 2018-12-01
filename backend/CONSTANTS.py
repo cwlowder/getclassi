@@ -7,7 +7,7 @@ DUMMY_MODE = False
 PROD_BRANCH = "master"
 
 LOCAL_CLIENT_ID = "667147779945-d349v2ioe3f5kvqhhsvrcvepj8jqpqrn.apps.googleusercontent.com"
-SESSION_TIMEOUT = 3600 # 1 hour of seconds
+SESSION_TIMEOUT = 36000 # 10 hours in seconds
 
 # Query environ objects
 PATH = "PATH_INFO"

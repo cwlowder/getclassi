@@ -53,11 +53,13 @@ def real(environ, start_response, netId):
 		content = None
 		try:
 			content = environ[BODY].read()
+			if len(content) == 0:
+				raise Exception("Please provide a non empty document")
 		except:
-			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
+			start_response('400 Bad Request', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: FAILED,
-				MESSAGE: "Please provide valid json"
+				MESSAGE: "Error uploading document"
 			})
 			return [message.encode()]
 		crn = query["crn"][0]
