@@ -18,11 +18,11 @@ def check_request(environ,start_response):
 			STATUS: FAILED,
 			MESSAGE: "Missing query parameter ?format=%"
 		})
-	elif "crn" not in query or len(query["crn"]) == 0:
+	elif "eventId" not in query or len(query["eventId"]) == 0:
 		start_response('400 Bad Request', [('Content-Type', 'json')])
 		return json.dumps({
 			STATUS: FAILED,
-			MESSAGE: "Missing query parameter ?crn=%"
+			MESSAGE: "Missing query parameter ?eventId=%"
 		})
 	elif "CONTENT_LENGTH" not in environ:
 		start_response('400 Bad Request', [('Content-Type', 'json')])
@@ -62,10 +62,10 @@ def real(environ, start_response, netId):
 				MESSAGE: "Error uploading document"
 			})
 			return [message.encode()]
-		crn = query["crn"][0]
+		eventId = query["eventId"][0]
 		form = query["format"][0]
-		sql = "INSERT INTO Documents (format, content, CRN, author) VALUES (%s, %s, %s, %s)"
-		val = (form, content, crn, netId) #TODO CHANGE TO LOGIN USER
+		sql = "INSERT INTO Documents (format, content, EventId, author) VALUES (%s, %s, %s, %s)"
+		val = (form, content, eventId, netId) #TODO CHANGE TO LOGIN USER
 		mydb = None
 		try:
 			mydb, mycursor = db.connect()
