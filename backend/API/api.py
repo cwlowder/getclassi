@@ -19,6 +19,7 @@ from API.mark_event import mark_event
 from API.update_event import update_event
 from API.event_info import event_info
 from API.upload_doc import upload_doc
+from API.list_docs import list_docs
 
 def not_implemented(environ, start_response, netid):
 	start_response('404 Not Found', [('Content-Type', 'text/html')])
@@ -73,6 +74,7 @@ routes = [
 	('update_event', update_event),
 	('event_info', event_info),
 	('upload_doc', upload_doc),
+	('list_docs', list_docs),
 	('*', not_implemented)
 ]
 

@@ -15,6 +15,12 @@ def check_request(environ, start_response):
 			STATUS: FAILED,
 			MESSAGE: "Bad request method: expecting POST"
 		})
+	elif "eventId" not in query or len(query["eventId"]) == 0:
+		start_response('400 Bad Request', [('Content-Type', 'json')])
+		return json.dumps({
+			STATUS: FAILED,
+			MESSAGE: "Missing query parameter ?eventId=#"
+		})
 	else:
 		return ""
 
@@ -24,11 +30,18 @@ def dummy(environ, start_response):
 	query = pq(environ[QUERY])
 	if message == "":
 		start_response('200 OK', [('Content-Type', 'json')])
-		payload = {
-			"1000":"cs241",
-			"1000":"tp103",
-			"1000":"astr120"
-		}
+		payload = [
+			{
+				"id": 1,
+				"format": "png",
+				"author": "alb2",
+			},
+			{
+				"id": 5,
+				"format": "jpg",
+				"author": "mac_is_kewl",
+			}
+		]
 		message = json.dumps({
 			STATUS: SUCCESS,
 			MESSAGE: payload
@@ -38,23 +51,30 @@ def dummy(environ, start_response):
 
 def real(environ, start_response, netId):
 	message = check_request(environ,start_response)
+	query = pq(environ[QUERY])
 	if message == "":
 		mydb = None
-		sql = "SELECT Classes.CRN, Classes.Title FROM Classes INNER JOIN Enrollments ON Classes.CRN = Enrollments.CRN WHERE Enrollments.NetId = %s"
-		val = (netId,)
+		eventId = query["eventId"][0]
+		sql = "SELECT id, format, author FROM Documents WHERE EventId = %s"
 		try:
+			eventId = int(eventId)
+			val = (eventId,)
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql, val)
-			resultsClasses = mycursor.fetchall()
+			results = mycursor.fetchall()
 
-			classes = {}
-			for row in resultsClasses:
-				classes[row[0]] = row[1]
+			docs = []
+			for row in results:
+				docs.append({
+					"id": int(row[0]),
+					"format": row[1],
+					"author": row[2]
+				})
 
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: SUCCESS,
-				MESSAGE: classes
+				MESSAGE: docs
 			})
 		except:
 			print_exc()
@@ -69,7 +89,7 @@ def real(environ, start_response, netId):
 	return [message.encode()]
 
 
-def list_classes(environ, start_response, netId):
+def list_docs(environ, start_response, netId):
 	if netId == None:
 		raise Exception("Please log in")
 	if DUMMY_MODE:
