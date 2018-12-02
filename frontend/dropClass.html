@@ -18,8 +18,8 @@ body {
         console.log(result);
         var buttonHolder = "<br>";
         for (var i in result["message"]) {
-          buttonHolder += "<p1 style='padding-right:10px; padding-left:20px'> " + "CRN: " + i + " Class title: " + result["message"][i]
-            + "</p1>" + "<button class='btn btn-default btn-sm' id=button" +
+          buttonHolder += "<p1 style='padding-right:10px; padding-left:20px; font-size:18pt'> " + result["message"][i] + " CRN: " + i
+            + "</p1>" + "<button class='btn btn-danger btn-sm' id=button" +
             i + " onclick=addClick(" + i + ") "
               + "<br>" + "Drop Me! </button>"
           buttonHolder += "<br>";
