@@ -46,6 +46,7 @@ def real(environ, start_response):
 		body = None
 		try:
 			body = environ[BODY].read().decode("utf-8")
+			print(body)
 			body = json.loads(body)
 			sql = "INSERT INTO Events ( CRN , Title, DueDate, Event_Des) VALUES (%s, %s, %s, %s)"
 			num_attributes = 0
