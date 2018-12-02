@@ -75,7 +75,8 @@ def real(environ, start_response):
 			print("done")
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
-				STATUS: SUCCESS
+				STATUS: SUCCESS,
+				"CRN" : body["CRN"]
 			})
 		except Exception as e:
 			if mydb is not None:

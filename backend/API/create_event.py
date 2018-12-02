@@ -80,10 +80,12 @@ def real(environ, start_response):
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql, vals)
 			mydb.commit()
+			_id = mycursor.lastrowid
 			print("done")
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
-				STATUS: SUCCESS
+				STATUS: SUCCESS,
+				"EventId" : _id
 			})
 		except Exception as e:
 			if mydb is not None:
