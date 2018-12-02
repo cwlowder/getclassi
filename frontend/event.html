@@ -52,12 +52,15 @@ body {
 
   <form>
     <div class="form-group">
-      <label for="exampleFormControlFile1"></label>
-      <input type="file" class="form-control-file" id="exampleFormControlFile1">
+      <label for="upload"></label>
+      <input type="file" class="form-control-file" id="upload">
     </div>
   </form>
 
+  <button onclick="uploadButton()" class="btn btn-primary btn-sm"> Upload! </button>
+
 </div>
+
 
 <script>
   $(document).ready(function() {
@@ -83,15 +86,43 @@ body {
 </script>
 
 <script>
-</script>
-
-<script>
 	function getEventId() {
 		var url_string = window.location.href;
 		var url = new URL(url_string);
 		var c = url.searchParams.get("eventId");
     return c;
 	}
+
+  function getFileType(fileName) {
+    var res = fileName.split(".");
+    return res[res.length - 1];
+  }
+  function uploadButton() {
+
+    var file = document.getElementById("upload").files[0];
+    //console.log(file);
+    var fileType = getFileType(file.name);
+    var fileReader = new FileReader();
+
+    fileReader.onload = function(e){
+      var contents = e.target.result;
+      console.log(contents);
+      var one = contents.split(",")[1]
+
+      $.post("/api/upload_doc?eventId=" + getEventId() + "&format=" + fileType, one, function(result) {
+
+      })
+      .done(function(result) {
+        console.log("Shit was posted");
+        console.log(result)
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log("Failed");
+      })
+    }
+
+    fileReader.readAsDataURL(file);
+  }
 </script>
 
 </body>
