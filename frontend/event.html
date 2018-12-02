@@ -1,0 +1,97 @@
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<body>
+
+<style>
+body {
+	background-color: #D3D3D3;
+}
+</style>
+
+<div class="jumbotron text-center" style="background-color: #122B4A; margin-bottom:0">
+	<h1 id="jumbo" style="color: #D67713; font-size:50px; margin-bottom:0px; padding:0px 0px 0px 0px" align="center">
+	</h1>
+</div>
+
+<nav class="navbar navbar-custom" role="navigation" style="padding-right:0px; margin-bottom:0">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">getclassi</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/calendar.html">Calendar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/addClass.html">Add a Class</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dropClass.html">Drop a Class</a>
+      </li>
+    </ul>
+		<ul class="nav navbar-nav navbar-right pull-right" style="margin-left:93%; margin-right:0px; width:100">
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:{}" onClick="return signOut()"><span class="glyphicon glyphicon-log-out"></span>Sign Out</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid">
+	<div id="crnDiv">
+	</div>
+
+	<div id="assignmentDescription">
+	</div>
+
+  <div id="dueDate">
+	</div>
+
+  <form>
+    <div class="form-group">
+      <label for="exampleFormControlFile1"></label>
+      <input type="file" class="form-control-file" id="exampleFormControlFile1">
+    </div>
+  </form>
+
+</div>
+
+<script>
+  $(document).ready(function() {
+    $.getJSON("/api/event_info?eventId=" + getEventId(), function(result) {
+
+    })
+    .done(function(result) {
+      var info = result["message"];
+			$(document.getElementById("jumbo")).append(info.title);
+      $(document.getElementById("crnDiv")).append("Class CRN: ");
+      $(document.getElementById("assignmentDescription")).append(info.desc);
+      $(document.getElementById("dueDate")).append("This assignment is due on: " + info.duedate);
+
+
+      var dataHolder = "<a href='/class.html?crn=" + info.crn + "'"  + ">";
+      dataHolder += info.crn;
+      //dataHolder += "<a href='/class.html?crn=" + info.crn + "'"  + ">'";
+      $(document.getElementById("crnDiv")).append(dataHolder);
+
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { alert('getJSON request failed! ' + textStatus); })
+  })
+</script>
+
+<script>
+</script>
+
+<script>
+	function getEventId() {
+		var url_string = window.location.href;
+		var url = new URL(url_string);
+		var c = url.searchParams.get("eventId");
+    return c;
+	}
+</script>
+
+</body>

@@ -71,7 +71,6 @@ body {
     })
     .done(function(result) {
       var info = result["message"];
-      $(document.getElementById("classHeaderDiv")).append(info.class);
       $(document.getElementById("crnDiv")).append(info.crn);
       $(document.getElementById("currNote")).empty().append(info.note);
 			$(document.getElementById("jumbo")).append(info.class);
