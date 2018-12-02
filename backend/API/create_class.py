@@ -35,8 +35,9 @@ def dummy(environ, start_response):
 key_map = {
 	"CRN" : "CRN",
 	"title" : "Title",
-	"duedate" : "DueDate",
-	"desc": "Event_Des"
+	"department" : "Department",
+	"instructor": "Instructor",
+	"note" : "Note"
 }
 
 def real(environ, start_response):
@@ -44,28 +45,19 @@ def real(environ, start_response):
 	query = pq(environ[QUERY])
 	if message == "":
 		body = None
+		# (CRN, Title, Department, Instructor , Note VARCHAR(280))
 		try:
 			body = environ[BODY].read().decode("utf-8")
 			body = json.loads(body)
-			sql = "INSERT INTO Events ( CRN , Title, DueDate, Event_Des) VALUES (%s, %s, %s, %s)"
+			sql = "INSERT INTO Classes ( CRN , Title, Department, Instructor, Note) VALUES (%s, %s, %s, %s, %s)"
 			num_attributes = 0
 			vals = []
 			vals.append(body["CRN"])
 			vals.append(body["title"])
 			# Extract updated values
-			try:
-				time.strptime(body["duedate"], "%Y-%m-%d %H:%M:%S")
-			except:
-				print_exc()
-				start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
-				message = json.dumps({
-					STATUS: FAILED,
-					MESSAGE: "Incorrect Date in duedate put it in %Y-%m-%d %H:%M:%S"
-				})
-				return [message.encode()]
-
-			vals.append(body["duedate"])
-			vals.append(body["desc"])
+			vals.append(body["department"])
+			vals.append(body["instructor"])
+			vals.append(body["note"] if "note" in body else "Nothing here.")
 		except:
 			print_exc()
 			start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
@@ -80,12 +72,11 @@ def real(environ, start_response):
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql, vals)
 			mydb.commit()
-			_id = mycursor.lastrowid
 			print("done")
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: SUCCESS,
-				"EventId" : _id
+				"CRN" : body["CRN"]
 			})
 		except Exception as e:
 			if mydb is not None:
@@ -102,7 +93,7 @@ def real(environ, start_response):
 	print(message)
 	return [message.encode()]
 
-def create_event(environ, start_response, netId):
+def create_class(environ, start_response, netId):
 	if netId == None:
 		raise Exception("Must be a valid user")
 	if DUMMY_MODE:
