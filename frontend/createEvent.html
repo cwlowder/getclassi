@@ -1,0 +1,157 @@
+
+<head>
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="screen"
+ href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<!-- Bootstrap Date-Picker Plugin -->
+<script type="text/javascript"
+ src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
+</script>
+<script type="text/javascript"
+ src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+</script>
+<script type="text/javascript"
+ src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
+</script>
+</head>
+<body>
+<style>
+	body {
+		background-color: #D3D3D3;
+	}
+
+	/* Style inputs with type="text", select elements and textareas */
+	input[type=text], select, textarea {
+	    width: 100%; /* Full width */
+	    padding: 12px; /* Some padding */
+	    border: 1px solid #ccc; /* Gray border */
+	    border-radius: 4px; /* Rounded borders */
+	    box-sizing: border-box; /* Make sure that padding and width stays in place */
+	    margin-top: 6px; /* Add a top margin */
+	    margin-bottom: 16px; /* Bottom margin */
+	    resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+	}
+
+	/* Style the submit button with a specific background color etc */
+	input[type=submit] {
+	    background-color: #4CAF50;
+	    color: white;
+	    padding: 12px 20px;
+	    border: none;
+	    border-radius: 4px;
+	    cursor: pointer;
+	}
+
+	/* When moving the mouse over the submit button, add a darker green color */
+	input[type=submit]:hover {
+	    background-color: #45a049;
+	}
+
+	/* Add a background color and some padding around the form */
+	#form {
+	    border-radius: 5px;
+	    background-color: white;
+	    margin-top: 2%;
+	}
+
+	#text {
+	    width: 75%;
+	    font-size: 18;
+	    align-content: flex-start;
+	}
+	input.hasDatepicker {
+	  display: inline-block;
+	  margin-right: 5px;
+	  width: -webkit-calc(100% - 21px);
+	  width: -moz-calc(100% - 21px);
+	  width: -o-calc(100% - 21px);
+	  width: -ms-calc(100% - 21px);
+	  width: calc(100% - 21px);
+	}
+</style>
+
+<div class="jumbotron text-center" style="background-color: #122B4A; margin-bottom:0">
+	<h1 style="color: #D67713; font-size:50px; margin-bottom:0px; padding:0px 0px 0px 0px" align="center">
+		New Event
+	</h1>
+</div>
+
+<nav class="navbar navbar-custom" role="navigation" style="padding-right:0px; margin-bottom:0">
+<div class="container-fluid">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="#">getclassi</a>
+	</div>
+	<ul class="nav navbar-nav">
+		<li class="nav-item ">
+			<a class="nav-link" href="/calendar.html">Calendar</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/addClass.html">Add a Class</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/dropClass.html">Drop a Class</a>
+		</li>
+	</ul>
+	<ul class="nav navbar-nav navbar-right pull-right" style="margin-left:50%; margin-right:0px; width:100">
+		<li class="nav-item">
+			<a class="nav-link" href="javascript:{}" onClick="return signOut()">Sign Out</a>
+		</li>
+	</ul>
+</div>
+</nav>
+	<div class="container">
+		<form name="myform" onsubmit="return submitform(event)">
+	      <label for="title">Title</label>
+	      <input type="text" id="title" name="title" placeholder="Event Title"></input>
+
+				<label for="duedate"> Due Date for event</label>
+					<div id="datetimepicker" class="input-append date">
+						<input type="text" id="duedate" name="duedate" readonly></input>
+						<span class="add-on">
+							<i data-time-icon="icon-time" style="" data-date-icon="icon-calendar"></i>
+						</span>
+					</div>
+
+				<label for="desc">Event Description</label>
+				<input type="text" id="desc" name="desc"></input>
+				<br>
+				<input type="submit" value="Submit" >
+			</form>
+		</div>
+
+	<script>
+		function getCrn() {
+			var url_string = window.location.href;
+			var url = new URL(url_string);
+			var c = url.searchParams.get("crn");
+			console.log(c);
+	    return c;
+		}
+		$('#datetimepicker').datetimepicker({
+			format: 'yyyy-MM-dd hh:mm:ss'
+		});
+		function submitform(e){
+				e.preventDefault()
+				var formData = {
+					"title":  document.getElementById("title").value,
+					"CRN" : getCrn(),
+					"desc" : document.getElementById("desc").value,
+					"duedate" : document.getElementById("duedate").value
+				}
+				form = JSON.stringify(formData);
+				console.log(document.getElementById("title").value)
+				$.ajax({
+				  type: "POST",
+				  url: "/api/create_event",
+				  data: form,
+				  success: function(){},
+				  dataType: "json",
+				  contentType : "application/json"
+				});
+				return false;
+		}
+</script>
+</body>
