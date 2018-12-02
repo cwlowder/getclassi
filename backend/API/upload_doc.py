@@ -56,6 +56,7 @@ def real(environ, start_response, netId):
 			if len(content) == 0:
 				raise Exception("Please provide a non empty document")
 		except:
+			print_exc()
 			start_response('400 Bad Request', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: FAILED,
