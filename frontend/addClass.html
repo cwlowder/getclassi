@@ -40,15 +40,16 @@ body {
     </ul>
   </div>
 </nav>
+<div  style="padding-left:10px">
+  <h7 style="font-size:20px"> Department Acronym: </h7> <br> <input type="text" class="form-control" placeholder="E.g. CS" id="departmentAcroynm"
+  style="width: 10%; min-width:100px">
+  <br>
+  <h7 style="font-size:20px"> Course Number: </h7> <br> <input type="text" class="form-control" placeholder="E.g 411" id="courseNumber" style="width: 10%; min-width:100px ">
+  <br>
 
-<h7 style="font-size:20px"> Department Acronym: </h7> <br> <input type="text" class="form-control" placeholder="E.g. CS" id="departmentAcroynm"
-style="width: 10%; min-width:100px">
-<br>
-<h7 style="font-size:20px"> Course Number: </h7> <br> <input type="text" class="form-control" placeholder="E.g 411" id="courseNumber" style="width: 10%; min-width:100px ">
-<br>
-
-<button class="btn btn-default btn-lg" id="submit"> Find Classes </button>
-<br>
+  <button class="btn btn-primary btn-lg" id="submit"> Find Classes </button>
+  <br>
+</div>
 <script>
   function concatenate() {
     var departmentAcr = document.getElementById("departmentAcroynm").value;
@@ -71,10 +72,16 @@ style="width: 10%; min-width:100px">
         console.log(result);
         var buttonHolder = "<br>";
         for (var i in result["message"].results) {
-          buttonHolder += "<p1> " + result["message"].results[i].class + "     " + "CRN: " + result["message"].results[i].crn
-            + "</p1>" + "<br>" + "<button class='btn btn-default btn-sm' id=button" +
-            result["message"].results[i].crn + " onclick=addClick(" + result["message"].results[i].crn + ") "
-              + "<br>" + "Add me </button>"
+          buttonHolder += "<p1 style='padding-right:15px;padding-left:10px; font-size:18pt'> " + result["message"].results[i].class + "     " + "CRN: " + result["message"].results[i].crn
+            + "</p1>";
+          if (result["message"].results[i]["currentlyEnrolled"] == false) {
+            buttonHolder += "<button class='btn btn-primary' id=button" +
+            result["message"].results[i].crn + " onclick=addClick(" + result["message"].results[i].crn + ")> "
+            + "Add me </button>"
+          }
+          else {
+            buttonHolder += "<button class='btn btn-primary' disabled> Already Added</button>"
+          }
           buttonHolder += "<br>";
           buttonHolder += "<br>";
         }
@@ -111,5 +118,5 @@ const signOut = function() {
 <div id="buttonList">
 </div>
 
-<div id="addedClassDiv">
+<div id="addedClassDiv">  
 </div>
