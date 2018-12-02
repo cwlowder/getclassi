@@ -96,6 +96,7 @@ body {
   function addClick(crn) {
     console.log("In addClick");
     console.log(crn);
+    $("#button" + crn).replaceWith("<button class='btn btn-primary' disabled> Already Added</button>")
     $.post("/api/add_class?crn=" + crn, function(result) {
     })
     .done(function(result) {
