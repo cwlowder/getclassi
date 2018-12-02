@@ -54,7 +54,9 @@ def real(environ, start_response, netId):
 		content = None
 		try:
 			content = environ[BODY].read()
-			content = base64.decodebytes(content)
+			if 'binary' not in query or query['binary'][0].lower() == "false":
+				print("Not binary")
+				content = base64.decodebytes(content)
 			if len(content) == 0:
 				raise Exception("Please provide a non empty document")
 		except:
