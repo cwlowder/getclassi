@@ -68,7 +68,7 @@ def real(environ, start_response, netId):
 			})
 			return [message.encode()]
 		eventId = query["eventId"][0]
-		form = query["format"][0]
+		form = query["format"][0].lower()
 		sql = "INSERT INTO Documents (format, content, EventId, author) VALUES (%s, %s, %s, %s)"
 		val = (form, content, eventId, netId) #TODO CHANGE TO LOGIN USER
 		mydb = None
