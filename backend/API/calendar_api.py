@@ -38,10 +38,10 @@ def dummy(environ, start_response):
 		start_response('200 OK', [('Content-Type', 'json')])
 		payload = {
 				"dates": [
-					"2018-11-28"
+					"11-28-2018"
 				],
-				"prev": "2018-11-27",
-				"next": "2018-11-29",
+				"prev": "11-27-2018",
+				"next": "11-29-2018",
 				"titles": {
 					"0":"cs241",
 					"1":"tp103",
@@ -100,20 +100,20 @@ def real(environ, start_response, netId):
 		start = time.time()
 		current = start
 		if q == "today":
-			dates += [time.strftime('%Y-%m-%d', time.localtime(current))]
+			dates += [time.strftime('%m-%d-%Y', time.localtime(current))]
 		elif q == "tomorrow":
-			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
+			dates += [time.strftime('%m-%d-%Y', time.localtime(current + 86400))]
 			current = start + 86400
 		elif q == "yesterday":
-			dates += [time.strftime('%Y-%m-%d', time.localtime(current - 86400))]
+			dates += [time.strftime('%m-%d-%Y', time.localtime(current - 86400))]
 			current = start - 86400
 		else:
 			try:
 				print(q)
-				format =  time.strptime(q, "%Y-%m-%d")
+				format =  time.strptime(q, "%m-%d-%Y")
 				start = time.mktime(format)
 				current = start
-				print("start is {}".format(time.strftime('%Y-%m-%d', time.localtime(current - (numDays) * 86400))))
+				print("start is {}".format(time.strftime('%m-%d-%Y', time.localtime(current - (numDays) * 86400))))
 				dates += [q]
 			except:
 				print_exc()
@@ -123,11 +123,11 @@ def real(environ, start_response, netId):
 					MESSAGE: "Date query has wrong format"
 				})
 				return [message.encode()]
-		previous = time.strftime('%Y-%m-%d', time.localtime(current - (numDays) * 86400))
+		previous = time.strftime('%m-%d-%Y', time.localtime(current - (numDays) * 86400))
 		for x in range(numDays - 1):
-			dates += [time.strftime('%Y-%m-%d', time.localtime(current + 86400))]
+			dates += [time.strftime('%m-%d-%Y', time.localtime(current + 86400))]
 			current += 86400
-		nextDay = time.strftime('%Y-%m-%d', time.localtime(current + 86400))
+		nextDay = time.strftime('%m-%d-%Y', time.localtime(current + 86400))
 		mydb = None
 		sql1 = "SELECT Enrollments.CRN, Classes.Title FROM Classes INNER JOIN Enrollments ON Classes.CRN = Enrollments.CRN WHERE Enrollments.NetId = %s"
 		val1 = (netId, )

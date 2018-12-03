@@ -35,7 +35,7 @@ def testData():
 	for c in classes:
 		x = crn - 1000
 		for assignment in range(0,5):
-			val += [(str(crn), "MP" + str(assignment), time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(current + (10000 * x + x))), "This assignment exists")]
+			val += [(str(crn), "MP" + str(assignment), time.strftime('%m-%d-%Y %H:%M', time.localtime(current + (10000 * x + x))), "This assignment exists")]
 		crn += 1
 	mycursor.executemany(sql, val)
 

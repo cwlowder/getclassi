@@ -20,7 +20,7 @@ def insertEventData(day):
     for c in classes:
     	x = crn - 1000
     	for assignment in range(0,1 + random.randint(0,5)):
-    		val += [(str(crn), "MP" + str(assignment), time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(day + (100000 * (x + 1)))), "This assignment exists")]
+    		val += [(str(crn), "MP" + str(assignment), time.strftime("%m-%d-%Y %H:%M", time.localtime(day + (100000 * (x + 1)))), "This assignment exists")]
     	crn += 1
     mycursor.executemany(sql, val)
     mydb.commit()

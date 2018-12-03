@@ -3,6 +3,7 @@ import json
 from urllib.parse import parse_qs as pq
 import DB.database as db
 from traceback import print_exc
+import base64
 
 def check_request(environ,start_response):
 	query = pq(environ[QUERY])
@@ -53,9 +54,11 @@ def real(environ, start_response, netId):
 		content = None
 		try:
 			content = environ[BODY].read()
+			content = base64.decodebytes(content)
 			if len(content) == 0:
 				raise Exception("Please provide a non empty document")
 		except:
+			print_exc()
 			start_response('400 Bad Request', [('Content-Type', 'json')])
 			message = json.dumps({
 				STATUS: FAILED,

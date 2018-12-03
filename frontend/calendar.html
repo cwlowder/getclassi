@@ -89,9 +89,8 @@ const signOut = function() {
     <div class="row" style="margin-top:20px">
       <div class="card-deck">
           <div class="card">
-            <div class="card-body" style="max-height:300px; overflow-y:auto">
+            <div class="card-body" style="max-height:250px; min-height:250px; overflow-y:auto">
               <h4 align="center" class="card-header" id="leftCardTitle">
-
               </h4>
               <p class="card-text" id="left">
               </p>
@@ -163,10 +162,10 @@ const signOut = function() {
             var eventId = leftInfo[i][j].EventId;
             var isChecked = leftInfo[i][j].checked;
             if (isChecked == true) {
-              leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
+              leftDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
 
             } else {
-              leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
+              leftDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
             }
           }
 
@@ -190,10 +189,10 @@ const signOut = function() {
             var eventId = middleInfo[i][j].EventId;
             var isChecked = middleInfo[i][j].checked;
             if (isChecked == true) {
-              middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
+              middleDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" +  "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
 
             } else {
-              middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
+              middleDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
             }            }
           middleHolder += middleDataHolder;
           middleHolder += "</div>"
@@ -215,10 +214,10 @@ const signOut = function() {
             var eventId = rightInfo[i][j].EventId;
             var isChecked = rightInfo[i][j].checked;
             if (isChecked == true) {
-              rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
+              rightDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
 
             } else {
-              rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
+              rightDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
             }          }
           rightHolder += rightDataHolder;
 
@@ -233,9 +232,9 @@ const signOut = function() {
         var leftString = "";
         var middleString = "";
         var rightString = "";
-        leftString = "<p1> You have no work to do today! </p1>";
-        middleString = "<p1> Take the day off! </p1>";
-        rightString = "<p1> Check back tomorrow! </p1>";
+        leftString = "<div style='text-align:center'> Take the day off! </div>";
+        middleString = "<div style='text-align:center'> Take the day off! </div>";
+        rightString = "<div style='text-align:center'> Take the day off! </div>";
 
         $(document.getElementById("left")).empty().append(leftString);
         $(document.getElementById("middle")).empty().append(middleString);
@@ -256,9 +255,9 @@ const signOut = function() {
       var leftString = "";
       var middleString = "";
       var rightString = "";
-      leftString = "<p1> You have no work to do today! </p1>";
-      middleString = "<p1> Take the day off! </p1>";
-      rightString = "<p1> Check back tomorrow! </p1>";
+      leftString = "<div style='text-align:center'> Take the day off! </div>";
+      middleString = "<div style='text-align:center'> Take the day off! </div>";
+      rightString = "<div style='text-align:center'> Take the day off! </div>";
 
       $(document.getElementById("left")).empty().append(leftString);
       $(document.getElementById("middle")).empty().append(middleString);
@@ -297,10 +296,10 @@ const signOut = function() {
               var eventId = leftInfo[i][j].EventId;
               var isChecked = leftInfo[i][j].checked;
               if (isChecked == true) {
-                leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
+                leftDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
 
               } else {
-                leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
+                leftDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
               }                }
 
             leftHolder += leftDataHolder;
@@ -323,10 +322,10 @@ const signOut = function() {
               var eventId = middleInfo[i][j].EventId;
               var isChecked = middleInfo[i][j].checked;
               if (isChecked == true) {
-                middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
+                middleDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
 
               } else {
-                middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
+                middleDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
               }                }
             middleHolder += middleDataHolder;
             middleHolder += "</div>"
@@ -348,9 +347,9 @@ const signOut = function() {
               var eventId = rightInfo[i][j].EventId;
               var isChecked = rightInfo[i][j].checked;
               if (isChecked == true) {
-                rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
+                rightDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
               } else {
-                rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
+                rightDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
               }
             }
             rightHolder += rightDataHolder;
@@ -374,9 +373,9 @@ const signOut = function() {
           var leftString = "";
           var middleString = "";
           var rightString = "";
-          leftString = "<p1> You have no work to do today! </p1>";
-          middleString = "<p1> Take the day off! </p1>";
-          rightString = "<p1> Check back tomorrow! </p1>";
+          leftString = "<div style='text-align:center'> Take the day off! </div>";
+          middleString = "<div style='text-align:center'> Take the day off! </div>";
+          rightString = "<div style='text-align:center'> Take the day off! </div>";
 
           $(document.getElementById("left")).empty().append(leftString);
           $(document.getElementById("middle")).empty().append(middleString);
@@ -398,9 +397,9 @@ const signOut = function() {
       var leftString = "";
       var middleString = "";
       var rightString = "";
-      leftString = "<p1> You have no work to do today! </p1>";
-      middleString = "<p1> Take the day off! </p1>";
-      rightString = "<p1> Check back tomorrow! </p1>";
+      leftString = "<div style='text-align:center'> Take the day off! </div>";
+      middleString = "<div style='text-align:center'> Take the day off! </div>";
+      rightString = "<div style='text-align:center'> Take the day off! </div>";
 
       $(document.getElementById("left")).empty().append(leftString);
       $(document.getElementById("middle")).empty().append(middleString);
@@ -440,10 +439,10 @@ const signOut = function() {
             var eventId = leftInfo[i][j].EventId;
             var isChecked = leftInfo[i][j].checked;
             if (isChecked == true) {
-              leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
+              leftDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + leftInfo[i][j].title + "</ul>";
 
             } else {
-              leftDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
+              leftDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + leftInfo[i][j].title + "</ul>";
             }
           }
           leftHolder += leftDataHolder;
@@ -466,10 +465,10 @@ const signOut = function() {
             var eventId = middleInfo[i][j].EventId;
             var isChecked = middleInfo[i][j].checked;
             if (isChecked == true) {
-              middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
+              middleDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + middleInfo[i][j].title + "</ul>";
 
             } else {
-              middleDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
+              middleDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + middleInfo[i][j].title + "</ul>";
             }            }
           middleHolder += middleDataHolder;
           middleHolder += "</div>"
@@ -491,10 +490,10 @@ const signOut = function() {
             var eventId = rightInfo[i][j].EventId;
             var isChecked = rightInfo[i][j].checked;
             if (isChecked == true) {
-              rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
+              rightDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox' checked> </input>" + rightInfo[i][j].title + "</ul>";
 
             } else {
-              rightDataHolder += "<ul>" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
+              rightDataHolder += "<ul>" + "<div "+ "style='font-size:20px;'>" + "<a style='color:red' href='/event.html?eventId=" + eventId + "'" + ">" + "<input class='form-check-input' onclick='assignmentsDone(" + eventId + ", " + isChecked + ")' type='checkbox'> </input>" + rightInfo[i][j].title + "</ul>";
             }          }
           rightHolder += rightDataHolder;
 
@@ -509,9 +508,9 @@ const signOut = function() {
         var leftString = "";
         var middleString = "";
         var rightString = "";
-        leftString = "<p1> You have no work to do today! </p1>";
-        middleString = "<p1> Take the day off! </p1>";
-        rightString = "<p1> Check back tomorrow! </p1>";
+        leftString = "<div style='text-align:center'> Take the day off! </div>";
+        middleString = "<div style='text-align:center'> Take the day off! </div>";
+        rightString = "<div style='text-align:center'> Take the day off! </div>";
 
         $(document.getElementById("left")).empty().append(leftString);
         $(document.getElementById("middle")).empty().append(middleString);
@@ -532,9 +531,9 @@ const signOut = function() {
       var leftString = "";
       var middleString = "";
       var rightString = "";
-      leftString = "<p1> You have no work to do today! </p1>";
-      middleString = "<p1> Take the day off! </p1>";
-      rightString = "<p1> Check back tomorrow! </p1>";
+      leftString = "<div style='text-align:center'> Take the day off! </div>";
+      middleString = "<div style='text-align:center'> Take the day off! </div>";
+      rightString = "<div style='text-align:center'> Take the day off! </div>";
 
       $(document.getElementById("left")).empty().append(leftString);
       $(document.getElementById("middle")).empty().append(middleString);
@@ -546,7 +545,7 @@ const signOut = function() {
 <footer class="page-footer font-small blue pt-4">
     <div class="container-fluid text-center text-md-left">
       <div class="row" style="margin-bottom:20px">
-        <div class="col-sm-4" align="left">
+        <div class="col-sm-4" text-align="left">
           <button onclick="previousDays()" class="btn btn-primary btn-sm">Previous 3 days</button>
         </div>
         <div class="col-sm-4" align="center">

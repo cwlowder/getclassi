@@ -55,7 +55,7 @@ def real(environ, start_response):
 			vals.append(body["title"])
 			# Extract updated values
 			try:
-				time.strptime(body["duedate"], "%Y-%m-%d %H:%M:%S")
+				time.strptime(body["duedate"], "%m-%d-%Y %H:%M")
 			except:
 				print_exc()
 				start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])
@@ -81,10 +81,12 @@ def real(environ, start_response):
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql, vals)
 			mydb.commit()
+			_id = mycursor.lastrowid
 			print("done")
 			start_response('200 OK', [('Content-Type', 'json')])
 			message = json.dumps({
-				STATUS: SUCCESS
+				STATUS: SUCCESS,
+				"EventId" : _id
 			})
 		except Exception as e:
 			if mydb is not None:
