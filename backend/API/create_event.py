@@ -55,7 +55,7 @@ def real(environ, start_response):
 			vals.append(body["title"])
 			# Extract updated values
 			try:
-				time.strptime(body["duedate"], "%Y-%m-%d %H:%M:%S")
+				time.strptime(body["duedate"], "%m-%d-%Y %H:%M")
 			except:
 				print_exc()
 				start_response('500 INTERNAL SERVER ERROR', [('Content-Type', 'json')])

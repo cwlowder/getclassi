@@ -32,7 +32,7 @@ def dummy(environ, start_response):
 				"eventId": str(query["eventId"][0]),
 				"crn": "1002",
 				"Title": "mp2",
-				"DueDate": "11-29-2018 10:12:10",
+				"DueDate": "11-29-2018 10:12",
 				"description": "Just another annoying event"
 			}
 		})

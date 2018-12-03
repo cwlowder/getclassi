@@ -60,7 +60,14 @@ body {
 	  <br>
 	  <textarea class="form-control" style="width: 35%" id="notesBox" maxlength="280" rows="4" cols="70"></textarea>
 	  <br>
-	  <button class="btn btn-default btn-lg" id="updateNote" onclick="updateNote()">Update Note! </button>
+		<div class="row" style="margin-bottom:20px">
+			<div class="col-sm-4" text-align="left">
+				<button class="btn btn-primary btn-lg" id="updateNote" onclick="updateNote()">Update Note! </button>
+			</div>
+			<div class="col-sm-4" align="center">
+				<button class="btn btn-primary btn-lg" id="createEvent" onclick="createE()"> Add an Event </button>
+			</div>
+
 	</div>
 </div>
 
@@ -105,6 +112,9 @@ body {
 		var c = url.searchParams.get("crn");
 		console.log(c);
     return c;
+	}
+	function createE(){
+		window.location.href = "/createEvent.html?crn=" + getCrn();
 	}
 </script>
 

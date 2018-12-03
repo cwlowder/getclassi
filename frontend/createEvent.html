@@ -95,7 +95,7 @@
 			<a class="nav-link" href="/dropClass.html">Drop a Class</a>
 		</li>
 	</ul>
-	<ul class="nav navbar-nav navbar-right pull-right" style="margin-left:50%; margin-right:0px; width:100">
+	<ul class="nav navbar-nav navbar-right pull-right" style=" margin-right:0px; width:100">
 		<li class="nav-item">
 			<a class="nav-link" href="javascript:{}" onClick="return signOut()">Sign Out</a>
 		</li>
@@ -131,7 +131,7 @@
 	    return c;
 		}
 		$('#datetimepicker').datetimepicker({
-			format: 'yyyy-MM-dd hh:mm:ss'
+			format: 'MM-dd-yyyy hh:mm'
 		});
 		function submitform(e){
 				e.preventDefault()
@@ -147,11 +147,16 @@
 				  type: "POST",
 				  url: "/api/create_event",
 				  data: form,
-				  success: function(){},
+				  success: redirect,
 				  dataType: "json",
 				  contentType : "application/json"
 				});
 				return false;
+		}
+		function redirect(event) {
+			console.log(event);
+			console.log(event["EventId"])
+			window.location.href = "/event.html?eventId=" + event["EventId"]
 		}
 </script>
 </body>
