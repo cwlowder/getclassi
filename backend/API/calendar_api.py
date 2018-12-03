@@ -134,7 +134,7 @@ def real(environ, start_response, netId):
 		sql2 = """
 		SELECT * FROM ((SELECT Classes.CRN, `Events`.`Title`, `Events`.`DueDate`, `Events`.`Event_Des`,
 		`Classes`.`Title` AS CTitle, `Events`.EventId as EventId FROM Classes LEFT JOIN `Events` ON Classes.crn = `Events`.crn) As Y
-		LEFT JOIN EventDone ON EventDone.EventId = Y.EventId),
+		LEFT JOIN EventDone ON EventDone.EventId = Y.EventId WHERE EventDone.NetId = %s),
 		`Enrollments` WHERE `Enrollments`.crn = Y.CRN AND `Enrollments`.NetId = %s
 		"""
 		# Dates is not USER generated, I made it bitch thats right. I can bring down this whole system by changing motherfucking date
@@ -142,7 +142,7 @@ def real(environ, start_response, netId):
 		for x in range(1, len(dates)):
 			sql2 += "OR Y.DueDate LIKE '" + dates[x] +"%'"
 		sql2 += ")"
-		val2 = (netId, )
+		val2 = (netId, netId)
 		try:
 			if len(dates) == "0":
 				raise Exception('Date is not anything')
