@@ -156,7 +156,7 @@ const signOut = function() {
         for (var i in leftInfo) {
           var leftDataHolder = "";
           leftHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-          leftHolder += result["message"].titles[i];
+          leftHolder += result["message"].titles[i].split("-")[0];
           leftHolder += "</a>";
           for (var j in leftInfo[i]) {
             var eventId = leftInfo[i][j].EventId;
@@ -183,7 +183,7 @@ const signOut = function() {
         for (var i in middleInfo) {
           var middleDataHolder = "";
           middleHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-          middleHolder += result["message"].titles[i];
+          middleHolder += result["message"].titles[i].split("-")[0];
           middleHolder += "</a>";
           for (var j in middleInfo[i]) {
             var eventId = middleInfo[i][j].EventId;
@@ -208,7 +208,7 @@ const signOut = function() {
         for (var i in rightInfo) {
           var rightDataHolder = "";
           rightHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-          rightHolder += result["message"].titles[i];
+          rightHolder += result["message"].titles[i].split("-")[0];
           rightHolder += "</a>";
           for (var j in rightInfo[i]) {
             var eventId = rightInfo[i][j].EventId;
@@ -290,7 +290,7 @@ const signOut = function() {
           for (var i in leftInfo) {
             var leftDataHolder = "";
             leftHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-            leftHolder += result["message"].titles[i];
+            leftHolder += result["message"].titles[i].split("-")[0];
             leftHolder += "</a>";
             for (var j in leftInfo[i]) {
               var eventId = leftInfo[i][j].EventId;
@@ -316,7 +316,7 @@ const signOut = function() {
           for (var i in middleInfo) {
             var middleDataHolder = "";
             middleHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-            middleHolder += result["message"].titles[i];
+            middleHolder += result["message"].titles[i].split("-")[0];
             middleHolder += "</a>";
             for (var j in middleInfo[i]) {
               var eventId = middleInfo[i][j].EventId;
@@ -341,7 +341,7 @@ const signOut = function() {
           for (var i in rightInfo) {
             var rightDataHolder = "";
             rightHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-            rightHolder += result["message"].titles[i];
+            rightHolder += result["message"].titles[i].split("-")[0];
             rightHolder += "</a>";
             for (var j in rightInfo[i]) {
               var eventId = rightInfo[i][j].EventId;
@@ -433,7 +433,7 @@ const signOut = function() {
         for (var i in leftInfo) {
           var leftDataHolder = "";
           leftHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-          leftHolder += result["message"].titles[i];
+          leftHolder += result["message"].titles[i].split("-")[0];
           leftHolder += "</a>";
           for (var j in leftInfo[i]) {
             var eventId = leftInfo[i][j].EventId;
@@ -459,7 +459,7 @@ const signOut = function() {
         for (var i in middleInfo) {
           var middleDataHolder = "";
           middleHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-          middleHolder += result["message"].titles[i];
+          middleHolder += result["message"].titles[i].split("-")[0];
           middleHolder += "</a>";
           for (var j in middleInfo[i]) {
             var eventId = middleInfo[i][j].EventId;
@@ -484,7 +484,7 @@ const signOut = function() {
         for (var i in rightInfo) {
           var rightDataHolder = "";
           rightHolder += "<div "+ "style='font-size:20px;'>" + "<a href='/class.html?crn=" + i + "'" + ">";
-          rightHolder += result["message"].titles[i];
+          rightHolder += result["message"].titles[i].split("-")[0];
           rightHolder += "</a>";
           for (var j in rightInfo[i]) {
             var eventId = rightInfo[i][j].EventId;
