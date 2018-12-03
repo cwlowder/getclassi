@@ -47,7 +47,15 @@ body {
   <h7 style="font-size:20px"> Course Number: </h7> <br> <input type="text" class="form-control" placeholder="E.g 411" id="courseNumber" style="width: 10%; min-width:100px ">
   <br>
 
-  <button class="btn btn-primary btn-lg" id="submit"> Find Classes </button>
+
+	<div class="row" style="margin-bottom:20px">
+		<div class="col-sm-4" text-align="left">
+ 			<button class="btn btn-primary btn-lg" id="submit"> Find Classes </button>
+		</div>
+		<div class="col-sm-4" align="center">
+			<button class="btn btn-primary btn-lg" id="createClass" onclick="createC()"> Create a Class </button>
+		</div>
+	</div>
   <br>
 </div>
 <script>
@@ -64,6 +72,9 @@ body {
 </script>
 
 <script>
+function createC(){
+	window.location.href = "/createClass.html";
+	}
   $(document.getElementById("submit")).click(function(){
     $(document.getElementById("addedClassDiv")).empty();
     $.getJSON("/api/find_class?q=" + concatenate(), function(result) {
@@ -119,5 +130,5 @@ const signOut = function() {
 <div id="buttonList">
 </div>
 
-<div id="addedClassDiv">  
+<div id="addedClassDiv">
 </div>
