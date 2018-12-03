@@ -57,8 +57,13 @@ body {
     </div>
   </form>
 
-  <button onclick="uploadButton()" class="btn btn-primary btn-sm"> Upload! </button>
-
+	<div class="row" style="margin-bottom:20px">
+		<div class="col-sm-4" text-align="left">
+ 			<button onclick="uploadButton()" class="btn btn-primary btn-sm"> Upload! </button>
+		</div>
+		<div class="col-sm-4" align="center">
+			<button class="btn btn-primary btn-sm" id="updateEvent" onclick="updateE()"> Update Event </button>
+		</div>
 </div>
 
 
@@ -86,6 +91,9 @@ body {
 </script>
 
 <script>
+	function updateE(){
+		window.location.href = "/updateEvent.html?eventId=" + getEventId();
+	}
 	function getEventId() {
 		var url_string = window.location.href;
 		var url = new URL(url_string);

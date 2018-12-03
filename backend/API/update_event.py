@@ -39,8 +39,8 @@ def dummy(environ, start_response):
 	return [message.encode()]
 
 key_map = {
-	"title" : "Title", 
-	"duedate" : "DueDate", 
+	"title" : "Title",
+	"duedate" : "DueDate",
 	"desc": "Event_Des"
 }
 
@@ -60,24 +60,25 @@ def real(environ, start_response):
 				MESSAGE: "Please provide valid json"
 			})
 			return [message.encode()]
-		sql = "UPDATE Events SET" 
+		sql = "UPDATE Events SET"
 		num_attributes = 0
 		vals = []
 		# Extract updated values
 		for key, val in body.items():
-			print(val)
+			print(key, "=", val)
 			if key not in key_map:
 				num_attributes = 0
 				break
 			if key == "duedate":
 				# must validate it is a good time
 				try:
-					time.strptime(val, "%Y-%m-%d %H:%M:%S")
+					time.strptime(val, "%m-%d-%Y %H:%M")
 				except:
 					print_exc()
 					num_attributes = 0
 					break
 			if type(val) != str:
+				print("Improper type! expecting string but got", type(val))
 				num_attributes = 0
 				break
 			num_attributes += 1
@@ -92,7 +93,7 @@ def real(environ, start_response):
 			sql = sql[:-1]
 			sql += " WHERE EventId = %s"
 			vals.append(eventId)
-	
+
 			mydb, mycursor = db.connect()
 			mycursor.execute(sql, vals)
 			mydb.commit()
