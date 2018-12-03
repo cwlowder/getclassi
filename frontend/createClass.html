@@ -147,5 +147,12 @@
 			console.log(event["CRN"])
 			window.location.href = "/class.html?crn=" + event["CRN"]
 		}
+		const signOut = function() {
+		  console.log("LOG OUT")
+		  $.post("/api/sign_out", function() {
+		    window.location.href = "/";
+		  })
+		  return false;
+		}
 </script>
 </body>

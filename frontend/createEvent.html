@@ -158,5 +158,12 @@
 			console.log(event["EventId"])
 			window.location.href = "/event.html?eventId=" + event["EventId"]
 		}
+		const signOut = function() {
+		  console.log("LOG OUT")
+		  $.post("/api/sign_out", function() {
+		    window.location.href = "/";
+		  })
+		  return false;
+		}
 </script>
 </body>
