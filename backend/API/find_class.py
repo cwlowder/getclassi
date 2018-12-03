@@ -58,7 +58,7 @@ def real(environ, start_response, netId):
 		q = db.escapeString(query["q"][0])
 		sql = """SELECT Title, Classes.CRN, Department, Instructor, (x.netId IS NOT NULL) FROM
 		 Classes LEFT JOIN (SELECT * FROM Enrollments WHERE NetID = %s) AS x
-		 ON Classes.CRN = x.CRN WHERE Title LIKE '%""" + q + "%'"
+		 ON Classes.CRN = x.CRN WHERE Title LIKE '""" + q + "%'"
 		val1 = (netId, )
 		try:
 			mydb, mycursor = db.connect()
